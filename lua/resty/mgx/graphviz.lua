@@ -3,3 +3,4 @@ return require("resty.mgx.base"):new {
    ext = "gv",
    tag_name = "graphviz",
 }
+
