@@ -4,7 +4,7 @@ local fopen = io.open
 local ipairs = ipairs
 local ngx_md5 = ngx.md5
 local ngx_var = ngx.var
-local sformat = string.format
+local str_format = string.format
 local setmetatable = setmetatable
 
 local EXEC_SOCK = "/tmp/exec.sock"
@@ -55,7 +55,7 @@ function _M:update_document (update_node)
       local uri = mgx_cache:get(fname)
       if not uri then
          -- make input file
-         local f = fopen(sformat("%s%s.%s", work_dir, fname, self.ext), "w")
+         local f = fopen(str_format("%s%s.%s", work_dir, fname, self.ext), "w")
          f:write(self.preamble)
          f:write(content)
          f:write(self.postamble)
@@ -72,7 +72,7 @@ function _M:update_document (update_node)
             ngx.log(ngx.ERR, "fail to exec: ", err)
             ngx.exit(ngx.HTTP_INTERNAL_SERVER_ERROR)
          end
-         uri = sformat("%s.%s", fname, self.outputfmt)
+         uri = str_format("%s.%s", fname, self.outputfmt)
          mgx_cache:set(fname, uri)
       end
       node:removeAttribute("cmd")
