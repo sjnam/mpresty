@@ -14,7 +14,6 @@ local MGX_SCRIPT = "util/mgx"
 local mgx_cache = ngx.shared.mgx_cache
 local cache_dir = (ngx_var.cache_dir or CACHE_DIR).."/"
 local work_dir = ngx_var.document_root..cache_dir
-local prog_name = ngx.config.prefix()..(ngx_var.mgx_script or MGX_SCRIPT)
 
 
 local _M = {
@@ -63,7 +62,7 @@ function _M:update_document (update_node)
          f:close()
          -- run command
          local prog = resty_exec.new(ngx_var.exec_sock or EXEC_SOCK)
-         local res, err = prog(prog_name,
+         local res, err = prog(ngx.config.prefix()..(ngx_var.mgx_script or MGX_SCRIPT),
                                work_dir,
                                self.tag_name,
                                fname,
