@@ -1,6 +1,5 @@
 local mgx = require "resty.mgx"
 
-local ipairs = ipairs
 
 local update_node = function (self, node, uri, content)
    local img = self:createElement("img")
@@ -18,6 +17,7 @@ local update_node = function (self, node, uri, content)
    node:appendChild(pre)
 end
 
+
 --[[
 mgx.metapost:set_update_node(update_node)
 mgx.tikz:set_update_node(function (self, node, uri, content)
@@ -28,4 +28,6 @@ mgx.tikz:set_update_node(function (self, node, uri, content)
 end)
 --]]
 
+
 mgx:render(update_node)
+

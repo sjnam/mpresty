@@ -2,6 +2,10 @@ GraphicsNode
 =======
 Just as MathJax makes it easier to use the tex math equations on a web page, GraphicsNode makes it easy to get the corresponding graphics with scripts such as `metapost`, `tikz`, or `graphviz` on a web page.
 
+Status
+------
+Experimental.
+
 Installation
 ------------
 - Prerequisites:
@@ -61,6 +65,4 @@ server {
     }
 }
 ```
-
-- Visit `localhost:8080/sample.html`
 
