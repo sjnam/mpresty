@@ -1,6 +1,7 @@
 local mgx = require "resty.mgx"
 
 
+--[[
 local fn_update_node_img_pre = function (self, node, uri, content)
    local img = self:createElement("img")
    img:setAttribute("src", uri)
@@ -18,7 +19,6 @@ local fn_update_node_img_pre = function (self, node, uri, content)
 end
 
 
---[[
 mgx.metapost:set_update_node(fn_update_node_img_pre)
 mgx.tikz:set_update_node(function (self, node, uri, content)
       node.localName = "pre"
@@ -30,5 +30,5 @@ end)
 --]]
 
 
-mgx:render(fn_update_node_img_pre)
+mgx:render()
 
