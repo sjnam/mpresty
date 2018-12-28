@@ -1,6 +1,5 @@
 local mgx = require "resty.mgx"
 
-
 --[[
 local fn_update_node_img_pre = function (self, node, uri, content)
    local img = self:createElement("img")

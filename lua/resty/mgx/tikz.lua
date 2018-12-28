@@ -4,7 +4,7 @@ return require("resty.mgx.base"):new {
    tag_name = "tikzpicture",
    preamble = [[
                 \documentclass[tikz]{standalone}
-                \usepackage{istgame}
+                %\usepackage{istgame}
                 \usetikzlibrary{calc}
                 \begin{document}
               ]],
