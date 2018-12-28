@@ -34,20 +34,21 @@ function _M:createElement (name)
 end
 
 
-function _M:update_node (node, uri, content)
+function _M:fn_update_node (node, uri, content)
    node.localName = "img"
    node:setAttribute("src", uri)
 end
 
 
-function _M:set_update_node (update_node)
-   self.cur_update_node = update_node
+function _M:set_update_node (fn_update_node)
+   self.cur_update_node = fn_update_node
 end
 
 
-function _M:update_document (update_node)
+function _M:update_document (fn_update_node)
    local doc = self.doc
-   local update_node = update_node or (self.cur_update_node or self.update_node)
+   local fn_update_node = fn_update_node or
+      (self.cur_update_node or self.fn_update_node)
 
    for _, node in ipairs(doc:getElementsByTagName(self.tag_name)) do
       local content = node.textContent
@@ -62,22 +63,23 @@ function _M:update_document (update_node)
          f:close()
          -- run command
          local prog = resty_exec.new(ngx_var.exec_sock or EXEC_SOCK)
-         local res, err = prog(ngx.config.prefix()..(ngx_var.mgx_script or MGX_SCRIPT),
+         local res, err = prog(ngx.config.prefix()
+                                  ..(ngx_var.mgx_script or MGX_SCRIPT),
                                work_dir,
                                self.tag_name,
                                fname,
                                self.outputfmt,
                                node:getAttribute("cmd") or self.cmd)
-         if err then
-            ngx.log(ngx.ERR, "fail to exec: ", err)
-            ngx.exit(ngx.HTTP_INTERNAL_SERVER_ERROR)
+         if res.exitcode ~= 0 then
+            ngx.log(ngx.ERR, res.stderr)
+            ngx.log(ngx.ERR, res.stdout)
          end
          uri = str_format("%s.%s", fname, self.outputfmt)
          mgx_cache:set(fname, uri)
       end
       node:removeAttribute("cmd")
       node:removeChild(node.childNodes[1])
-      update_node(self, node, cache_dir..uri, content)
+      fn_update_node(self, node, cache_dir..uri, content)
    end
 
    self.cur_update_node = nil

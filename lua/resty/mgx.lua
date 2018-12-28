@@ -15,15 +15,15 @@ for i=1,#graphics do
 end
 
 
-function _M:render (update_node)
+function _M:render (fn_update_node)
    local doc = gumbo_parse(ngx_var.document_root..ngx_var.uri)
    if not doc then
-      ngx.exit(ngx.HTTP_NOT_FOUND)
+      ngx.exit(404)
    end
    for i=1,#graphics do
-      local mgx = self[graphics[i]]
-      mgx.doc = doc
-      doc = mgx:update_document(update_node)
+      local gx = self[graphics[i]]
+      gx.doc = doc
+      doc = gx:update_document(fn_update_node)
    end
    ngx_print(doc:serialize())
 end
