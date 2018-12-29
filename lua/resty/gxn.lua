@@ -6,7 +6,9 @@ local gumbo_parse = require("gumbo").parseFile
 local graphics = { "metapost", "tikz", "graphviz", "sudoku" }
 
 
-local _M = {}
+local _M = {
+   _VERSION = '0.30',
+}
 
 
 for i=1,#graphics do

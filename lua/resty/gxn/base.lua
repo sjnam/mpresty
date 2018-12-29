@@ -17,7 +17,6 @@ local work_dir = ngx_var.document_root..cache_dir
 
 
 local _M = {
-   _VERSION = '0.23',
    outputfmt = "svg",
    preamble = "",
    postamble = ""
