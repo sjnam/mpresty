@@ -1,4 +1,4 @@
-return require("resty.mgx.base"):new {
+return require("resty.gxn.base"):new {
    cmd = "dot",
    ext = "gv",
    tag_name = "graphviz",

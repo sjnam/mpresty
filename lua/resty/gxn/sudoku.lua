@@ -1,4 +1,4 @@
-return require("resty.mgx.base"):new {
+return require("resty.gxn.base"):new {
    cmd = "sudoku-solver",
    ext = "dlx",
    tag_name = "sudoku",

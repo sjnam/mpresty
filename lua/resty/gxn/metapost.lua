@@ -1,4 +1,4 @@
-return require("resty.mgx.base"):new {
+return require("resty.gxn.base"):new {
    cmd = "mpost",
    ext = "mp",
    tag_name = "mplibcode",

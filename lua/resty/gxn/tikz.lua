@@ -1,4 +1,4 @@
-return require("resty.mgx.base"):new {
+return require("resty.gxn.base"):new {
    cmd = "pdflatex",
    ext = "tex",
    tag_name = "tikzpicture",

@@ -10,8 +10,7 @@ local _M = {}
 
 
 for i=1,#graphics do
-   local v = graphics[i]
-   _M[v] = require("resty.mgx."..v)
+   _M[graphics[i]] = require("resty.gxn."..graphics[i])
 end
 
 

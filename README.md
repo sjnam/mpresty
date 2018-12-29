@@ -60,7 +60,7 @@ server {
     listen 8080;
     location = /sample.html {
         content_by_lua_block {
-            require("resty.mgx"):render()
+            require("resty.gxn"):render()
         }
     }
 }
