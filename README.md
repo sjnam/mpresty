@@ -1,6 +1,6 @@
 lua-resty-graphics-node
 =======
-Just as MathJax makes it easier to use the tex math equations on a web page, `lua-resty-graphics-node` makes it easy to get the corresponding graphics with scripts such as `metapost`, `graphviz` or `tikz` on a web page.
+Just as [MathJax](https://www.mathjax.org/) makes it easier to use the tex math equations on a web page, `lua-resty-graphics-node` makes it easy to get the corresponding graphics with scripts such as `metapost` and `graphviz` on a web page.
 
 Status
 ------
