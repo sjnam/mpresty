@@ -88,11 +88,6 @@ case $2 in
         $5 $3
         ERROR=$?
         ;;
-    tikzpicture)
-        $5 $3
-        pdf2svg $3.pdf $3.svg
-        ERROR=$?
-        ;;
     graphviz)
         $5 -Tsvg $3.gv -o $3.$4
         ERROR=$?
@@ -101,7 +96,7 @@ case $2 in
         echo 'NOT SUPPORTED'
 esac
 
-rm -rf *.log *.mp *.mpx *.tex *.aux *.pdf *.gv
+rm -rf *.log *.mp *.mpx *.gv
 
 exit $ERROR
 ```
