@@ -51,7 +51,7 @@ end
 
 
 local function hasError (uri)
-   local f = fopen(str_format("%s%s", work_dir, uri), "r")
+   local f = fopen(str_format("%s%s", ngx_var.document_root, uri), "r")
    if not f then
       return true
    end
@@ -85,11 +85,11 @@ function _M:update_document (fn_update_node)
                                fname,
                                self.outputfmt,
                                node:getAttribute("cmd") or self.cmd)
-         uri = str_format("%s.%s", fname, self.outputfmt)
+         uri = str_format("%s%s.%s", cache_dir, fname, self.outputfmt)
          if hasError(uri) then
-            ngx.log(ngx.ERR, res.stdout)
             content = res.stdout
-            uri = str_format("%s.log", fname)
+            ngx.log(ngx.ERR, content)
+            uri = str_format("%s%s.log", cache_dir, fname)
             fn_update_node = function (self, node, uri)
                node.localName = "iframe"
                node:setAttribute("src", uri)
@@ -101,7 +101,7 @@ function _M:update_document (fn_update_node)
       end
       node:removeAttribute("cmd")
       node:removeChild(node.childNodes[1])
-      fn_update_node(self, node, cache_dir..uri, content)
+      fn_update_node(self, node, uri, content)
    end
 
    self.cur_update_node = nil
