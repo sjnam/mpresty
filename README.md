@@ -16,6 +16,7 @@ Installation
   - [sockexec](https://github.com/jprjr/sockexec), A small server for executing local processes
   - [netstring.lua](https://github.com/jprjr/netstring.lua), An implementation of DJB's netstring encoding format for Lua/LuaJIT
   - [lua-resty-exec](https://github.com/jprjr/lua-resty-exec), Run external programs in OpenResty without spawning a shell or blocking
+  - [Graphviz](https://www.graphviz.org/), Graph visualization is a way of representing structural information as diagrams of abstract graphs and networks.
 
 - Place `lib/resty` to your lua library path.
 
