@@ -10,7 +10,7 @@ local GXS = { "metapost", "graphviz", "tikz" }
 
 
 local _M = {
-   _VERSION = '0.30',
+   _VERSION = '0.3.0',
 }
 
 
