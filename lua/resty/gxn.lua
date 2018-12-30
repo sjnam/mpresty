@@ -3,7 +3,7 @@ local ngx_print = ngx.print
 local gumbo_parse = require("gumbo").parseFile
 
 
-local graphics = { "metapost", "tikz", "graphviz", "sudoku" }
+local GXS = { "metapost", "graphviz", "tikz" }
 
 
 local _M = {
@@ -11,8 +11,8 @@ local _M = {
 }
 
 
-for i=1,#graphics do
-   _M[graphics[i]] = require("resty.gxn."..graphics[i])
+for i=1,#GXS do
+   _M[GXS[i]] = require("resty.gxn."..GXS[i])
 end
 
 
@@ -21,10 +21,8 @@ function _M:render (fn_update_node)
    if not doc then
       ngx.exit(404)
    end
-   for i=1,#graphics do
-      local gx = self[graphics[i]]
-      gx.doc = doc
-      doc = gx:update_document(fn_update_node)
+   for i=1,#GXS do
+      doc = self[GXS[i]]:set_docucmet(doc):update_document(fn_update_node)
    end
    ngx_print(doc:serialize())
 end

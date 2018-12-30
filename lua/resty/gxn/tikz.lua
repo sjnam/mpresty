@@ -8,8 +8,6 @@ return require("resty.gxn.base"):new {
                 \usetikzlibrary{calc}
                 \begin{document}
               ]],
-   postamble = [[
-                \end{document}
-               ]]
+   postamble = "\\end{document}",
 }
 

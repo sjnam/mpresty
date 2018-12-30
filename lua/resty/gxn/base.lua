@@ -44,6 +44,12 @@ function _M:set_update_node (fn_update_node)
 end
 
 
+function _M:set_docucmet(doc)
+   self.doc = doc
+   return self
+end
+
+
 function _M:update_document (fn_update_node)
    local doc = self.doc
    local fn_update_node = fn_update_node or
