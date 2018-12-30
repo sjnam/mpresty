@@ -27,7 +27,7 @@ $ PATH=/usr/local/nginx/sbin:$PATH
 $ export PATH
 $ git clone https://github.com/sjnam/GraphicsNode.git /path/to/www
 $ cd /path/to/www
-$ mkdir -p conf logs html/images
+$ mkdir -p conf logs util html/images
 $ sockexec /tmp/exec.sock
 $ nginx -p `pwd`/ -c conf/nginx.conf
 ```
@@ -96,7 +96,7 @@ case $2 in
         echo 'NOT SUPPORTED'
 esac
 
-rm -rf *.log *.mp *.mpx *.gv
+rm -rf *.mp *.mpx *.gv
 
 exit $ERROR
 ```
