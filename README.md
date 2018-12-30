@@ -1,4 +1,4 @@
-GraphicsNode
+lua-resty-graphics-node
 =======
 Just as MathJax makes it easier to use the tex math equations on a web page, GraphicsNode makes it easy to get the corresponding graphics with scripts such as `metapost`, `graphviz` or `tikz` on a web page.
 
@@ -27,7 +27,7 @@ $ PATH=/usr/local/nginx/sbin:$PATH
 $ export PATH
 $ git clone https://github.com/sjnam/GraphicsNode.git /path/to/www
 $ cd /path/to/www
-$ mkdir -p logs html/images
+$ mkdir -p conf logs html/images
 $ sockexec /tmp/exec.sock
 $ nginx -p `pwd`/ -c conf/nginx.conf
 ```
