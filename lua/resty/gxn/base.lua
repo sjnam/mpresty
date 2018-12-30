@@ -9,7 +9,7 @@ local setmetatable = setmetatable
 
 local EXEC_SOCK = "/tmp/exec.sock"
 local CACHE_DIR = "/images"
-local GXN_SCRIPT = "util/gxn"
+local GXN_SCRIPT = "util/gxn.sh"
 
 local gxn_cache = ngx.shared.gxn_cache
 local cache_dir = (ngx_var.cache_dir or CACHE_DIR).."/"
@@ -68,7 +68,7 @@ function _M:update_document (fn_update_node)
    for _, node in ipairs(doc:getElementsByTagName(self.tag_name)) do
       local content = node.textContent
       local fname = ngx_md5(content)
-      local uri = gxn_cache:get(fname)
+      local uri = gxn_cache and gxn_cache:get(fname) or nil
       if not uri then
          -- make input file
          local f = fopen(str_format("%s%s.%s", work_dir, fname, self.ext), "w")
@@ -96,7 +96,9 @@ function _M:update_document (fn_update_node)
                node:setAttribute("width", "500")
             end
          else
-            gxn_cache:set(fname, uri)
+            if gxn_cache then
+               gxn_cache:set(fname, uri)
+            end
          end
       end
       node:removeAttribute("cmd")
