@@ -50,6 +50,16 @@ function _M:set_docucmet(doc)
 end
 
 
+local function hasError (uri)
+   local f = fopen(str_format("%s%s", work_dir, uri), "r")
+   if not f then
+      return true
+   end
+   f:close()
+   return false
+end
+
+
 function _M:update_document (fn_update_node)
    local doc = self.doc
    local fn_update_node = fn_update_node or
@@ -75,12 +85,19 @@ function _M:update_document (fn_update_node)
                                fname,
                                self.outputfmt,
                                node:getAttribute("cmd") or self.cmd)
-         if res.exitcode ~= 0 then
-            ngx.log(ngx.ERR, res.stderr)
-            ngx.log(ngx.ERR, res.stdout)
-         end
          uri = str_format("%s.%s", fname, self.outputfmt)
-         gxn_cache:set(fname, uri)
+         if hasError(uri) then
+            ngx.log(ngx.ERR, res.stdout)
+            content = res.stdout
+            uri = str_format("%s.log", fname)
+            fn_update_node = function (self, node, uri)
+               node.localName = "iframe"
+               node:setAttribute("src", uri)
+               node:setAttribute("width", "500")
+            end
+         else
+            gxn_cache:set(fname, uri)
+         end
       end
       node:removeAttribute("cmd")
       node:removeChild(node.childNodes[1])
