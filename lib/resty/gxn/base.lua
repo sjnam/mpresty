@@ -1,3 +1,6 @@
+-- Copyright (C) 2018, Soojin Nam
+
+
 local resty_exec = require "resty.exec"
 
 local fopen = io.open

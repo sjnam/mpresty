@@ -1,3 +1,6 @@
+-- Copyright (C) 2018, Soojin Nam
+
+
 local ngx_var = ngx.var
 local ngx_print = ngx.print
 local gumbo_parse = require("gumbo").parseFile

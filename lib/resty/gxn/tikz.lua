@@ -1,3 +1,6 @@
+-- Copyright (C) 2018, Soojin Nam
+
+
 return require("resty.gxn.base"):new {
    cmd = "pdflatex",
    ext = "tex",
