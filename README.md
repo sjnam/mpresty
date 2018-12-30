@@ -18,7 +18,7 @@ Installation
   - [netstring.lua](https://github.com/jprjr/netstring.lua), An implementation of DJB's netstring encoding format for Lua/LuaJIT.
   - [lua-resty-exec](https://github.com/jprjr/lua-resty-exec), Run external programs in OpenResty without spawning a shell or blocking
 
-- Place `lua/resty` to your lua library path.
+- Place `lib/resty` to your lua library path.
 
 Getting Started
 ---------------
@@ -56,11 +56,20 @@ digraph G {
 
 - conf/nginx.conf
 ```
-server {
-    listen 8080;
-    location = /sample.html {
-        content_by_lua_block {
-            require("resty.gxn"):render()
+worker_processes  1;
+error_log logs/error.log;
+events {
+    worker_connections 1024;
+}
+http {
+    server {
+        listen 8080;
+        include mime.types;
+        location /sample {
+            default_type text/html;
+            content_by_lua_block {
+                require("resty.gxn"):render()
+            }
         }
     }
 }
