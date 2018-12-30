@@ -1,6 +1,6 @@
 GraphicsNode
 =======
-Just as MathJax makes it easier to use the tex math equations on a web page, GraphicsNode makes it easy to get the corresponding graphics with scripts such as `metapost`, `tikz`, or `graphviz` on a web page.
+Just as MathJax makes it easier to use the tex math equations on a web page, GraphicsNode makes it easy to get the corresponding graphics with scripts such as `metapost`, `graphviz` or `tikz` on a web page.
 
 Status
 ------
@@ -36,7 +36,7 @@ $ nginx -p `pwd`/ -c conf/nginx.conf
 ```html
 <html>
 <body>
-<mplibcode width="200px">
+<mplibcode width="250">
 beginfig(1)
   pair A, B, C;
   A:=(0,0); B:=(1cm,0); C:=(0,1cm);
@@ -44,12 +44,12 @@ beginfig(1)
 endfig;
 </mplibcode>
 <hr>
-<tikzpicture width="200px">
-\begin{tikzpicture}
-  \draw (-1.5,0) -- (1.5,0);
-  \draw (0,-1.5) -- (0,1.5);
-\end{tikzpicture}.
-</tikzpicture>
+<graphviz cmd="dot" width="250">
+digraph G {
+  main -> init;
+  main -> cleanup;
+}
+</graphviz>
 </body>
 </html>
 ```
