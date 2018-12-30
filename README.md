@@ -10,12 +10,11 @@ Installation
 ------------
 - Prerequisites:
   
-  - [texlive](https://www.tug.org/texlive/), An easy way to get up and running with the TeX document production system.
-  - [nginx](http://nginx.org), An HTTP and reverse proxy server
-  - [lua-nginx-module](https://github.com/openresty/lua-nginx-module), Embed the power of Lua into Nginx HTTP Servers
+  - [Tex Live](https://www.tug.org/texlive/), An easy way to get up and running with the TeX document production system
+  - [OpenResty](http://openresty.org/en/), A full-fledged web platform that integrates the standard Nginx core, LuaJIT
   - [lua-gumbo](https://craigbarnes.gitlab.io/lua-gumbo/), A HTML5 parser and DOM library for Lua
-  - [sockexec](https://github.com/jprjr/sockexec), A small server for executing local processes.
-  - [netstring.lua](https://github.com/jprjr/netstring.lua), An implementation of DJB's netstring encoding format for Lua/LuaJIT.
+  - [sockexec](https://github.com/jprjr/sockexec), A small server for executing local processes
+  - [netstring.lua](https://github.com/jprjr/netstring.lua), An implementation of DJB's netstring encoding format for Lua/LuaJIT
   - [lua-resty-exec](https://github.com/jprjr/lua-resty-exec), Run external programs in OpenResty without spawning a shell or blocking
 
 - Place `lib/resty` to your lua library path.
@@ -23,12 +22,11 @@ Installation
 Getting Started
 ---------------
 ```bash
-$ PATH=/usr/local/nginx/sbin:$PATH
-$ export PATH
-$ git clone https://github.com/sjnam/GraphicsNode.git /path/to/www
-$ cd /path/to/www
+$ export PATH=/usr/local/openresty/nginx/sbin:$PATH
+$ mkdir ~/www
+$ cd ~/www
 $ mkdir -p conf logs util html/images
-$ sockexec /tmp/exec.sock
+$ sockexec /tmp/exec.sock &
 $ nginx -p `pwd`/ -c conf/nginx.conf
 ```
 
