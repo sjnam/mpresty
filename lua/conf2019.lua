@@ -19,11 +19,11 @@ end
 
 
 gxn.metapost:set_update_node(fn_update_node_img_pre)
-gxn.tikz:set_update_node(function (self, node, uri, content)
+gxn.graphviz:set_update_node(function (self, node, uri, content)
       node.localName = "pre"
       node.textContent = content
-      for _, attr in ipairs(node.attributes) do
-         node:removeAttribute(attr.name)
+      for _, v in ipairs(node.attributes) do
+         node:removeAttribute(v.name)
       end
 end)
 --]]
