@@ -33,7 +33,7 @@ function _M:createElement (name)
 end
 
 
-function _M:fn_update_node (node, uri, content)
+function _M:fn_update_node (node, uri)
    node.localName = "img"
    node:setAttribute("src", uri)
 end
