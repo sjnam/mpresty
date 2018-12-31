@@ -99,3 +99,6 @@ rm -rf *.mp *.mpx *.gv
 
 exit $ERROR
 ```
+
+Copyright (C) 2018-2019 Soojin Nam
+
