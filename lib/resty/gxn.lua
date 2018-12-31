@@ -1,4 +1,4 @@
--- Copyright (C) 2018, Soojin Nam
+-- Copyright (C) 2018-2019, Soojin Nam
 
 
 local ngx_var = ngx.var
@@ -10,7 +10,7 @@ local GXS = { "metapost", "graphviz", "tikz" }
 
 
 local _M = {
-   _VERSION = '0.3.0',
+   _VERSION = '0.3.1',
 }
 
 
