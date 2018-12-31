@@ -7,10 +7,9 @@ return require("resty.gxn.base"):new {
    tag_name = "tikzpicture",
    preamble = [[
                 \documentclass[tikz]{standalone}
-                %\usepackage{istgame}
                 \usetikzlibrary{calc}
                 \begin{document}
               ]],
-   postamble = "\\end{document}",
+   postamble = [[\end{document}]],
 }
 

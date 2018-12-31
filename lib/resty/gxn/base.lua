@@ -96,7 +96,8 @@ function _M:update_document (fn_update_node)
             fn_update_node = function (self, node, uri)
                node.localName = "iframe"
                node:setAttribute("src", uri)
-               node:setAttribute("width", "500")
+               node:setAttribute("width", "400")
+               node:setAttribute("height", "400")
             end
          else
             if gxn_cache then
