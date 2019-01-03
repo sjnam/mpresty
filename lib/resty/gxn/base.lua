@@ -73,8 +73,12 @@ function _M:update_document (fn_update_node)
       local fname = ngx_md5(content)
       local uri = gxn_cache and gxn_cache:get(fname) or nil
       if not uri then
-         -- make input file
+         -- prepare input file
          local f = fopen(str_format("%s%s.%s", work_dir, fname, self.ext), "w")
+         if not f then
+            ngx.log(ngx.ERR, "fail to prepare input file")
+            ngx.exit(500)
+         end
          f:write(self.preamble)
          f:write(content)
          f:write(self.postamble)
