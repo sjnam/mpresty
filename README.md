@@ -87,7 +87,7 @@ case $2 in
         $5 $3
         ERROR=$?
         ;;
-    graphviz)
+    digraph)
         $5 -Tsvg $3.gv -o $3.$4
         ERROR=$?
         ;;
