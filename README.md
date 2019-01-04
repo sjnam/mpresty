@@ -43,12 +43,12 @@ beginfig(1)
 endfig;
 </mplibcode>
 <hr>
-<graphviz cmd="dot" width="250">
+<digraph width="250">
 digraph G {
   main -> init;
   main -> cleanup;
 }
-</graphviz>
+</digraph>
 </body>
 </html>
 ```

@@ -53,6 +53,11 @@ function _M:set_docucmet(doc)
 end
 
 
+function _M:getContent(node)
+   return node.textContent
+end
+
+
 local function hasError (uri)
    local f = fopen(str_format("%s%s", ngx_var.document_root, uri), "r")
    if not f then
@@ -69,7 +74,7 @@ function _M:update_document (fn_update_node)
       (self.cur_update_node or self.fn_update_node)
 
    for _, node in ipairs(doc:getElementsByTagName(self.tag_name)) do
-      local content = node.textContent
+      local content = self:getContent(node)
       local fname = ngx_md5(content)
       local uri = gxn_cache and gxn_cache:get(fname) or nil
       if not uri then
@@ -110,7 +115,9 @@ function _M:update_document (fn_update_node)
          end
       end
       node:removeAttribute("cmd")
-      node:removeChild(node.childNodes[1])
+      if node.childNodes[1] then
+         node:removeChild(node.childNodes[1])
+      end
       fn_update_node(self, node, uri, content)
    end
 
