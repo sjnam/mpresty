@@ -6,7 +6,7 @@ local ngx_print = ngx.print
 local gumbo_parse = require("gumbo").parseFile
 
 
-local GXS = { "graphics", "metapost", "tikz", "dot", "neato" }
+local GXS = { "graphics", "mplibcode", "tikzpicture", "digraph", "neatograph" }
 
 
 local _M = {

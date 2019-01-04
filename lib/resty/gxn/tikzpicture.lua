@@ -2,7 +2,7 @@
 
 
 return require("resty.gxn.base"):new {
-   cmd = "xelatex",
+   cmd = "pdflatex",
    ext = "tex",
    tag_name = "tikzpicture",
    preamble = [[
