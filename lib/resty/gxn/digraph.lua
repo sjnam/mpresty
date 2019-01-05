@@ -6,4 +6,3 @@ return require("resty.gxn.base"):new {
    ext = "gv",
    tag_name = "digraph",
 }
-

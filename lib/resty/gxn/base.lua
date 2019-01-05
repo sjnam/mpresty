@@ -2,7 +2,6 @@
 
 
 local resty_exec = require "resty.exec"
-
 local fopen = io.open
 local ipairs = ipairs
 local ngx_md5 = ngx.md5
@@ -10,9 +9,11 @@ local ngx_var = ngx.var
 local str_format = string.format
 local setmetatable = setmetatable
 
+
 local EXEC_SOCK = "/tmp/exec.sock"
 local CACHE_DIR = "/images"
 local GXN_SCRIPT = "util/gxn.sh"
+
 
 local gxn_cache = ngx.shared.gxn_cache
 local cache_dir = (ngx_var.cache_dir or CACHE_DIR).."/"
@@ -129,4 +130,3 @@ end
 
 
 return _M
-

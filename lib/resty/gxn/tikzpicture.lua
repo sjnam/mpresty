@@ -12,4 +12,3 @@ return require("resty.gxn.base"):new {
               ]],
    postamble = [[\end{document}]],
 }
-

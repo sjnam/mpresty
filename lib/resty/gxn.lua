@@ -8,12 +8,12 @@ local ngx_print = ngx.print
 local gumbo_parse = require("gumbo").parse
 
 
-local GXS = { "gxn", "mplibcode", "tikzpicture", "digraph", "neatograph" }
-
-
 local _M = {
    _VERSION = '0.3.6',
 }
+
+
+local GXS = { "gxn", "mplibcode", "tikzpicture", "digraph", "neatograph" }
 
 
 for i=1,#GXS do
@@ -38,4 +38,3 @@ end
 
 
 return _M
-

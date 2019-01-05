@@ -8,4 +8,3 @@ return require("resty.gxn.base"):new {
    preamble = [[prologues:=3; outputtemplate:="%j.svg"; outputformat:="svg";]],
    postamble = "end;",
 }
-
