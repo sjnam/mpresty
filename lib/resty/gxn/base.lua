@@ -44,18 +44,18 @@ function _M:fn_update_node (node, uri, content)
 end
 
 
-function _M:set_update_node (fn_update_node)
+function _M:setCurrentUpdateNode (fn_update_node)
    self.cur_update_node = fn_update_node
 end
 
 
-function _M:set_docucmet(doc)
+function _M:setDocument (doc)
    self.doc = doc
    return self
 end
 
 
-function _M:getContent(node)
+function _M:getContent (node)
    return node.textContent
 end
 
@@ -70,36 +70,43 @@ local function hasError (uri)
 end
 
 
-function _M:update_document (fn_update_node)
-   local doc = self.doc
-   local fn_update_node = fn_update_node or
-      (self.cur_update_node or self.fn_update_node)
+local function prepareInputFile (self, fname, content)
+   local f = fopen(str_format("%s%s.%s", work_dir, fname, self.ext), "w")
+   if not f then
+      ngx.log(ngx.ERR, "fail to prepare input file")
+      ngx.exit(500)
+   end
+   f:write(self.preamble)
+   f:write(content)
+   f:write(self.postamble)
+   f:close()
+end
 
+
+local function generateURI (self, fname, cmd)
+   local prog = resty_exec.new(ngx_var.exec_sock or EXEC_SOCK)
+   local res = prog(ngx.config.prefix()
+                       ..(ngx_var.gxn_script or GXN_SCRIPT),
+                    work_dir,
+                    self.tag_name,
+                    fname,
+                    self.outputfmt,
+                    cmd or self.cmd)
+   return str_format("%s%s.%s", cache_dir, fname, self.outputfmt), res
+end
+
+
+function _M:updateDocument (fn_update_node)
+   local doc = self.doc
    for _, node in ipairs(doc:getElementsByTagName(self.tag_name)) do
+      local fn_update_node = fn_update_node or
+         (self.cur_update_node or self.fn_update_node)
       local content = self:getContent(node)
       local fname = ngx_md5(content)
       local uri = gxn_cache and gxn_cache:get(fname)
       if not uri then
-         -- prepare input file
-         local f = fopen(str_format("%s%s.%s", work_dir, fname, self.ext), "w")
-         if not f then
-            ngx.log(ngx.ERR, "fail to prepare input file")
-            ngx.exit(500)
-         end
-         f:write(self.preamble)
-         f:write(content)
-         f:write(self.postamble)
-         f:close()
-         -- run command
-         local prog = resty_exec.new(ngx_var.exec_sock or EXEC_SOCK)
-         local res, err = prog(ngx.config.prefix()
-                                  ..(ngx_var.gxn_script or GXN_SCRIPT),
-                               work_dir,
-                               self.tag_name,
-                               fname,
-                               self.outputfmt,
-                               node:getAttribute("cmd") or self.cmd)
-         uri = str_format("%s%s.%s", cache_dir, fname, self.outputfmt)
+         prepareInputFile(self, fname, content)
+         uri, res = generateURI(self, fname, node:getAttribute("cmd"))
          if hasError(uri) then
             content = res.stdout
             ngx.log(ngx.ERR, content)
@@ -111,9 +118,7 @@ function _M:update_document (fn_update_node)
                node:setAttribute("height", "400")
             end
          else
-            if gxn_cache then
-               gxn_cache:set(fname, uri)
-            end
+            if gxn_cache then gxn_cache:set(fname, uri) end
          end
       end
       node:removeAttribute("src")
@@ -122,6 +127,7 @@ function _M:update_document (fn_update_node)
          node:removeChild(node.childNodes[1])
       end
       fn_update_node(self, node, uri, content)
+      fn_update_node = nil
    end
 
    self.cur_update_node = nil
@@ -130,3 +136,4 @@ end
 
 
 return _M
+

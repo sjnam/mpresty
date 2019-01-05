@@ -31,7 +31,7 @@ function _M:render (fn_update_node)
       ngx.exit(404)
    end
    for i=1,#GXS do
-      doc = self[GXS[i]]:set_docucmet(doc):update_document(fn_update_node)
+      doc = self[GXS[i]]:setDocument(doc):updateDocument(fn_update_node)
    end
    ngx_print(doc:serialize())
 end
