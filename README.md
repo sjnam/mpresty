@@ -34,6 +34,11 @@ $ nginx -p `pwd`/ -c conf/nginx.conf
 ```html
 <html>
 <body>
+
+<hr>
+<gxn src="http://ktug.org/~sjnam/examples/newton.mp" width="250"/>
+
+<hr>
 <mplibcode width="250">
 beginfig(1)
   pair A, B, C;
@@ -41,6 +46,7 @@ beginfig(1)
   draw A--B--C;
 endfig;
 </mplibcode>
+
 <hr>
 <digraph width="250">
 digraph G {
@@ -48,6 +54,7 @@ digraph G {
   main -> cleanup;
 }
 </digraph>
+
 </body>
 </html>
 ```
