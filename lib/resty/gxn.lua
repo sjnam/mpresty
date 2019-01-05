@@ -1,16 +1,18 @@
 -- Copyright (C) 2018-2019, Soojin Nam
 
 
+local fopen = io.open
+local str_gsub = string.gsub
 local ngx_var = ngx.var
 local ngx_print = ngx.print
-local gumbo_parse = require("gumbo").parseFile
+local gumbo_parse = require("gumbo").parse
 
 
-local GXS = { "graphics", "mplibcode", "tikzpicture", "digraph", "neatograph" }
+local GXS = { "gxn", "mplibcode", "tikzpicture", "digraph", "neatograph" }
 
 
 local _M = {
-   _VERSION = '0.3.5',
+   _VERSION = '0.3.6',
 }
 
 
@@ -20,7 +22,11 @@ end
 
 
 function _M:render (fn_update_node)
-   local doc = gumbo_parse(ngx_var.document_root..ngx_var.uri)
+   local f = fopen(ngx_var.document_root..ngx_var.uri, "r")
+   local content = f:read("*a")
+   f:close()
+   content = str_gsub(content, "(<gxn%s+.-)/?>", "%1></gxn>")
+   local doc = gumbo_parse(content)
    if not doc then
       ngx.exit(404)
    end

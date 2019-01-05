@@ -36,9 +36,10 @@ function _M:createElement (name)
 end
 
 
-function _M:fn_update_node (node, uri)
+function _M:fn_update_node (node, uri, content)
    node.localName = "img"
    node:setAttribute("src", uri)
+   node:setAttribute("alt", content)
 end
 
 
@@ -114,6 +115,7 @@ function _M:update_document (fn_update_node)
             end
          end
       end
+      node:removeAttribute("src")
       node:removeAttribute("cmd")
       if node.childNodes[1] then
          node:removeChild(node.childNodes[1])

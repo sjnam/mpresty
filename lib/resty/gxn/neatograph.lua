@@ -2,7 +2,7 @@
 
 
 return require("resty.gxn.base"):new {
-   cmd = "dot",
+   cmd = "neato",
    ext = "gv",
    tag_name = "neatograph",
 }
