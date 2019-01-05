@@ -78,7 +78,7 @@ function _M:update_document (fn_update_node)
    for _, node in ipairs(doc:getElementsByTagName(self.tag_name)) do
       local content = self:getContent(node)
       local fname = ngx_md5(content)
-      local uri = gxn_cache and gxn_cache:get(fname) or nil
+      local uri = gxn_cache and gxn_cache:get(fname)
       if not uri then
          -- prepare input file
          local f = fopen(str_format("%s%s.%s", work_dir, fname, self.ext), "w")

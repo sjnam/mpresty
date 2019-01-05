@@ -3,6 +3,7 @@
 
 local resty_http = require "resty.http"
 local str_find = string.find
+local str_format = string.format
 local ngx_var = ngx.var
 local gxn_cache = ngx.shared.gxn_cache
 
@@ -32,25 +33,26 @@ end
 
 
 gxn.getContent = function (self, node)
-   local src = node:getAttribute("src");
-   set_graphics(self, src, node:getAttribute("cmd"))
+   local uri = node:getAttribute("src");
+   set_graphics(self, uri, node:getAttribute("cmd"))
 
    local http = resty_http.new()
-   local scheme = http:parse_uri(src)
+   local scheme = http:parse_uri(uri)
    if not scheme then
-      src = "http://127.0.0.1:2019/"..src
+      uri = str_format("http://%s:%s/%s",
+                       ngx_var.server_addr, ngx_var.server_port, uri)
    end
 
-   local content = gxn_cache and gxn_cache:get(src) or nil
+   local content = gxn_cache and gxn_cache:get(uri)
    if not content then
-      local res, err = http:request_uri(src)
+      local res, err = http:request_uri(uri)
       if not res then
-         ngx.log(ngx.ERR, "fail to fetch file: ", err)
+         ngx.log(ngx.ERR, "fail to fetch uri: ", err)
          ngx.exit(500)
       end
       content = res.body
       if gxn_cache then
-         gxn_cache:set(src, content)
+         gxn_cache:set(uri, content)
       end
    end
    return content
