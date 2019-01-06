@@ -1,6 +1,7 @@
 -- Copyright (C) 2018-2019, Soojin Nam
 
 
+local resty_http = require "resty.http"
 local resty_exec = require "resty.exec"
 local fopen = io.open
 local ipairs = ipairs
@@ -59,7 +60,31 @@ end
 
 
 function _M:getContent (node)
-   return node.textContent
+   local uri = node:getAttribute("src");
+   if not uri then
+      return node.textContent
+   end
+
+   local http = resty_http.new()
+   local scheme = http:parse_uri(uri)
+   if not scheme then
+      uri = str_format("http://%s:%s/%s",
+                       ngx_var.server_addr, ngx_var.server_port, uri)
+   end
+
+   local content = gxn_cache and gxn_cache:get(uri)
+   if not content then
+      local res, err = http:request_uri(uri)
+      if not res then
+         ngx.log(ngx.ERR, "fail to fetch uri: ", err)
+         ngx.exit(500)
+      end
+      content = res.body
+      if gxn_cache then
+         gxn_cache:set(uri, content)
+      end
+   end
+   return content
 end
 
 
