@@ -40,6 +40,9 @@ end
 function _M:fn_update_node (node, uri, content)
    node.localName = "img"
    node:setAttribute("src", uri)
+   if not node:getAttribute("width") then
+      node:setAttribute("width", "250")
+   end
    node:setAttribute("alt", content)
 end
 
