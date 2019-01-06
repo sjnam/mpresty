@@ -103,7 +103,11 @@ function _M:updateDocument (fn_update_node)
          (self.cur_update_node or self.fn_update_node)
       local content = self:getContent(node)
       local fname = ngx_md5(content)
-      local uri = gxn_cache and gxn_cache:get(fname)
+      local res, uri
+      local doCache = node:getAttribute("cache")
+      if not doCache or doCache ~= "no" then
+         uri = gxn_cache and gxn_cache:get(fname)
+      end
       if not uri then
          prepareInputFile(self, fname, content)
          uri, res = generateURI(self, fname, node:getAttribute("cmd"))
@@ -118,7 +122,9 @@ function _M:updateDocument (fn_update_node)
                node:setAttribute("height", "400")
             end
          else
-            if gxn_cache then gxn_cache:set(fname, uri) end
+            if not doCache or doCache ~= "no" then
+               if gxn_cache then gxn_cache:set(fname, uri) end
+            end
          end
       end
       node:removeAttribute("src")
