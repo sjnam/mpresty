@@ -14,9 +14,7 @@ Installation
   - [Graphviz](https://www.graphviz.org/), Graph visualization is a way of representing structural information as diagrams of abstract graphs and networks.
   - [OpenResty](http://openresty.org/en/), A full-fledged web platform that integrates the standard Nginx core, LuaJIT
   - [lua-gumbo](https://craigbarnes.gitlab.io/lua-gumbo/), A HTML5 parser and DOM library for Lua
-  - [sockexec](https://github.com/jprjr/sockexec), A small server for executing local processes
-  - [lua-resty-exec](https://github.com/jprjr/lua-resty-exec), Run external programs in OpenResty without spawning a shell or blocking
-
+  - [lua-resty-http](https://github.com/ledgetech/lua-resty-http), Lua HTTP client cosocket driver for OpenResty
 - Place `lib/resty` to your lua library path.
 
 Getting Started
@@ -26,7 +24,6 @@ $ export PATH=/usr/local/openresty/nginx/sbin:$PATH
 $ mkdir ~/www
 $ cd ~/www
 $ mkdir -p conf logs util html/images
-$ sockexec /tmp/exec.sock &
 $ nginx -p `pwd`/ -c conf/nginx.conf
 ```
 
