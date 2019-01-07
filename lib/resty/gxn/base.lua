@@ -1,15 +1,18 @@
 -- Copyright (C) 2018-2019, Soojin Nam
 
 
+--local lrucache = require "resty.lrucache"
 local resty_http = require "resty.http"
 local resty_exec = require "resty.exec"
 local fopen = io.open
 local ipairs = ipairs
-local ngx_md5 = ngx.md5
-local ngx_var = ngx.var
 local str_format = string.format
 local setmetatable = setmetatable
-
+local ngx_md5 = ngx.md5
+local ngx_var = ngx.var
+local ngx_log = ngx.log
+local ngx_exit = ngx.exit
+local ERR = ngx.ERR
 
 local EXEC_SOCK = "/tmp/exec.sock"
 local CACHE_DIR = "/images"
@@ -26,6 +29,9 @@ local _M = {
    preamble = "",
    postamble = ""
 }
+
+
+--local cache = lrucache.new(256)
 
 
 function _M:new (o)
@@ -73,16 +79,20 @@ function _M:getContent (node)
    end
 
    local content = gxn_cache and gxn_cache:get(uri)
+   --local content = cache:get(uri)
    if not content then
       local res, err = http:request_uri(uri)
       if not res then
-         ngx.log(ngx.ERR, "fail to fetch uri: ", err)
-         ngx.exit(500)
+         ngx_log(ERR, "fail to fetch uri: ", err)
+         ngx_exit(500)
       end
       content = res.body
+      --cache:set(uri, content)
+      ---[[
       if gxn_cache then
          gxn_cache:set(uri, content)
       end
+      --]]
    end
    return content
 end
@@ -101,8 +111,8 @@ end
 local function prepareInputFile (self, fname, content)
    local f = fopen(str_format("%s%s.%s", work_dir, fname, self.ext), "w")
    if not f then
-      ngx.log(ngx.ERR, "fail to prepare input file")
-      ngx.exit(500)
+      ngx_log(ERR, "fail to prepare input file")
+      ngx_exit(500)
    end
    f:write(self.preamble)
    f:write(content)
@@ -135,13 +145,14 @@ function _M:updateDocument (fn_update_node)
       local doCache = node:getAttribute("cache")
       if not doCache or doCache ~= "no" then
          uri = gxn_cache and gxn_cache:get(fname)
+         --uri = cache:get(fname)
       end
       if not uri then
          prepareInputFile(self, fname, content)
          uri, res = generateURI(self, fname, node:getAttribute("cmd"))
          if hasError(uri) then
             content = res.stdout
-            ngx.log(ngx.ERR, content)
+            ngx_log(ERR, content)
             uri = str_format("%s%s.log", cache_dir, fname)
             fn_update_node = function (self, node, uri)
                node.localName = "iframe"
@@ -152,6 +163,7 @@ function _M:updateDocument (fn_update_node)
          else
             if not doCache or doCache ~= "no" then
                if gxn_cache then gxn_cache:set(fname, uri) end
+               --cache:set(fname, uri)
             end
          end
       end
