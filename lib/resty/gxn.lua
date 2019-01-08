@@ -5,11 +5,11 @@ local ipairs = ipairs
 local fopen = io.open
 local str_gsub = string.gsub
 local ngx_var = ngx.var
-local ngx_say = ngx.say
-local ngx_log = ngx.log
-local ngx_ERR = ngx.ERR
-local ngx_exit = ngx.exit
 local gumbo_parse = require("gumbo").parse
+
+local HTTP_OK = ngx.HTTP_OK
+local HTTP_NOT_FOUND = ngx.HTTP_NOT_FOUND
+local HTTP_INTERNAL_SERVER_ERROR = ngx.HTTP_INTERNAL_SERVER_ERROR
 
 
 local _M = {
@@ -31,9 +31,9 @@ end
 
 
 function _M:render (fn_update_node)
-   local f = fopen(ngx_var.document_root..ngx_var.uri, "r")
+   local f, err = fopen(ngx_var.document_root..ngx_var.uri, "r")
    if not f then
-      ngx_exit(404)
+      return HTTP_NOT_FOUND, err
    end
 
    local content = f:read("*a")
@@ -43,15 +43,18 @@ function _M:render (fn_update_node)
       content = str_gsub(content, "(<"..v.."%s+.-src%s*=.-)/?>", "%1></"..v..">")
    end
 
-   local doc = gumbo_parse(content)
+   local doc, err = gumbo_parse(content)
    if not doc then
-      ngx_log(ngx_ERR, "fail to parse html")
-      ngx_exit(500)
+      return HTTP_INTERNAL_SERVER_ERROR, err
    end
    for _, v in ipairs(graphics) do
-      doc = self[v]:setDocument(doc):updateDocument(fn_update_node)
+      doc, err = self[v]:setDocument(doc):updateDocument(fn_update_node)
+      if not doc then
+         return HTTP_INTERNAL_SERVER_ERROR, err
+      end
    end
-   ngx_say(doc:serialize())
+
+   return HTTP_OK, doc:serialize()
 end
 
 

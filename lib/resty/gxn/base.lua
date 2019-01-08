@@ -1,9 +1,9 @@
 -- Copyright (C) 2018-2019, Soojin Nam
 
 
---local lrucache = require "resty.lrucache"
 local resty_http = require "resty.http"
 local resty_exec = require "resty.exec"
+--local lrucache = require "resty.lrucache"
 
 local fopen = io.open
 local ipairs = ipairs
@@ -11,24 +11,15 @@ local str_format = string.format
 local setmetatable = setmetatable
 local ngx_md5 = ngx.md5
 local ngx_var = ngx.var
-local ngx_log = ngx.log
-local ngx_exit = ngx.exit
 local ngx_shared = ngx.shared
 local ngx_config = ngx.config
-local ERR = ngx.ERR
 
 local EXEC_SOCK = "/tmp/exec.sock"
 local CACHE_DIR = "/images"
 local GXN_SCRIPT = "util/gxn.sh"
 
 
---[[
-local gxn_cache, err = lrucache.new(128)
-if not gxn_cache then
-   ngx_log(ERR, "failed to create the cache: " .. (err or "unknown"))
-   ngx.exit(500)
-end
---]]
+--local gxn_cache = lrucache.new(128)
 local gxn_cache = ngx_shared.gxn_cache
 local cache_dir = (ngx_var.cache_dir or CACHE_DIR).."/"
 local work_dir = ngx_var.document_root..cache_dir
@@ -73,9 +64,8 @@ end
 function _M:getContent (node)
    local uri = node:getAttribute("src");
    if not uri then
-      return node.textContent
+      return node.textContent, nil
    end
-
    local content = gxn_cache:get(uri)
    if not content then
       local http = resty_http.new()
@@ -83,27 +73,25 @@ function _M:getContent (node)
          uri = str_format("http://%s:%s/%s",
                           ngx_var.server_addr, ngx_var.server_port, uri)
       end
-
       local res, err = http:request_uri(uri)
       if not res then
-         ngx_log(ERR, "fail to fetch ", uri, ": ", err)
-         ngx_exit(500)
+         return nil, err
       end
       content = res.body
       gxn_cache:set(uri, content)
    end
-   return content
+   return content, nil
 end
 
 
 local function prepareInputFile (self, fname, content)
-   local f = fopen(str_format("%s%s.%s", work_dir, fname, self.ext), "w")
+   local f, err = fopen(str_format("%s%s.%s", work_dir, fname, self.ext), "w")
    if not f then
-      ngx_log(ERR, "fail to prepare input file")
-      ngx_exit(500)
+      return err
    end
    f:write(str_format("%s\n%s\n%s", self.preamble, content, self.postamble))
    f:close()
+   return nil
 end
 
 
@@ -132,7 +120,10 @@ function _M:updateDocument (fn_update_node)
    for _, node in ipairs(doc:getElementsByTagName(self.tag_name)) do
       local fn_update_node = fn_update_node or
          (self.cur_update_node or self.fn_update_node)
-      local content = self:getContent(node)
+      local content, err = self:getContent(node)
+      if not content then
+         return nil, err
+      end
       local fname = ngx_md5(content)
       local doCache = node:getAttribute("cache") ~= "no"
       local uri
@@ -141,11 +132,13 @@ function _M:updateDocument (fn_update_node)
       end
       if not uri then
          local res
-         prepareInputFile(self, fname, content)
+         local err = prepareInputFile(self, fname, content)
+         if err then
+            return nil, err
+         end
          uri, res = execute(self, node:getAttribute("cmd"), fname)
          if execFailed(uri) then
             content = res.stdout
-            ngx_log(ERR, content)
             uri = str_format("%s%s.log", cache_dir, fname)
             fn_update_node = function (self, node, uri)
                node.localName = "iframe"
@@ -165,9 +158,8 @@ function _M:updateDocument (fn_update_node)
       fn_update_node(self, node, uri, content)
       fn_update_node = nil
    end
-
    self.cur_update_node = nil
-   return doc
+   return doc, nil
 end
 
 
