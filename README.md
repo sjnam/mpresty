@@ -33,10 +33,10 @@ $ nginx -p `pwd`/ -c conf/nginx.conf
 <body>
 
 <hr>
-<mplibcode src="http://ktug.org/~sjnam/examples/newton.mp" width="250"/>
+<mplibcode src="http://ktug.org/~sjnam/examples/newton.mp"/>
 
 <hr>
-<mplibcode width="250">
+<mplibcode>
 beginfig(1)
   pair A, B, C;
   A:=(0,0); B:=(1cm,0); C:=(0,1cm);
@@ -45,7 +45,7 @@ endfig;
 </mplibcode>
 
 <hr>
-<digraph width="250">
+<digraph width="300">
 digraph G {
   main -> init;
   main -> cleanup;
@@ -58,15 +58,20 @@ digraph G {
 
 - conf/nginx.conf
 ```
-worker_processes  1;
+worker_processes 1;
 error_log logs/error.log;
 events {
     worker_connections 1024;
 }
 http {
+    lua_shared_dict gxn_cache 10m;
+    
     server {
         listen 8080;
+        
+        resolver 8.8.8.8;
         include mime.types;
+        
         location /sample {
             default_type text/html;
             content_by_lua_block {
@@ -90,7 +95,7 @@ case $2 in
         $5 $3
         ERROR=$?
         ;;
-    digraph)
+    digraph|neatograph)
         $5 -Tsvg $3.gv -o $3.$4
         ERROR=$?
         ;;
