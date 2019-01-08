@@ -4,6 +4,7 @@
 --local lrucache = require "resty.lrucache"
 local resty_http = require "resty.http"
 local resty_exec = require "resty.exec"
+
 local fopen = io.open
 local ipairs = ipairs
 local str_format = string.format
@@ -12,6 +13,8 @@ local ngx_md5 = ngx.md5
 local ngx_var = ngx.var
 local ngx_log = ngx.log
 local ngx_exit = ngx.exit
+local ngx_shared = ngx.shared
+local ngx_config = ngx.config
 local ERR = ngx.ERR
 
 local EXEC_SOCK = "/tmp/exec.sock"
@@ -19,7 +22,14 @@ local CACHE_DIR = "/images"
 local GXN_SCRIPT = "util/gxn.sh"
 
 
-local gxn_cache = ngx.shared.gxn_cache
+--[[
+local gxn_cache, err = lrucache.new(128)
+if not gxn_cache then
+   ngx_log(ERR, "failed to create the cache: " .. (err or "unknown"))
+   ngx.exit(500)
+end
+--]]
+local gxn_cache = ngx_shared.gxn_cache
 local cache_dir = (ngx_var.cache_dir or CACHE_DIR).."/"
 local work_dir = ngx_var.document_root..cache_dir
 
@@ -29,9 +39,6 @@ local _M = {
    preamble = "",
    postamble = ""
 }
-
-
---local cache = lrucache.new(256)
 
 
 function _M:new (o)
@@ -71,28 +78,21 @@ function _M:getContent (node)
       return node.textContent
    end
 
-   local http = resty_http.new()
-   local scheme = http:parse_uri(uri)
-   if not scheme then
-      uri = str_format("http://%s:%s/%s",
-                       ngx_var.server_addr, ngx_var.server_port, uri)
-   end
-
-   local content = gxn_cache and gxn_cache:get(uri)
-   --local content = cache:get(uri)
+   local content = gxn_cache:get(uri)
    if not content then
+      local http = resty_http.new()
+      if not http:parse_uri(uri) then
+         uri = str_format("http://%s:%s/%s",
+                          ngx_var.server_addr, ngx_var.server_port, uri)
+      end
+
       local res, err = http:request_uri(uri)
       if not res then
-         ngx_log(ERR, "fail to fetch uri: ", err)
+         ngx_log(ERR, "fail to fetch ", uri, ": ", err)
          ngx_exit(500)
       end
       content = res.body
-      --cache:set(uri, content)
-      ---[[
-      if gxn_cache then
-         gxn_cache:set(uri, content)
-      end
-      --]]
+      gxn_cache:set(uri, content)
    end
    return content
 end
@@ -114,16 +114,14 @@ local function prepareInputFile (self, fname, content)
       ngx_log(ERR, "fail to prepare input file")
       ngx_exit(500)
    end
-   f:write(self.preamble)
-   f:write(content)
-   f:write(self.postamble)
+   f:write(str_format("%s\n%s\n%s", self.preamble, content, self.postamble))
    f:close()
 end
 
 
 local function generateURI (self, fname, cmd)
    local prog = resty_exec.new(ngx_var.exec_sock or EXEC_SOCK)
-   local res = prog(ngx.config.prefix()
+   local res = prog(ngx_config.prefix()
                        ..(ngx_var.gxn_script or GXN_SCRIPT),
                     work_dir,
                     self.tag_name,
@@ -141,13 +139,13 @@ function _M:updateDocument (fn_update_node)
          (self.cur_update_node or self.fn_update_node)
       local content = self:getContent(node)
       local fname = ngx_md5(content)
-      local res, uri
-      local doCache = node:getAttribute("cache")
-      if not doCache or doCache ~= "no" then
-         uri = gxn_cache and gxn_cache:get(fname)
-         --uri = cache:get(fname)
+      local doCache = node:getAttribute("cache") ~= "no"
+      local uri
+      if doCache then
+         uri = gxn_cache:get(fname)
       end
       if not uri then
+         local res
          prepareInputFile(self, fname, content)
          uri, res = generateURI(self, fname, node:getAttribute("cmd"))
          if hasError(uri) then
@@ -161,10 +159,7 @@ function _M:updateDocument (fn_update_node)
                node:setAttribute("height", "400")
             end
          else
-            if not doCache or doCache ~= "no" then
-               if gxn_cache then gxn_cache:set(fname, uri) end
-               --cache:set(fname, uri)
-            end
+            if doCache then gxn_cache:set(fname, uri) end
          end
       end
       node:removeAttribute("src")
