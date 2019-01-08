@@ -127,7 +127,7 @@ function _M:updateDocument (fn_update_node)
       local doCache = node:getAttribute("cache") ~= "no"
       local uri
       if doCache then
-         uri = gxn_cache:get(fname)
+         uri = gxn_cache:get(self.tag_name..fname)
       end
       if not uri then
          local res
@@ -146,7 +146,7 @@ function _M:updateDocument (fn_update_node)
                node:setAttribute("height", "400")
             end
          else
-            if doCache then gxn_cache:set(fname, uri) end
+            if doCache then gxn_cache:set(self.tag_name..fname, uri) end
          end
       end
       node:removeAttribute("src")
