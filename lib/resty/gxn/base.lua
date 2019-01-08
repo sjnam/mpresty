@@ -37,7 +37,15 @@ local work_dir = ngx_var.document_root..cache_dir
 local _M = {
    outputfmt = "svg",
    preamble = "",
-   postamble = ""
+   postamble = "",
+   fn_update_node = function (self, node, uri, content)
+      node.localName = "img"
+      node:setAttribute("src", uri)
+      if not node:getAttribute("width") then
+         node:setAttribute("width", "250")
+      end
+      node:setAttribute("alt", content)
+   end
 }
 
 
@@ -51,17 +59,7 @@ function _M:createElement (name)
 end
 
 
-function _M:fn_update_node (node, uri, content)
-   node.localName = "img"
-   node:setAttribute("src", uri)
-   if not node:getAttribute("width") then
-      node:setAttribute("width", "250")
-   end
-   node:setAttribute("alt", content)
-end
-
-
-function _M:setCurrentUpdateNode (fn_update_node)
+function _M:setUpdateNode (fn_update_node)
    self.cur_update_node = fn_update_node
 end
 
@@ -98,16 +96,6 @@ function _M:getContent (node)
 end
 
 
-local function hasError (uri)
-   local f = fopen(str_format("%s%s", ngx_var.document_root, uri), "r")
-   if not f then
-      return true
-   end
-   f:close()
-   return false
-end
-
-
 local function prepareInputFile (self, fname, content)
    local f = fopen(str_format("%s%s.%s", work_dir, fname, self.ext), "w")
    if not f then
@@ -119,16 +107,23 @@ local function prepareInputFile (self, fname, content)
 end
 
 
-local function generateURI (self, fname, cmd)
+local function execute (self, cmd, fname)
    local prog = resty_exec.new(ngx_var.exec_sock or EXEC_SOCK)
    local res = prog(ngx_config.prefix()
                        ..(ngx_var.gxn_script or GXN_SCRIPT),
-                    work_dir,
-                    self.tag_name,
-                    fname,
-                    self.outputfmt,
+                    work_dir, self.tag_name, fname, self.outputfmt,
                     cmd or self.cmd)
    return str_format("%s%s.%s", cache_dir, fname, self.outputfmt), res
+end
+
+
+local function execFailed (uri)
+   local f = fopen(str_format("%s%s", ngx_var.document_root, uri), "r")
+   if not f then
+      return true
+   end
+   f:close()
+   return false
 end
 
 
@@ -147,8 +142,8 @@ function _M:updateDocument (fn_update_node)
       if not uri then
          local res
          prepareInputFile(self, fname, content)
-         uri, res = generateURI(self, fname, node:getAttribute("cmd"))
-         if hasError(uri) then
+         uri, res = execute(self, node:getAttribute("cmd"), fname)
+         if execFailed(uri) then
             content = res.stdout
             ngx_log(ERR, content)
             uri = str_format("%s%s.log", cache_dir, fname)
