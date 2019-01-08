@@ -3,7 +3,7 @@
 
 local resty_http = require "resty.http"
 local resty_exec = require "resty.exec"
---local lrucache = require "resty.lrucache"
+local lrucache = require "resty.lrucache"
 
 local fopen = io.open
 local ipairs = ipairs
@@ -19,8 +19,7 @@ local CACHE_DIR = "/images"
 local GXN_SCRIPT = "util/gxn.sh"
 
 
---local gxn_cache = lrucache.new(128)
-local gxn_cache = ngx_shared.gxn_cache
+local gxn_cache = ngx_shared.gxn_cache or lrucache.new(128)
 local cache_dir = (ngx_var.cache_dir or CACHE_DIR).."/"
 local work_dir = ngx_var.document_root..cache_dir
 
