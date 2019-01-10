@@ -9,7 +9,7 @@ local fopen = io.open
 local ipairs = ipairs
 local str_format = string.format
 local setmetatable = setmetatable
-local ngx_md5 = ngx.md5
+local crc32 = ngx.crc32_long
 local ngx_var = ngx.var
 local ngx_shared = ngx.shared
 local ngx_config = ngx.config
@@ -31,10 +31,12 @@ local _M = {
    fn_update_node = function (self, node, uri, content)
       node.localName = "img"
       node:setAttribute("src", uri)
-      if not node:getAttribute("width") then
+      if not node:hasAttribute("width") then
          node:setAttribute("width", "250")
       end
-      node:setAttribute("alt", content)
+      if not node:hasAttribute("alt", content) then
+         node:setAttribute("alt", content)
+      end
    end
 }
 
@@ -123,7 +125,7 @@ function _M:updateDocument (fn_update_node)
       if not content then
          return nil, err
       end
-      local fname = ngx_md5(content)
+      local fname = crc32(content)
       local doCache = node:getAttribute("cache") ~= "no"
       local uri
       if doCache then
