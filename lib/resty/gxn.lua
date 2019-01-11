@@ -3,7 +3,6 @@
 
 local ipairs = ipairs
 local fopen = io.open
-local str_gsub = string.gsub
 local ngx_var = ngx.var
 local gumbo_parse = require("gumbo").parse
 
@@ -35,15 +34,8 @@ function _M:render (fn_update_node)
    if not f then
       return HTTP_NOT_FOUND, err
    end
-
-   local content = f:read("*a")
+   local doc, err = gumbo_parse(f:read("*a"))
    f:close()
-
-   for _, v in ipairs(graphics) do
-      content = str_gsub(content, "(<"..v.."%s+.-src%s*=.-)/?>", "%1></"..v..">")
-   end
-
-   local doc, err = gumbo_parse(content)
    if not doc then
       return HTTP_INTERNAL_SERVER_ERROR, err
    end
@@ -53,7 +45,6 @@ function _M:render (fn_update_node)
          return HTTP_INTERNAL_SERVER_ERROR, err
       end
    end
-
    return HTTP_OK, doc:serialize()
 end
 

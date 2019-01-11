@@ -33,7 +33,7 @@ $ nginx -p `pwd`/ -c conf/nginx.conf
 <body>
 
 <hr>
-<mplibcode src="http://ktug.org/~sjnam/examples/newton.mp"/>
+<mplibcode src="http://ktug.org/~sjnam/examples/newton.mp"></mplibcode>
 
 <hr>
 <mplibcode>

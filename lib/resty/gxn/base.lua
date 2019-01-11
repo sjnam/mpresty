@@ -9,7 +9,7 @@ local fopen = io.open
 local ipairs = ipairs
 local str_format = string.format
 local setmetatable = setmetatable
-local crc32 = ngx.crc32_long
+local hash = ngx.crc32_long
 local ngx_var = ngx.var
 local ngx_shared = ngx.shared
 local ngx_config = ngx.config
@@ -22,6 +22,14 @@ local GXN_SCRIPT = "util/gxn.sh"
 local gxn_cache = ngx_shared.gxn_cache or lrucache.new(128)
 local cache_dir = (ngx_var.cache_dir or CACHE_DIR).."/"
 local work_dir = ngx_var.document_root..cache_dir
+
+
+local error_fn_update_node = function (self, node, uri)
+   node.localName = "iframe"
+   node:setAttribute("src", uri)
+   node:setAttribute("width", "400")
+   node:setAttribute("height", "400")
+end
 
 
 local _M = {
@@ -96,12 +104,11 @@ local function prepareInputFile (self, fname, content)
 end
 
 
-local function execute (self, cmd, fname)
+local function execute (self, fname)
    local prog = resty_exec.new(ngx_var.exec_sock or EXEC_SOCK)
    local res = prog(ngx_config.prefix()
                        ..(ngx_var.gxn_script or GXN_SCRIPT),
-                    work_dir, self.tag_name, fname, self.outputfmt,
-                    cmd or self.cmd)
+                    work_dir, self.tag_name, fname, self.outputfmt, self.cmd)
    return str_format("%s%s.%s", cache_dir, fname, self.outputfmt), res
 end
 
@@ -125,7 +132,7 @@ function _M:updateDocument (fn_update_node)
       if not content then
          return nil, err
       end
-      local fname = crc32(content)
+      local fname = hash(content)
       local doCache = node:getAttribute("cache") ~= "no"
       local uri
       if doCache then
@@ -137,23 +144,17 @@ function _M:updateDocument (fn_update_node)
          if err then
             return nil, err
          end
-         uri, res = execute(self, node:getAttribute("cmd"), fname)
+         uri, res = execute(self, fname)
          if execFailed(uri) then
             content = res.stdout
             uri = str_format("%s%s.log", cache_dir, fname)
-            fn_update_node = function (self, node, uri)
-               node.localName = "iframe"
-               node:setAttribute("src", uri)
-               node:setAttribute("width", "400")
-               node:setAttribute("height", "400")
-            end
+            fn_update_node = error_fn_update_node
          else
             if doCache then gxn_cache:set(self.tag_name..fname, uri) end
          end
       end
       node:removeAttribute("src")
-      node:removeAttribute("cmd")
-      if node.childNodes[1] then
+      if node:hasChildNodes() then
          node:removeChild(node.childNodes[1])
       end
       fn_update_node(self, node, uri, content)

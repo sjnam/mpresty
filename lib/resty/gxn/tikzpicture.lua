@@ -4,7 +4,7 @@ return require("resty.gxn.base"):new {
    tag_name = "tikzpicture",
    preamble = [[
                 \documentclass[tikz]{standalone}
-                \usetikzlibrary{calc}
+                \usetikzlibrary{calc,intersections}
                 \begin{document}
               ]],
    postamble = [[\end{document}]],
