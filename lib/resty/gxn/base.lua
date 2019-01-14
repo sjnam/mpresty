@@ -40,7 +40,7 @@ local _M = {
       node.localName = "img"
       node:setAttribute("src", uri)
       if not node:hasAttribute("width") then
-         node:setAttribute("width", "250")
+         node:setAttribute("width", "300")
       end
       if not node:hasAttribute("alt", content) then
          node:setAttribute("alt", content)
