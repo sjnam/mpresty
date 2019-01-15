@@ -33,9 +33,6 @@ $ nginx -p `pwd`/ -c conf/nginx.conf
 <body>
 
 <hr>
-<mplibcode src="http://ktug.org/~sjnam/examples/newton.mp"></mplibcode>
-
-<hr>
 <mplibcode>
 beginfig(1)
   pair A, B, C;
@@ -45,12 +42,10 @@ endfig;
 </mplibcode>
 
 <hr>
-<digraph width="300">
-digraph G {
-  main -> init;
-  main -> cleanup;
-}
-</digraph>
+<mplibcode src="/source/triangle.mp" width="300"></mplibcode>
+
+<hr>
+<mplibcode src="http://www.cs.ucc.ie/~dongen/mpost/mp/Escher87.mp"></mplibcode>
 
 </body>
 </html>
