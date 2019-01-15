@@ -70,7 +70,7 @@ http {
         location /sample {
             default_type text/html;
             content_by_lua_block {
-                require("resty.gxn"):render()
+                require("resty.gxn")()
             }
         }
     }

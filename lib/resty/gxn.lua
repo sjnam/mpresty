@@ -4,6 +4,7 @@
 local ipairs = ipairs
 local fopen = io.open
 local ngx_var = ngx.var
+local setmetatable = setmetatable
 local gumbo_parse = require("gumbo").parse
 
 local HTTP_OK = ngx.HTTP_OK
@@ -29,24 +30,24 @@ for _, v in ipairs(graphics) do
 end
 
 
-function _M:render (fn_update_node)
-   local f, err = fopen(ngx_var.document_root..ngx_var.uri, "r")
-   if not f then
-      return HTTP_NOT_FOUND, err
-   end
-   local doc, err = gumbo_parse(f:read("*a"))
-   f:close()
-   if not doc then
-      return HTTP_INTERNAL_SERVER_ERROR, err
-   end
-   for _, v in ipairs(graphics) do
-      doc, err = self[v]:setDocument(doc):updateDocument(fn_update_node)
-      if not doc then
-         return HTTP_INTERNAL_SERVER_ERROR, err
-      end
-   end
-   return HTTP_OK, doc:serialize()
-end
-
-
-return _M
+return setmetatable(
+   _M,
+   { __call = function (self, fn_update_node)
+        local f, err = fopen(ngx_var.document_root..ngx_var.uri, "r")
+        if not f then
+           return HTTP_NOT_FOUND, err
+        end
+        local doc, err = gumbo_parse(f:read("*a"))
+        f:close()
+        if not doc then
+           return HTTP_INTERNAL_SERVER_ERROR, err
+        end
+        for _, v in ipairs(graphics) do
+           doc, err = self[v]:setDocument(doc):updateDocument(fn_update_node)
+           if not doc then
+              return HTTP_INTERNAL_SERVER_ERROR, err
+           end
+        end
+        return HTTP_OK, doc:serialize()
+   end }
+)
