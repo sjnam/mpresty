@@ -7,10 +7,6 @@ local ngx_var = ngx.var
 local setmetatable = setmetatable
 local gumbo_parse = require("gumbo").parse
 
-local HTTP_OK = ngx.HTTP_OK
-local HTTP_NOT_FOUND = ngx.HTTP_NOT_FOUND
-local HTTP_INTERNAL_SERVER_ERROR = ngx.HTTP_INTERNAL_SERVER_ERROR
-
 
 local _M = {
    _VERSION = '0.3.6',
@@ -35,19 +31,19 @@ return setmetatable(
    { __call = function (self, fn_update_node)
         local f, err = fopen(ngx_var.document_root..ngx_var.uri, "r")
         if not f then
-           return HTTP_NOT_FOUND, err
+           return err, ngx.HTTP_NOT_FOUND
         end
         local doc, err = gumbo_parse(f:read("*a"))
         f:close()
         if not doc then
-           return HTTP_INTERNAL_SERVER_ERROR, err
+           return err, ngx.HTTP_INTERNAL_SERVER_ERROR
         end
         for _, v in ipairs(graphics) do
            doc, err = self[v]:setDocument(doc):updateDocument(fn_update_node)
            if not doc then
-              return HTTP_INTERNAL_SERVER_ERROR, err
+              return err, ngx.HTTP_INTERNAL_SERVER_ERROR
            end
         end
-        return HTTP_OK, doc:serialize()
+        return doc:serialize()
    end }
 )
