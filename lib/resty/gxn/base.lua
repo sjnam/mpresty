@@ -1,9 +1,9 @@
 -- Copyright (C) 2018-2019, Soojin Nam
 
 
-local resty_http = require "resty.http"
 local resty_exec = require "resty.exec"
 local lrucache = require "resty.lrucache"
+local resty_requests = require "resty.requests"
 
 local fopen = io.open
 local ipairs = ipairs
@@ -11,9 +11,11 @@ local str_format = string.format
 local setmetatable = setmetatable
 local hash = ngx.crc32_long
 local ngx_var = ngx.var
+local re_find = ngx.re.find
 local ngx_shared = ngx.shared
 local ngx_config = ngx.config
 local gumbo_parse = require("gumbo").parse
+local http_get = resty_requests.get
 
 local EXEC_SOCK = "/tmp/exec.sock"
 local CACHE_DIR = "/images"
@@ -78,16 +80,15 @@ function _M:getContent (node)
    end
    local content = gxn_cache:get(uri)
    if not content then
-      local http = resty_http.new()
-      if not http:parse_uri(uri) then
+      if not re_find(uri, "https?://") then
          uri = str_format("http://%s:%s/%s",
                           ngx_var.server_addr, ngx_var.server_port, uri)
       end
-      local res, err = http:request_uri(uri)
+      local res, err = http_get(uri)
       if not res then
          return nil, err
       end
-      content = res.body
+      content = res:body()
       gxn_cache:set(uri, content)
    end
    return content, nil
