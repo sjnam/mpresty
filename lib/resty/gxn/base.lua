@@ -7,6 +7,7 @@ local resty_requests = require "resty.requests"
 
 local fopen = io.open
 local ipairs = ipairs
+local str_gsub = string.gsub
 local str_format = string.format
 local setmetatable = setmetatable
 local hash = ngx.crc32_long
@@ -172,8 +173,11 @@ function _M:render (fn_update_node)
    if not f then
       return err, ngx.HTTP_NOT_FOUND
    end
-   local doc, err = gumbo_parse(f:read("*a"))
+   local content = str_gsub(f:read("*a"),
+                            "(<"..self.tag_name.."%s+.-src%s*=.-)/?>",
+                            "%1></"..self.tag_name..">")
    f:close()
+   local doc, err = gumbo_parse(content)
    if not doc then
       return err, ngx.HTTP_INTERNAL_SERVER_ERROR
    end
