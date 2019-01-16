@@ -4,6 +4,7 @@
 local ipairs = ipairs
 local fopen = io.open
 local ngx_var = ngx.var
+local str_gsub = string.gsub
 local setmetatable = setmetatable
 local gumbo_parse = require("gumbo").parse
 
@@ -33,8 +34,12 @@ return setmetatable(
         if not f then
            return err, ngx.HTTP_NOT_FOUND
         end
-        local doc, err = gumbo_parse(f:read("*a"))
+        local content = f:read("*a")
         f:close()
+        for _, v in ipairs(graphics) do
+           content = str_gsub(content, "(<"..v.."%s+.-src%s*=.-)/?>", "%1></"..v..">")
+        end
+        local doc, err = gumbo_parse(content)
         if not doc then
            return err, ngx.HTTP_INTERNAL_SERVER_ERROR
         end
