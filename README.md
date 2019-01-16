@@ -1,4 +1,4 @@
-lua-resty-graphics-node
+GraphicsNode
 =======
 Just as [MathJax](https://www.mathjax.org/) makes it easier to use the tex math equations on a web page, `GraphicsNode` makes it easy to get the corresponding graphics with scripts such as `metapost`, `graphviz` on `tikz` on a web page.
 
