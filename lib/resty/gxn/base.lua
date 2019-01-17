@@ -75,7 +75,7 @@ end
 
 
 function _M:getContent (node)
-   local uri = node:getAttribute("src");
+   local uri = node:getAttribute("src")
    if not uri then
       return node.textContent, nil
    end
@@ -107,11 +107,12 @@ local function prepareInputFile (self, fname, content)
 end
 
 
-local function execute (self, fname)
+local function execute (self, node, fname)
+   local cmd = node:getAttribute("cmd") or self.cmd
    local prog = resty_exec.new(ngx_var.exec_sock or EXEC_SOCK)
    local res = prog(ngx_config.prefix()
                        ..(ngx_var.gxn_script or GXN_SCRIPT),
-                    work_dir, self.tag_name, fname, self.outputfmt, self.cmd)
+                    work_dir, self.tag_name, fname, self.outputfmt, cmd)
    return str_format("%s%s.%s", cache_dir, fname, self.outputfmt), res
 end
 
@@ -147,7 +148,7 @@ function _M:updateDocument (fn_update_node)
          if err then
             return nil, err
          end
-         uri, res = execute(self, fname)
+         uri, res = execute(self, node, fname)
          if execFailed(uri) then
             content = res.stdout
             uri = str_format("%s%s.log", cache_dir, fname)

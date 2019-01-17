@@ -1,5 +1,5 @@
 return require("resty.gxn.base"):new {
-   cmd = "neato",
+   cmd = "dot",
    ext = "gv",
-   tag_name = "neatograph",
+   tag_name = "graphviz",
 }

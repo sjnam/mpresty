@@ -17,8 +17,7 @@ local _M = {
 local graphics = {
    "mplibcode",
    "tikzpicture",
-   "digraph",
-   "neatograph",
+   "graphviz",
 }
 
 
@@ -27,7 +26,7 @@ for _, v in ipairs(graphics) do
 end
 
 
-function _M:render (fn_update_node)
+local render = function (self, fn_update_node)
    local f, err = fopen(ngx_var.document_root..ngx_var.uri, "r")
    if not f then
       return err, ngx.HTTP_NOT_FOUND
@@ -50,6 +49,9 @@ function _M:render (fn_update_node)
    end
    return doc:serialize()
 end
+
+
+_M.render = render
 
 
 return setmetatable(_M, { __call = render })
