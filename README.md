@@ -90,7 +90,7 @@ case $2 in
         $5 $3
         ERROR=$?
         ;;
-    digraph|neatograph)
+    graphviz)
         $5 -Tsvg $3.gv -o $3.$4
         ERROR=$?
         ;;
