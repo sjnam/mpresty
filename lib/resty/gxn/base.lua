@@ -1,39 +1,31 @@
 -- Copyright (C) 2018-2019, Soojin Nam
 
 
+local gumbo = require "gumbo"
 local resty_exec = require "resty.exec"
 local lrucache = require "resty.lrucache"
 local resty_requests = require "resty.requests"
 
 local fopen = io.open
 local ipairs = ipairs
-local str_gsub = string.gsub
-local str_format = string.format
+local gsub = string.gsub
+local format = string.format
 local setmetatable = setmetatable
 local hash = ngx.crc32_long
 local ngx_var = ngx.var
 local re_find = ngx.re.find
 local ngx_shared = ngx.shared
 local ngx_config = ngx.config
-local gumbo_parse = require("gumbo").parse
+local gumbo_parse = gumbo.parse
 local http_get = resty_requests.get
 
 local EXEC_SOCK = "/tmp/exec.sock"
 local CACHE_DIR = "/images"
 local GXN_SCRIPT = "util/gxn.sh"
 
-
 local gxn_cache = ngx_shared.gxn_cache or lrucache.new(128)
 local cache_dir = (ngx_var.cache_dir or CACHE_DIR).."/"
 local work_dir = ngx_var.document_root..cache_dir
-
-
-local error_fn_update_node = function (self, node, uri)
-   node.localName = "iframe"
-   node:setAttribute("src", uri)
-   node:setAttribute("width", "400")
-   node:setAttribute("height", "400")
-end
 
 
 local _M = {
@@ -46,9 +38,6 @@ local _M = {
       if not node:hasAttribute("width") then
          node:setAttribute("width", "300")
       end
-      if not node:hasAttribute("alt", content) then
-         node:setAttribute("alt", content)
-      end
    end
 }
 
@@ -58,23 +47,23 @@ function _M:new (o)
 end
 
 
-function _M:createElement (name)
+function _M:create_element (name)
    return self.doc:createElement(name)
 end
 
 
-function _M:setUpdateNode (fn_update_node)
+function _M:set_update_node (fn_update_node)
    self.cur_update_node = fn_update_node
 end
 
 
-function _M:setDocument (doc)
+function _M:set_document (doc)
    self.doc = doc
    return self
 end
 
 
-function _M:getContent (node)
+function _M:get_content (node)
    local uri = node:getAttribute("src")
    if not uri then
       return node.textContent, nil
@@ -82,7 +71,7 @@ function _M:getContent (node)
    local content = gxn_cache:get(uri)
    if not content then
       if not re_find(uri, "https?://") then
-         uri = str_format("http://%s:%s/%s",
+         uri = format("http://%s:%s/%s",
                           ngx_var.server_addr, ngx_var.server_port, uri)
       end
       local res, err = http_get(uri)
@@ -96,12 +85,12 @@ function _M:getContent (node)
 end
 
 
-local function prepareInputFile (self, fname, content)
-   local f, err = fopen(str_format("%s%s.%s", work_dir, fname, self.ext), "w")
+local function prepare_input_file (self, fname, content)
+   local f, err = fopen(format("%s%s.%s", work_dir, fname, self.ext), "w")
    if not f then
       return err
    end
-   f:write(str_format("%s\n%s\n%s", self.preamble, content, self.postamble))
+   f:write(format("%s\n%s\n%s", self.preamble, content, self.postamble))
    f:close()
    return nil
 end
@@ -113,12 +102,12 @@ local function execute (self, node, fname)
    local res = prog(ngx_config.prefix()
                        ..(ngx_var.gxn_script or GXN_SCRIPT),
                     work_dir, self.tag_name, fname, self.outputfmt, cmd)
-   return str_format("%s%s.%s", cache_dir, fname, self.outputfmt), res
+   return format("%s%s.%s", cache_dir, fname, self.outputfmt), res
 end
 
 
-local function execFailed (uri)
-   local f = fopen(str_format("%s%s", ngx_var.document_root, uri), "r")
+local function exec_failed (uri)
+   local f = fopen(format("%s%s", ngx_var.document_root, uri), "r")
    if not f then
       return true
    end
@@ -127,12 +116,20 @@ local function execFailed (uri)
 end
 
 
-function _M:updateDocument (fn_update_node)
+local error_fn_update_node = function (self, node, uri)
+   node.localName = "iframe"
+   node:setAttribute("src", uri)
+   node:setAttribute("width", "400")
+   node:setAttribute("height", "400")
+end
+
+
+function _M:update_document (fn_update_node)
    local doc = self.doc
    for _, node in ipairs(doc:getElementsByTagName(self.tag_name)) do
       local fn_update_node = fn_update_node or
          (self.cur_update_node or self.fn_update_node)
-      local content, err = self:getContent(node)
+      local content, err = self:get_content(node)
       if not content then
          return nil, err
       end
@@ -144,19 +141,20 @@ function _M:updateDocument (fn_update_node)
       end
       if not uri then
          local res
-         local err = prepareInputFile(self, fname, content)
+         local err = prepare_input_file(self, fname, content)
          if err then
             return nil, err
          end
          uri, res = execute(self, node, fname)
-         if execFailed(uri) then
+         if exec_failed(uri) then
             content = res.stdout
-            uri = str_format("%s%s.log", cache_dir, fname)
+            uri = format("%s%s.log", cache_dir, fname)
             fn_update_node = error_fn_update_node
          else
             if doCache then gxn_cache:set(self.tag_name..fname, uri) end
          end
       end
+      node:removeAttribute("cmd")
       node:removeAttribute("src")
       if node:hasChildNodes() then
          node:removeChild(node.childNodes[1])
@@ -165,7 +163,7 @@ function _M:updateDocument (fn_update_node)
       fn_update_node = nil
    end
    self.cur_update_node = nil
-   return doc, nil
+   return doc
 end
 
 
@@ -174,15 +172,15 @@ function _M:render (fn_update_node)
    if not f then
       return err, ngx.HTTP_NOT_FOUND
    end
-   local content = str_gsub(f:read("*a"),
-                            "(<"..self.tag_name.."%s+.-src%s*=.-)/?>",
-                            "%1></"..self.tag_name..">")
+   local name = self.tag_name
+   local content = gsub(f:read("*a"),
+                        "(<"..name.."%s+.-src%s*=.-)/?>", "%1></"..name..">")
    f:close()
    local doc, err = gumbo_parse(content)
    if not doc then
       return err, ngx.HTTP_INTERNAL_SERVER_ERROR
    end
-   doc, err = self:setDocument(doc):updateDocument(fn_update_node)
+   doc, err = self:set_document(doc):update_document(fn_update_node)
    if not doc then
       return err, ngx.HTTP_INTERNAL_SERVER_ERROR
    end
