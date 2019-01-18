@@ -92,7 +92,6 @@ local function prepare_input_file (self, fname, content)
    end
    f:write(format("%s\n%s\n%s", self.preamble, content, self.postamble))
    f:close()
-   return nil
 end
 
 
