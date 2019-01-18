@@ -2,10 +2,10 @@
 
 
 local gumbo = require "gumbo"
-local resty_exec = require "resty.exec"
 local lrucache = require "resty.lrucache"
 local resty_requests = require "resty.requests"
 
+local pipe_spwan = io.popen
 local fopen = io.open
 local ipairs = ipairs
 local gsub = string.gsub
@@ -19,7 +19,6 @@ local ngx_config = ngx.config
 local gumbo_parse = gumbo.parse
 local http_get = resty_requests.get
 
-local EXEC_SOCK = "/tmp/exec.sock"
 local CACHE_DIR = "/images"
 local GXN_SCRIPT = "util/gxn.sh"
 
@@ -97,21 +96,24 @@ end
 
 local function execute (self, node, fname)
    local cmd = node:getAttribute("cmd") or self.cmd
-   local prog = resty_exec.new(ngx_var.exec_sock or EXEC_SOCK)
-   local res = prog(ngx_config.prefix()
-                       ..(ngx_var.gxn_script or GXN_SCRIPT),
-                    work_dir, self.tag_name, fname, self.outputfmt, cmd)
-   return format("%s%s.%s", cache_dir, fname, self.outputfmt), res
-end
+   local cmd_args = {ngx_config.prefix()
+                        ..(ngx_var.gxn_script or GXN_SCRIPT),
+                     work_dir, self.tag_name, fname, self.outputfmt, cmd}
+   local p = pipe_spwan(table.concat(cmd_args, " "))
+   if not p then
+      return nil, true
+   end
+   p:read("*all")
+   p:close()
 
-
-local function exec_failed (uri)
+   local uri = format("%s%s.%s", cache_dir, fname, self.outputfmt)
    local f = fopen(format("%s%s", ngx_var.document_root, uri), "r")
    if not f then
-      return true
+      return format("%s%s.log", cache_dir, fname), true
    end
    f:close()
-   return false
+
+   return uri
 end
 
 
@@ -139,15 +141,12 @@ function _M:update_document (fn_update_node)
          uri = gxn_cache:get(self.tag_name..fname)
       end
       if not uri then
-         local res
          local err = prepare_input_file(self, fname, content)
          if err then
             return nil, err
          end
-         uri, res = execute(self, node, fname)
-         if exec_failed(uri) then
-            content = res.stdout
-            uri = format("%s%s.log", cache_dir, fname)
+         uri, err = execute(self, node, fname)
+         if err then
             fn_update_node = error_fn_update_node
          else
             if doCache then gxn_cache:set(self.tag_name..fname, uri) end
