@@ -124,15 +124,15 @@ end
 function _M:update_document (fn_update_node)
    local doc = self.doc
    for _, node in ipairs(doc:getElementsByTagName(self.tag_name)) do
-      local fn_update_node = fn_update_node or
+      local update_node = fn_update_node or
          (self.cur_update_node or self.fn_update_node)
       local content, err = self:get_content(node)
       if not content then
          return nil, err
       end
+      local uri
       local fname = hash(content)
       local doCache = node:getAttribute("cache") ~= "no"
-      local uri
       if doCache then
          uri = gxn_cache:get(self.tag_name..fname)
       end
@@ -143,7 +143,7 @@ function _M:update_document (fn_update_node)
          end
          uri, err = execute(self, node, fname)
          if err then
-            fn_update_node = error_fn_update_node
+            update_node = error_fn_update_node
          else
             if doCache then gxn_cache:set(self.tag_name..fname, uri) end
          end
@@ -153,8 +153,8 @@ function _M:update_document (fn_update_node)
       if node:hasChildNodes() then
          node:removeChild(node.childNodes[1])
       end
-      fn_update_node(self, node, uri, content)
-      fn_update_node = nil
+      update_node(self, node, uri, content)
+      update_node = nil
    end
    self.cur_update_node = nil
    return doc

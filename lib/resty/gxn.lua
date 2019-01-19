@@ -10,14 +10,14 @@ local gumbo_parse = require("gumbo").parse
 
 
 local _M = {
-   _VERSION = '0.3.6',
+   _VERSION = '0.3.6'
 }
 
 
 local graphics = {
    "mplibcode",
    "tikzpicture",
-   "graphviz",
+   "graphviz"
 }
 
 
@@ -34,7 +34,7 @@ local render = function (self, fn_update_node)
    local content = f:read("*a")
    f:close()
    for _, v in ipairs(graphics) do
-      content = gsub(content, "(<"..v.."%s+.-src%s*=.-)/?>", "%1></"..v..">")
+      content = gsub(content, "(<"..v.."%s+.-src%s*=.-)/>", "%1></"..v..">")
    end
    local doc, err = gumbo_parse(content)
    if not doc then
