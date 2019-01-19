@@ -42,10 +42,10 @@ endfig;
 </mplibcode>
 
 <hr>
-<mplibcode src="/source/triangle.mp" width="300"></mplibcode>
+<mplibcode src="/source/triangle.mp" width="300"/>
 
 <hr>
-<mplibcode src="http://www.cs.ucc.ie/~dongen/mpost/mp/Escher87.mp"></mplibcode>
+<mplibcode src="http://www.cs.ucc.ie/~dongen/mpost/mp/Escher87.mp"/>
 
 <hr>
 <tikzpicture src="/source/cylinder.tikz"/>
