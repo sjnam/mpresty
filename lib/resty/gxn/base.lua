@@ -67,7 +67,7 @@ function _M:get_content (node)
    end
    local content = gxn_cache:get(uri)
    if not content then
-      if not re_find(uri, "https?://") then
+      if not re_find(uri, "^https?://") then
          uri = format("http://%s:%s/%s",
                           ngx_var.server_addr, ngx_var.server_port, uri)
       end
@@ -168,7 +168,7 @@ function _M:render (fn_update_node)
    end
    local name = self.tag_name
    local content = gsub(f:read("*a"),
-                        "(<"..name.."%s+.-src%s*=.-)/?>", "%1></"..name..">")
+                        "(<"..name.."%s+.-src%s*=.-)/>", "%1></"..name..">")
    f:close()
    local doc, err = gumbo_parse(content)
    if not doc then
