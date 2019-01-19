@@ -5,7 +5,6 @@ local gumbo = require "gumbo"
 local lrucache = require "resty.lrucache"
 local resty_requests = require "resty.requests"
 
-local pipe_spwan = io.popen
 local fopen = io.open
 local ipairs = ipairs
 local gsub = string.gsub
@@ -16,15 +15,14 @@ local ngx_var = ngx.var
 local re_find = ngx.re.find
 local ngx_shared = ngx.shared
 local ngx_config = ngx.config
+local pipe_spwan = io.popen
 local gumbo_parse = gumbo.parse
 local http_get = resty_requests.get
 
-local CACHE_DIR = "/images"
-local GXN_SCRIPT = "util/gxn.sh"
-
-local gxn_cache = ngx_shared.gxn_cache or lrucache.new(128)
-local cache_dir = (ngx_var.cache_dir or CACHE_DIR).."/"
+local gxn_script = "util/gxn.sh"
+local cache_dir = "/images"
 local work_dir = ngx_var.document_root..cache_dir
+local gxn_cache = ngx_shared.gxn_cache or lrucache.new(128)
 
 
 local _M = {
@@ -84,8 +82,16 @@ function _M:get_content (node)
 end
 
 
+local error_fn_update_node = function (self, node, uri)
+   node.localName = "iframe"
+   node:setAttribute("src", uri)
+   node:setAttribute("width", "400")
+   node:setAttribute("height", "400")
+end
+
+
 local function prepare_input_file (self, fname, content)
-   local f, err = fopen(format("%s%s.%s", work_dir, fname, self.ext), "w")
+   local f, err = fopen(format("%s/%s.%s", work_dir, fname, self.ext), "w")
    if not f then
       return err
    end
@@ -95,33 +101,23 @@ end
 
 
 local function execute (self, node, fname)
-   local cmd = node:getAttribute("cmd") or self.cmd
-   local cmd_args = {ngx_config.prefix()
-                        ..(ngx_var.gxn_script or GXN_SCRIPT),
-                     work_dir, self.tag_name, fname, self.outputfmt, cmd}
-   local p = pipe_spwan(table.concat(cmd_args, " "))
+   local p = pipe_spwan(table.concat({ ngx_config.prefix()..gxn_script,
+                                       work_dir, self.tag_name, fname,
+                                       self.outputfmt,
+                                       node:getAttribute("cmd") or self.cmd
+                                     }, " "))
    if not p then
       return nil, true
    end
-   p:read("*all")
+   p:read("*all") -- acts as wait function
    p:close()
-
-   local uri = format("%s%s.%s", cache_dir, fname, self.outputfmt)
+   local uri = format("%s/%s.%s", cache_dir, fname, self.outputfmt)
    local f = fopen(format("%s%s", ngx_var.document_root, uri), "r")
    if not f then
-      return format("%s%s.log", cache_dir, fname), true
+      return format("%s/%s.log", cache_dir, fname), true
    end
    f:close()
-
    return uri
-end
-
-
-local error_fn_update_node = function (self, node, uri)
-   node.localName = "iframe"
-   node:setAttribute("src", uri)
-   node:setAttribute("width", "400")
-   node:setAttribute("height", "400")
 end
 
 
