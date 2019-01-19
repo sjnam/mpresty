@@ -4,7 +4,7 @@ Just as [MathJax](https://www.mathjax.org/) makes it easier to use the tex math 
 
 Status
 ------
-Experimental.
+This Lua module is currently considered experimental.
 
 Installation
 ------------
@@ -47,6 +47,14 @@ endfig;
 <hr>
 <mplibcode src="http://www.cs.ucc.ie/~dongen/mpost/mp/Escher87.mp"></mplibcode>
 
+<hr>
+<tikzpicture src="/source/cylinder.tikz"/>
+
+<hr>
+<graphviz cmd="dot">
+  digraph G {Hello->World}
+</graphviz>
+
 </body>
 </html>
 ```
@@ -58,6 +66,7 @@ error_log logs/error.log;
 events {
     worker_connections 1024;
 }
+env PATH;
 http {
     lua_shared_dict gxn_cache 10m;
     
@@ -92,6 +101,11 @@ case $2 in
         ;;
     graphviz)
         $5 -Tsvg $3.gv -o $3.$4
+        ERROR=$?
+        ;;
+    tikzpicture)
+        $5 $3
+        pdf2svg $3.pdf $3.svg
         ERROR=$?
         ;;
     *)
