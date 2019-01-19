@@ -2,10 +2,6 @@ GraphicsNode
 =======
 Just as [MathJax](https://www.mathjax.org/) makes it easier to use the tex math equations on a web page, `GraphicsNode` makes it easy to get the corresponding graphics with scripts such as `metapost`, `graphviz` on `tikz` on a web page.
 
-Status
-------
-This Lua module is currently considered experimental.
-
 Installation
 ------------
 - Prerequisites:
@@ -15,10 +11,11 @@ Installation
   - [OpenResty](http://openresty.org/en/), A full-fledged web platform that integrates the standard Nginx core, LuaJIT
   - [lua-gumbo](https://craigbarnes.gitlab.io/lua-gumbo/), A HTML5 parser and DOM library for Lua
   - [lua-resty-requests](https://github.com/tokers/lua-resty-requests), Yet Another HTTP library for OpenResty
-- Place `lib/resty` to your lua library path.
 
 Getting Started
 ---------------
+- place `lib/resty` to your lua library path.
+- setup
 ```bash
 $ export PATH=/usr/local/openresty/nginx/sbin:$PATH
 $ mkdir ~/www
