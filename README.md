@@ -27,38 +27,6 @@ $ mkdir -p conf logs util html/images
 $ nginx -p `pwd`/ -c conf/nginx.conf
 ```
 
-- html/sample.html
-```html
-<html>
-<body>
-
-<hr>
-<mplibcode>
-beginfig(1)
-  pair A, B, C;
-  A:=(0,0); B:=(1cm,0); C:=(0,1cm);
-  draw A--B--C;
-endfig;
-</mplibcode>
-
-<hr>
-<mplibcode src="/source/triangle.mp" width="300"/>
-
-<hr>
-<mplibcode src="http://www.cs.ucc.ie/~dongen/mpost/mp/Escher87.mp"/>
-
-<hr>
-<tikzpicture src="/source/cylinder.tikz"/>
-
-<hr>
-<graphviz cmd="dot">
-  digraph G {Hello->World}
-</graphviz>
-
-</body>
-</html>
-```
-
 - conf/nginx.conf
 ```
 worker_processes 1;
@@ -117,5 +85,37 @@ rm -rf *.mp *.mpx *.gv
 exit $ERROR
 ```
 
-Copyright (C) 2018-2019 Soojin Nam
+- html/sample.html
+```html
+<html>
+<body>
 
+<hr>
+<mplibcode>
+beginfig(1)
+  pair A, B, C;
+  A:=(0,0); B:=(1cm,0); C:=(0,1cm);
+  draw A--B--C;
+endfig;
+</mplibcode>
+
+<hr>
+<mplibcode src="/source/triangle.mp" width="300"/>
+
+<hr>
+<mplibcode src="http://www.cs.ucc.ie/~dongen/mpost/mp/Escher87.mp"/>
+
+<hr>
+<tikzpicture src="/source/cylinder.tikz"/>
+
+<hr>
+<graphviz cmd="dot">
+  digraph G {Hello->World}
+</graphviz>
+
+</body>
+</html>
+```
+
+
+Copyright (C) 2018-2019 Soojin Nam
