@@ -12,10 +12,10 @@ Installation
   - [lua-gumbo](https://craigbarnes.gitlab.io/lua-gumbo/), A HTML5 parser and DOM library for Lua
   - [lua-resty-requests](https://github.com/tokers/lua-resty-requests), Yet Another HTTP library for OpenResty
 
+- place `lib/resty` to your lua library path.
+
 Getting Started
 ---------------
-- place `lib/resty` to your lua library path.
-- setup
 ```bash
 $ export PATH=/usr/local/openresty/nginx/sbin:$PATH
 $ mkdir ~/www
