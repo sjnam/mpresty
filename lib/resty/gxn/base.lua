@@ -109,7 +109,7 @@ local function execute (self, node, fname)
    if not p then
       return nil, true
    end
-   p:read("*all") -- acts as wait function
+   --p:read("*all") -- acts as wait function
    p:close()
    local uri = format("%s/%s.%s", cache_dir, fname, self.outputfmt)
    local f = fopen(format("%s%s", ngx_var.document_root, uri), "r")

@@ -1,6 +1,6 @@
 GraphicsNode
 =======
-Just as [MathJax](https://www.mathjax.org/) makes it easier to use the tex math equations on a web page, `GraphicsNode` makes it easy to get the corresponding graphics with scripts such as `metapost`, `graphviz` on `tikz` on a web page.
+Just as [MathJax](https://www.mathjax.org/) makes it easier to use the tex math equations on a web page, `GraphicsNode` makes it easy to get the corresponding graphics with scripts such as `metapost` or `graphviz` on a web page.
 
 Installation
 ------------
@@ -68,11 +68,6 @@ case $2 in
         $5 -Tsvg $3.gv -o $3.$4
         ERROR=$?
         ;;
-    tikzpicture)
-        $5 $3
-        pdf2svg $3.pdf $3.svg
-        ERROR=$?
-        ;;
     *)
         echo 'NOT SUPPORTED'
 esac
@@ -101,9 +96,6 @@ endfig;
 
 <hr>
 <mplibcode src="http://www.cs.ucc.ie/~dongen/mpost/mp/Escher87.mp"/>
-
-<hr>
-<tikzpicture src="/source/cylinder.tikz"/>
 
 <hr>
 <graphviz cmd="dot">

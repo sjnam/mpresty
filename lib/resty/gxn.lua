@@ -16,7 +16,6 @@ local _M = {
 
 local graphics = {
    "mplibcode",
-   "tikzpicture",
    "graphviz"
 }
 
@@ -54,3 +53,4 @@ _M.render = render
 
 
 return setmetatable(_M, { __call = render })
+
