@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async>
+MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath: [['$','$'], ['\\(','\\)']],
+    processEscapes: true
+  }
+});
+</script>
+<style>
+body {
+  width: 40em;
+  margin: 0 auto;
+}
+img { padding: 15px; }
+</style>
+</head>
+  
+<body>
+    
+<h3>Sunflower</h3>
+
+<p>
+  Figure 16 shows a pattern of dots arranged in the way that sunflower florets
+  develop. The model for sunflower development was proposed in 1979 by
+  H. Vogel. The position of the $n$th floret is given in polar coordinates
+  by $$r=k\sqrt n,\quad\theta={2\pi\over\phi^2}n$$ where $k$ determines
+  the scale and $\phi={1\over2}(1+\sqrt5)$ is the golden ratio.
+</p>
+
+<center>
+<mplibcode width="300">
+  beginfig(1)
+  phisq = (0.5*(1+sqrt(5)))**2;  
+  for n = 1 upto 1000:
+    r := 3*sqrt(n);
+    theta := 360*((n/phisq) mod 1);
+    filldraw fullcircle scaled 2bp shifted (r*cosd(theta),r*sind(theta));
+  endfor;
+  endfig
+</mplibcode>
+
+<p>Figure 16: Position of florets in the head of a sunflower</p>
+</center>
+
+<p>
+  Programming Vogel's formula in MetaPost is straightforward but for one small
+  problem. Since MetaPost uses degrees, we actually need $\theta={360^\circ
+  \over\phi^2}$ and, as $n$ gets large, the numerical values exceed
+  MetaPost's limit of 4096. Consequently, we compute $\theta$ using
+  "whole turns" (multiples of 360${}^\circ$ as the unit, and use mod 1 to bring
+  the result into the interval $[0, 1).$ We can then safely multiply this
+  value by 360 to obtain the desired angle.
+</p>
+
+</body>
+</html>
