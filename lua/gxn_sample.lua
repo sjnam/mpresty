@@ -1,5 +1,3 @@
-local gxn = require "resty.gxn"
-
 --[[
 local function update_node_img_pre (self, node, uri, content)
    local img = self:create_element("img")
@@ -21,7 +19,7 @@ local function update_node_img_pre (self, node, uri, content)
 end
 --]]
 
-local body, err = gxn:render()
+local body, err = (require "gxn"):render()
 if err then
    ngx.log(ngx.ERR, "fail to render html: ", body)
    ngx.exit(err)

@@ -3,7 +3,7 @@ local gumbo_parse = require("gumbo").parse
 ngx.req.read_body()
 local args = ngx.req.get_post_args()
 local gx = args.gx or "mplibcode"
-local gxn = require("resty.gxn."..gx)
+local gxn = require("gxn."..gx)
 local cmd = ""
 if gx == "graphviz" then
    cmd = " cmd='"..args.cmd.."'"

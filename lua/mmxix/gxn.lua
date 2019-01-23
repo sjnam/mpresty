@@ -16,12 +16,13 @@ local _M = {
 
 local graphics = {
    "mplibcode",
-   "graphviz"
+   "graphviz",
+   "tikzpicture"
 }
 
 
 for _, v in ipairs(graphics) do
-   _M[v] = require("resty.gxn."..v)
+   _M[v] = require("gxn."..v)
 end
 
 
