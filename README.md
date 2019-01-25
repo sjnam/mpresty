@@ -15,7 +15,7 @@ Installation
 ```bash
 $ git clone https://github.com/sjnam/GraphicsNode.git ./www
 $ cd ~/www
-$ mkdir -p logs
+$ mkdir -p html/images logs
 $ ./openrestyctl start
 ```
 
