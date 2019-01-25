@@ -2,18 +2,18 @@
 
 ARGV="$@"
 
-NGINX="/usr/local/nginx/sbin/nginx"
+OPENRESTY="/usr/local/openresty/bin/openresty"
 APP_HOME=`pwd`
 
 ERROR=0
 
 case $ARGV in
     start)
-        $NGINX -p $APP_HOME/ -c $APP_HOME/conf/nginx.conf
+        $OPENRESTY -p $APP_HOME/ -c $APP_HOME/conf/nginx.conf
         ERROR=$?
         ;;
     stop|reload)
-        $NGINX -p $APP_HOME/ -c $APP_HOME/conf/nginx.conf -s $ARGV
+        $OPENRESTY -p $APP_HOME/ -c $APP_HOME/conf/nginx.conf -s $ARGV
         ERROR=$?
 	rm -rf $APP_HOME/html/images/*
         ;;
