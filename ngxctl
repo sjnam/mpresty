@@ -1,0 +1,25 @@
+#!/bin/bash
+
+ARGV="$@"
+
+NGINX="/usr/local/nginx/sbin/nginx"
+APP_HOME=`pwd`
+
+ERROR=0
+
+case $ARGV in
+    start)
+        $NGINX -p $APP_HOME/ -c $APP_HOME/conf/nginx.conf
+        ERROR=$?
+        ;;
+    stop|reload)
+        $NGINX -p $APP_HOME/ -c $APP_HOME/conf/nginx.conf -s $ARGV
+        ERROR=$?
+	rm -rf $APP_HOME/html/images/*
+        ;;
+    *)
+        echo 'usage: ./ngxctl start|stop|reload'
+esac
+
+exit $ERROR
+
