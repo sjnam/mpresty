@@ -22,6 +22,6 @@ $ ./openrestyctl start
 Examples
 --------
 - Sample page,  http://localhost:8080/demo/sunflower.html
-- Preview page, http://localhost:8080/demo/preview.html
+- Preview page, http://localhost:8080/preview.html
 
 Copyright (C) 2018-2019 Soojin Nam
