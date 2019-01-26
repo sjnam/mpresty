@@ -1,6 +1,7 @@
 FitzRoy
 =======
-Just as [MathJax](https://www.mathjax.org/) makes it easier to use the tex math equations on a web page, `FitzRoy` makes it easy to get the corresponding graphics with scripts such as `metapost`, `graphviz` or `tikz` on a web page.
+- A web application for TeX graphics that works in all browsers.
+- No more setup for readers. It just works.
 
 Installation
 ------------
@@ -12,7 +13,7 @@ Installation
 
 - Webapps
 
-```bash
+```
 $ git clone https://github.com/sjnam/FitzRoy.git ./www
 $ cd ~/www
 $ mkdir -p html/images logs
