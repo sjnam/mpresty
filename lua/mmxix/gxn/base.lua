@@ -20,8 +20,8 @@ local gumbo_parse = gumbo.parse
 local http_get = resty_requests.get
 
 local gxn_script = "util/gxn.sh"
-local cache_dir = "/images"
-local work_dir = ngx_var.document_root..cache_dir
+local img_dir = "/images"
+local work_dir = ngx_var.document_root..img_dir
 local gxn_cache = ngx_shared.gxn_cache or lrucache.new(128)
 
 
@@ -112,10 +112,10 @@ local function execute (self, node, fname)
    end
    p:read("*all") -- acts as wait function
    p:close()
-   local uri = format("%s/%s.%s", cache_dir, fname, self.outputfmt)
+   local uri = format("%s/%s.%s", img_dir, fname, self.outputfmt)
    local f = fopen(format("%s%s", ngx_var.document_root, uri), "r")
    if not f then
-      return format("%s/%s.log", cache_dir, fname), true
+      return format("%s/%s.log", img_dir, fname), true
    end
    f:close()
    return uri
