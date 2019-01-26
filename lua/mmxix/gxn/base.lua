@@ -104,7 +104,7 @@ end
 local function execute (self, node, fname)
    local p = pipe_spwan(table.concat({ ngx_config.prefix()..gxn_script,
                                        work_dir, self.tag_name, fname,
-                                       self.outputfmt,
+                                       self.ext, self.outputfmt,
                                        node:getAttribute("cmd") or self.cmd
                                      }, " "))
    if not p then
