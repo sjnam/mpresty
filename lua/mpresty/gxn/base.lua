@@ -4,6 +4,7 @@
 local gumbo = require "gumbo"
 local lrucache = require "resty.lrucache"
 local resty_requests = require "resty.requests"
+local ngx_pipe = require "ngx.pipe"
 
 local fopen = io.open
 local ipairs = ipairs
@@ -15,7 +16,7 @@ local ngx_var = ngx.var
 local re_find = ngx.re.find
 local ngx_shared = ngx.shared
 local ngx_config = ngx.config
-local pipe_spwan = io.popen
+local pipe_spwan = ngx_pipe.spawn
 local gumbo_parse = gumbo.parse
 local http_get = resty_requests.get
 
@@ -102,16 +103,15 @@ end
 
 
 local function execute (self, node, fname)
-   local p = pipe_spwan(table.concat({ ngx_config.prefix()..gxn_script,
-                                       work_dir, self.tag_name, fname,
-                                       self.ext, self.outputfmt,
-                                       node:getAttribute("cmd") or self.cmd
-                                     }, " "))
-   if not p then
-      return nil, true
+   local proc, err = pipe_spwan{ ngx_config.prefix()..gxn_script,
+                                 work_dir, self.tag_name, fname,
+                                 self.ext, self.outputfmt,
+                                 node:getAttribute("cmd") or self.cmd
+   }
+   if not proc then
+      return err, true
    end
-   p:read("*all") -- acts as wait function
-   p:close()
+   proc:wait()
    local uri = format("%s/%s.%s", img_dir, fname, self.outputfmt)
    local f = fopen(format("%s%s", ngx_var.document_root, uri), "r")
    if not f then
