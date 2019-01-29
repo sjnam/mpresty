@@ -16,6 +16,7 @@ local ngx_var = ngx.var
 local re_find = ngx.re.find
 local ngx_shared = ngx.shared
 local ngx_config = ngx.config
+local loc_capture = ngx.location.capture
 local pipe_spwan = ngx_pipe.spawn
 local gumbo_parse = gumbo.parse
 local http_get = resty_requests.get
@@ -163,14 +164,13 @@ end
 
 
 function _M:render (fn_update_node)
-   local f, err = fopen(ngx_var.document_root..ngx_var.uri, "r")
-   if not f then
-      return err, ngx.HTTP_NOT_FOUND
+   local res = loc_capture("/source/"..ngx_var.uri)
+   if res.status ~= 200 then
+      ngx.exit(res.status)
    end
    local name = self.tag_name
-   local content = gsub(f:read("*a"),
+   local content = gsub(res.body,
                         "(<"..name.."%s+.-src%s*=.-)/>", "%1></"..name..">")
-   f:close()
    local doc, err = gumbo_parse(content)
    if not doc then
       return err, ngx.HTTP_INTERNAL_SERVER_ERROR

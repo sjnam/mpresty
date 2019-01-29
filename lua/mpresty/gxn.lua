@@ -2,10 +2,10 @@
 
 
 local ipairs = ipairs
-local fopen = io.open
 local gsub = string.gsub
-local ngx_var = ngx.var
 local setmetatable = setmetatable
+local ngx_var = ngx.var
+local loc_capture = ngx.location.capture
 local gumbo_parse = require("gumbo").parse
 
 
@@ -27,12 +27,11 @@ end
 
 
 local render = function (self, fn_update_node)
-   local f, err = fopen(ngx_var.document_root..ngx_var.uri, "r")
-   if not f then
-      return err, ngx.HTTP_NOT_FOUND
+   local res = loc_capture("/source/"..ngx_var.uri)
+   if res.status ~= 200 then
+      ngx.exit(res.status)
    end
-   local content = f:read("*a")
-   f:close()
+   local content = res.body
    for _, v in ipairs(graphics) do
       content = gsub(content, "(<"..v.."%s+.-src%s*=.-)/>", "%1></"..v..">")
    end
