@@ -104,10 +104,8 @@ end
 
 local function execute (self, node, fname)
    local proc, err = pipe_spwan(
-      { ngx_config.prefix()..gxn_script,
-        work_dir, self.tag_name, fname,
-        self.ext, self.outputfmt,
-        node:getAttribute("cmd") or self.cmd },
+      { ngx_config.prefix()..gxn_script, work_dir, self.tag_name, fname,
+        self.ext, self.outputfmt, node:getAttribute("cmd") or self.cmd },
       { merge_stderr = true })
    if not proc then
       return err, true
@@ -117,7 +115,6 @@ local function execute (self, node, fname)
    if err == "timeout" then
       return nil, partial
    end
-   proc:wait()
    return format("%s/%s.%s", img_dir, fname, self.outputfmt)
 end
 
