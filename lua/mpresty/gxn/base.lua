@@ -2,9 +2,9 @@
 
 
 local gumbo = require "gumbo"
+local ngx_pipe = require "ngx.pipe"
 local lrucache = require "resty.lrucache"
 local resty_requests = require "resty.requests"
-local ngx_pipe = require "ngx.pipe"
 
 local fopen = io.open
 local ipairs = ipairs
@@ -85,11 +85,10 @@ function _M:get_content (node)
 end
 
 
-local error_fn_update_node = function (self, node, uri)
-   node.localName = "iframe"
-   node:setAttribute("src", uri)
-   node:setAttribute("width", "400")
-   node:setAttribute("height", "400")
+local error_fn_update_node = function (self, node, uri, content)
+   node.localName = "pre"
+   node.textContent = content
+   node:setAttribute("style", "color:red")
 end
 
 
@@ -104,22 +103,22 @@ end
 
 
 local function execute (self, node, fname)
-   local proc, err = pipe_spwan{ ngx_config.prefix()..gxn_script,
-                                 work_dir, self.tag_name, fname,
-                                 self.ext, self.outputfmt,
-                                 node:getAttribute("cmd") or self.cmd
-   }
+   local proc, err = pipe_spwan(
+      { ngx_config.prefix()..gxn_script,
+        work_dir, self.tag_name, fname,
+        self.ext, self.outputfmt,
+        node:getAttribute("cmd") or self.cmd },
+      { merge_stderr = true })
    if not proc then
       return err, true
    end
-   proc:wait()
-   local uri = format("%s/%s.%s", img_dir, fname, self.outputfmt)
-   local f = fopen(format("%s%s", ngx_var.document_root, uri), "r")
-   if not f then
-      return format("%s/%s.log", img_dir, fname), true
+   proc:set_timeouts(nil, 2000)
+   local _, err, partial = proc:stdout_read_all()
+   if err == "timeout" then
+      return nil, partial
    end
-   f:close()
-   return uri
+   proc:wait()
+   return format("%s/%s.%s", img_dir, fname, self.outputfmt)
 end
 
 
@@ -146,6 +145,7 @@ function _M:update_document (fn_update_node)
          uri, err = execute(self, node, fname)
          if err then
             update_node = error_fn_update_node
+            content = err
          else
             if doCache then gxn_cache:set(self.tag_name..fname, uri) end
          end

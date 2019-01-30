@@ -22,6 +22,6 @@ case $2 in
         echo 'NOT SUPPORTED'
 esac
 
-rm -rf *.mp *.mpx *.gv *.tex *.aux *.pdf
+rm -rf *.mp *.mpx *.gv *.tex *.aux *.pdf *.log
 
 exit $ERROR
