@@ -4,6 +4,7 @@
 local gumbo = require "gumbo"
 local ngx_pipe = require "ngx.pipe"
 local lrucache = require "resty.lrucache"
+local resty_shell = require "resty.shell"
 local resty_requests = require "resty.requests"
 
 local fopen = io.open
@@ -20,8 +21,8 @@ local ngx_config = ngx.config
 local loc_capture = ngx.location.capture
 local pipe_spwan = ngx_pipe.spawn
 local gumbo_parse = gumbo.parse
+local shell_run = resty_shell.run
 local http_get = resty_requests.get
-
 local gxn_script = "util/gxn.sh"
 local img_dir = "/images"
 local work_dir = ngx_var.document_root..img_dir
@@ -105,17 +106,11 @@ end
 
 
 local function figure_uri (self, node, fname)
-   local proc, err = pipe_spwan(
-      { ngx_config.prefix()..gxn_script, work_dir, self.tag_name, fname,
-        self.ext, self.outputfmt, node:getAttribute("cmd") or self.cmd },
-      { merge_stderr = true })
-   if not proc then
-      return err, true
-   end
-   proc:set_timeouts(nil, 2000)
-   local _, err, partial = proc:stdout_read_all()
-   if err == "timeout" then
-      return nil, partial
+   local ok, stdout = shell_run {
+      ngx_config.prefix()..gxn_script, work_dir, self.tag_name, fname,
+      self.ext, self.outputfmt, node:getAttribute("cmd") or self.cmd }
+   if not ok then
+      return nil, stdout
    end
    return format("%s/%s.%s", img_dir, fname, self.outputfmt)
 end
