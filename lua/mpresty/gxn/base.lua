@@ -14,6 +14,7 @@ local setmetatable = setmetatable
 local hash = ngx.crc32_long
 local ngx_var = ngx.var
 local re_find = ngx.re.find
+local ngx_exit = ngx.exit
 local ngx_shared = ngx.shared
 local ngx_config = ngx.config
 local loc_capture = ngx.location.capture
@@ -88,6 +89,7 @@ end
 local error_fn_update_node = function (self, node, uri, content)
    node.localName = "pre"
    node.textContent = content
+   node:removeAttribute("width")
    node:setAttribute("style", "color:red")
 end
 
@@ -102,7 +104,7 @@ local function prepare_input_file (self, fname, content)
 end
 
 
-local function execute (self, node, fname)
+local function figure_uri (self, node, fname)
    local proc, err = pipe_spwan(
       { ngx_config.prefix()..gxn_script, work_dir, self.tag_name, fname,
         self.ext, self.outputfmt, node:getAttribute("cmd") or self.cmd },
@@ -128,18 +130,15 @@ function _M:update_document (fn_update_node)
       if not content then
          return nil, err
       end
-      local uri
       local fname = hash(content)
       local doCache = node:getAttribute("cache") ~= "no"
-      if doCache then
-         uri = gxn_cache:get(self.tag_name..fname)
-      end
+      local uri = doCache and gxn_cache:get(self.tag_name..fname) or nil
       if not uri then
          local err = prepare_input_file(self, fname, content)
          if err then
             return nil, err
          end
-         uri, err = execute(self, node, fname)
+         uri, err = figure_uri(self, node, fname)
          if err then
             update_node = error_fn_update_node
             content = err
@@ -163,7 +162,7 @@ end
 function _M:render (fn_update_node)
    local res = loc_capture("/source/"..ngx_var.uri)
    if res.status ~= 200 then
-      ngx.exit(res.status)
+      ngx_exit(res.status)
    end
    local name = self.tag_name
    local content = gsub(res.body,

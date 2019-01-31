@@ -5,12 +5,13 @@ local ipairs = ipairs
 local gsub = string.gsub
 local setmetatable = setmetatable
 local ngx_var = ngx.var
+local ngx_exit = ngx.exit
 local loc_capture = ngx.location.capture
 local gumbo_parse = require("gumbo").parse
 
 
 local _M = {
-   _VERSION = '0.3.6'
+   _VERSION = '0.4.4'
 }
 
 
@@ -29,7 +30,7 @@ end
 local render = function (self, fn_update_node)
    local res = loc_capture("/source/"..ngx_var.uri)
    if res.status ~= 200 then
-      ngx.exit(res.status)
+      ngx_exit(res.status)
    end
    local content = res.body
    for _, v in ipairs(graphics) do
@@ -53,4 +54,3 @@ _M.render = render
 
 
 return setmetatable(_M, { __call = render })
-

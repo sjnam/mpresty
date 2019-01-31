@@ -1,4 +1,4 @@
-mpResty
+mpresty
 =======
 A version of MathJax, adapted to tex graphics such as metapost, graphviz or tikz
 - A web application for TeX graphics that works in all browsers.
