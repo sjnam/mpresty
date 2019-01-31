@@ -2,7 +2,6 @@
 
 
 local gumbo = require "gumbo"
-local ngx_pipe = require "ngx.pipe"
 local lrucache = require "resty.lrucache"
 local resty_shell = require "resty.shell"
 local resty_requests = require "resty.requests"
@@ -12,19 +11,19 @@ local ipairs = ipairs
 local gsub = string.gsub
 local format = string.format
 local setmetatable = setmetatable
-local hash = ngx.crc32_long
 local ngx_var = ngx.var
-local re_find = ngx.re.find
 local ngx_exit = ngx.exit
+local hash = ngx.crc32_long
+local re_find = ngx.re.find
 local ngx_shared = ngx.shared
 local ngx_config = ngx.config
-local loc_capture = ngx.location.capture
-local pipe_spwan = ngx_pipe.spawn
 local gumbo_parse = gumbo.parse
 local shell_run = resty_shell.run
 local http_get = resty_requests.get
-local gxn_script = "util/gxn.sh"
+local loc_capture = ngx.location.capture
+
 local img_dir = "/images"
+local gxn_script = "util/gxn.sh"
 local work_dir = ngx_var.document_root..img_dir
 local gxn_cache = ngx_shared.gxn_cache or lrucache.new(128)
 
@@ -36,10 +35,10 @@ local _M = {
    fn_update_node = function (self, node, uri, content)
       node.localName = "img"
       node:setAttribute("src", uri)
-      node:setAttribute("alt", content)
       if not node:hasAttribute("width") then
          node:setAttribute("width", "300")
       end
+      node:setAttribute("alt", content)
    end
 }
 
@@ -74,7 +73,7 @@ function _M:get_content (node)
    if not content then
       if not re_find(uri, "^https?://") then
          uri = format("http://%s:%s/%s",
-                          ngx_var.server_addr, ngx_var.server_port, uri)
+                      ngx_var.server_addr, ngx_var.server_port, uri)
       end
       local res, err = http_get(uri)
       if not res then
@@ -90,8 +89,8 @@ end
 local error_fn_update_node = function (self, node, uri, content)
    node.localName = "pre"
    node.textContent = content
-   node:removeAttribute("width")
    node:setAttribute("style", "color:red")
+   node:removeAttribute("width")
 end
 
 
@@ -122,17 +121,13 @@ function _M:update_document (fn_update_node)
       local update_node = fn_update_node or
          (self.cur_update_node or self.fn_update_node)
       local content, err = self:get_content(node)
-      if not content then
-         return nil, err
-      end
+      if not content then return nil, err end
       local fname = hash(content)
       local doCache = node:getAttribute("cache") ~= "no"
       local uri = doCache and gxn_cache:get(self.tag_name..fname) or nil
       if not uri then
          local err = prepare_input_file(self, fname, content)
-         if err then
-            return nil, err
-         end
+         if err then return nil, err end
          uri, err = figure_uri(self, node, fname)
          if err then
             update_node = error_fn_update_node
