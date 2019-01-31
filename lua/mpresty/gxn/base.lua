@@ -165,11 +165,11 @@ function _M:render (fn_update_node)
                         "(<"..name.."%s+.-src%s*=.-)/>", "%1></"..name..">")
    local doc, err = gumbo_parse(content)
    if not doc then
-      return err, ngx.HTTP_INTERNAL_SERVER_ERROR
+      return err, 500
    end
    doc, err = self:set_document(doc):update_document(fn_update_node)
    if not doc then
-      return err, ngx.HTTP_INTERNAL_SERVER_ERROR
+      return err, 500
    end
    return doc:serialize()
 end 
