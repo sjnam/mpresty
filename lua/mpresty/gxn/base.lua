@@ -66,20 +66,16 @@ end
 
 function _M:get_content (node)
    local uri = node:getAttribute("src")
-   if not uri then
-      return node.textContent, nil
-   end
+   if not uri then return node.textContent, nil end
    local content = gxn_cache:get(uri)
    if not content then
       if not re_find(uri, "^https?://") then
-         uri = format("http://%s:%s/%s",
-                      ngx_var.server_addr, ngx_var.server_port, uri)
+         content = loc_capture(uri).body
+      else
+         local res, err = http_get(uri)
+         if not res then return nil, err  end
+         content = res:body()
       end
-      local res, err = http_get(uri)
-      if not res then
-         return nil, err
-      end
-      content = res:body()
       gxn_cache:set(uri, content)
    end
    return content, nil
@@ -96,9 +92,7 @@ end
 
 local function prepare_input_file (self, fname, content)
    local f, err = fopen(format("%s/%s.%s", work_dir, fname, self.ext), "w")
-   if not f then
-      return err
-   end
+   if not f then return err end
    f:write(format("%s\n%s\n%s", self.preamble, content, self.postamble))
    f:close()
 end
@@ -108,9 +102,7 @@ local function figure_uri (self, node, fname)
    local ok, stdout = shell_run {
       ngx_config.prefix()..gxn_script, work_dir, self.tag_name, fname,
       self.ext, self.outputfmt, node:getAttribute("cmd") or self.cmd }
-   if not ok then
-      return nil, stdout
-   end
+   if not ok then return nil, stdout end
    return format("%s/%s.%s", img_dir, fname, self.outputfmt)
 end
 
