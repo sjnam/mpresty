@@ -2,7 +2,6 @@
 
 
 local gumbo = require "gumbo"
-local lrucache = require "resty.lrucache"
 local resty_shell = require "resty.shell"
 local resty_requests = require "resty.requests"
 
@@ -23,9 +22,9 @@ local http_get = resty_requests.get
 local loc_capture = ngx.location.capture
 
 local img_dir = "/images"
-local gxn_script = "util/gxn.sh"
 local work_dir = ngx_var.document_root..img_dir
-local gxn_cache = ngx_shared.gxn_cache or lrucache.new(128)
+local gxn_cache = ngx_shared.gxn_cache
+local gxn_script = ngx_config.prefix().."util/gxn.sh"
 
 
 local _M = {
@@ -66,23 +65,27 @@ end
 
 function _M:get_content (node)
    local uri = node:getAttribute("src")
-   if not uri then return node.textContent, nil end
+   if not uri then
+      return node.textContent, nil
+   end
    local content = gxn_cache:get(uri)
    if not content then
       if not re_find(uri, "^https?://") then
          content = loc_capture(uri).body
       else
          local res, err = http_get(uri)
-         if not res then return nil, err  end
+         if not res then
+            return nil, err
+         end
          content = res:body()
       end
       gxn_cache:set(uri, content)
    end
-   return content, nil
+   return content
 end
 
 
-local error_fn_update_node = function (self, node, uri, content)
+local function error_fn_update_node (self, node, uri, content)
    node.localName = "pre"
    node.textContent = content
    node:setAttribute("style", "color:red")
@@ -92,7 +95,9 @@ end
 
 local function prepare_input_file (self, fname, content)
    local f, err = fopen(format("%s/%s.%s", work_dir, fname, self.ext), "w")
-   if not f then return err end
+   if not f then
+      return err
+   end
    f:write(format("%s\n%s\n%s", self.preamble, content, self.postamble))
    f:close()
 end
@@ -100,9 +105,12 @@ end
 
 local function figure_uri (self, node, fname)
    local ok, stdout = shell_run {
-      ngx_config.prefix()..gxn_script, work_dir, self.tag_name, fname,
-      self.ext, self.outputfmt, node:getAttribute("cmd") or self.cmd }
-   if not ok then return nil, stdout end
+      gxn_script, work_dir, self.tag_name, fname,
+      self.ext, self.outputfmt, node:getAttribute("cmd") or self.cmd
+   }
+   if not ok then
+      return nil, stdout
+   end
    return format("%s/%s.%s", img_dir, fname, self.outputfmt)
 end
 
@@ -113,19 +121,25 @@ function _M:update_document (fn_update_node)
       local update_node = fn_update_node or
          (self.cur_update_node or self.fn_update_node)
       local content, err = self:get_content(node)
-      if not content then return nil, err end
+      if not content then
+         return nil, err
+      end
       local fname = hash(content)
       local doCache = node:getAttribute("cache") ~= "no"
       local uri = doCache and gxn_cache:get(self.tag_name..fname) or nil
       if not uri then
          local err = prepare_input_file(self, fname, content)
-         if err then return nil, err end
+         if err then
+            return nil, err
+         end
          uri, err = figure_uri(self, node, fname)
          if err then
             update_node = error_fn_update_node
             content = err
          else
-            if doCache then gxn_cache:set(self.tag_name..fname, uri) end
+            if doCache then
+               gxn_cache:set(self.tag_name..fname, uri)
+            end
          end
       end
       node:removeAttribute("cmd")
