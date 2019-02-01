@@ -125,7 +125,8 @@ function _M:update_document (fn_update_node)
       end
       local fname = hash(content)
       local doCache = node:getAttribute("cache") ~= "no"
-      local uri = doCache and gxn_cache:get(self.tag_name..fname) or nil
+      local key = self.tag_name..fname
+      local uri = doCache and gxn_cache:get(key) or nil
       if not uri then
          local err = prepare_input_file(self, fname, content)
          if err then
@@ -137,7 +138,7 @@ function _M:update_document (fn_update_node)
             content = err
          else
             if doCache then
-               gxn_cache:set(self.tag_name..fname, uri)
+               gxn_cache:set(key, uri)
             end
          end
       end

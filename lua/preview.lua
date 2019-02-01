@@ -4,10 +4,7 @@ ngx.req.read_body()
 local args = ngx.req.get_post_args()
 local gx = args.gx or "mplibcode"
 local gxn = require("gxn."..gx)
-local cmd = ""
-if gx == "graphviz" then
-   cmd = " cmd='"..args.cmd.."'"
-end
+local cmd = gx == "graphviz" and string.format(" cmd='%s'", args.cmd) or ""
 local msg = string.format("<%s%s width='360' cache='no'>%s</%s>",
                           gx, cmd, args.msg, gx)
 

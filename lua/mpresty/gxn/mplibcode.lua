@@ -1,7 +1,7 @@
 return require("gxn.base"):new {
+   tag_name = "mplibcode",
    cmd = "mpost",
    ext = "mp",
-   tag_name = "mplibcode",
    preamble = [[prologues:=3; outputtemplate:="%j.svg"; outputformat:="svg";]],
    postamble = "end;",
 }

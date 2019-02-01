@@ -16,8 +16,8 @@ local _M = {
 
 local graphics = {
    "mplibcode",
+   "tikzpicture",
    "graphviz",
-   "tikzpicture"
 }
 
 

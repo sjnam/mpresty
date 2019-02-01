@@ -1,5 +1,5 @@
 return require("gxn.base"):new {
+   tag_name = "graphviz",
    cmd = "dot",
    ext = "gv",
-   tag_name = "graphviz",
 }
