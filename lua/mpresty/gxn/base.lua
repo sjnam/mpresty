@@ -7,7 +7,6 @@ local resty_requests = require "resty.requests"
 
 local fopen = io.open
 local ipairs = ipairs
-local gsub = string.gsub
 local format = string.format
 local setmetatable = setmetatable
 local ngx_var = ngx.var
@@ -160,10 +159,7 @@ function _M:render (fn_update_node)
    if res.status ~= 200 then
       ngx_exit(res.status)
    end
-   local name = self.tag_name
-   local content = gsub(res.body,
-                        "(<"..name.."%s+.-src%s*=.-)/>", "%1></"..name..">")
-   local doc, err = gumbo_parse(content)
+   local doc, err = gumbo_parse(res.body)
    if not doc then
       return err, 500
    end

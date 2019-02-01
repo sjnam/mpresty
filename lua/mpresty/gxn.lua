@@ -2,7 +2,6 @@
 
 
 local ipairs = ipairs
-local gsub = string.gsub
 local setmetatable = setmetatable
 local ngx_var = ngx.var
 local ngx_exit = ngx.exit
@@ -32,11 +31,7 @@ local render = function (self, fn_update_node)
    if res.status ~= 200 then
       ngx_exit(res.status)
    end
-   local content = res.body
-   for _, v in ipairs(graphics) do
-      content = gsub(content, "(<"..v.."%s+.-src%s*=.-)/>", "%1></"..v..">")
-   end
-   local doc, err = gumbo_parse(content)
+   local doc, err = gumbo_parse(res.body)
    if not doc then
       return err, 500
    end
