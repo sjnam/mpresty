@@ -1,4 +1,4 @@
-mpresty
+mpResty
 =======
 A version of MathJax, adapted to tex graphics such as metapost, graphviz or tikz
 - A web application for TeX graphics that works in all browsers.
@@ -18,7 +18,7 @@ Installation
 - Webapps
 
 ```bash
-$ git clone https://github.com/sjnam/mpResty.git ./www
+$ git clone https://github.com/sjnam/mp-resty.git ./www
 $ cd ~/www
 $ mkdir -p html/images logs
 $ ./openrestyctl start
@@ -28,5 +28,20 @@ Examples
 --------
 - Sample page,  http://localhost:8080/demo/sunflower.html
 - Preview page, http://localhost:8080/preview.html
+
+````html
+<html>
+<body>
+<h1>mpresty examples</h1>
+<mplibcode width="300">
+beginfig(1)
+  pair A, B, C;
+  A:=(0,0); B:=(1cm,0); C:=(0,1cm);
+  draw A--B--C;
+endfig
+</mplibcode>
+</body>
+</html>
+````
 
 Copyright (C) 2018-2019 Soojin Nam
