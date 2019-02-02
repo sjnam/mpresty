@@ -17,7 +17,7 @@ local _M = {
 local graphics = {
    "mplibcode",
    "tikzpicture",
-   "graphviz",
+   "graphviz"
 }
 
 
@@ -26,14 +26,17 @@ for _, v in ipairs(graphics) do
 end
 
 
-local render = function (self, fn_update_node)
-   local res = loc_capture("/source/"..ngx_var.uri)
-   if res.status ~= 200 then
-      ngx_exit(res.status)
-   end
-   local doc, err = gumbo_parse(res.body)
+local render = function (self, fn_update_node, doc)
+   local err
    if not doc then
-      return err, 500
+      local res = loc_capture("/source/"..ngx_var.uri)
+      if res.status ~= 200 then
+         ngx_exit(res.status)
+      end
+      doc, err = gumbo_parse(res.body)
+      if not doc then
+         return err, 500
+      end
    end
    for _, v in ipairs(graphics) do
       doc, err = self[v]:update_document(doc, fn_update_node)

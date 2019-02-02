@@ -46,17 +46,12 @@ function _M:new (o)
 end
 
 
-function _M:create_element (name)
-   return self.doc:createElement(name)
-end
-
-
 function _M:set_update_node (fn_update_node)
    self.cur_update_node = fn_update_node
 end
 
 
-function _M:get_content (node)
+local function get_content (node)
    local uri = node:getAttribute("src")
    if not uri then
       return node.textContent, nil
@@ -109,10 +104,11 @@ end
 
 
 function _M:update_document (doc, fn_update_node)
+   self.doc = doc
    for _, node in ipairs(doc:getElementsByTagName(self.tag_name)) do
       local update_node = fn_update_node or
          (self.cur_update_node or self.fn_update_node)
-      local content, err = self:get_content(node)
+      local content, err = get_content(node)
       if not content then
          return nil, err
       end
@@ -148,14 +144,17 @@ function _M:update_document (doc, fn_update_node)
 end
 
 
-function _M:render (fn_update_node)
-   local res = loc_capture("/source/"..ngx_var.uri)
-   if res.status ~= 200 then
-      ngx_exit(res.status)
-   end
-   local doc, err = gumbo_parse(res.body)
+function _M:render (fn_update_node, doc)
+   local err
    if not doc then
-      return err, 500
+      local res = loc_capture("/source/"..ngx_var.uri)
+      if res.status ~= 200 then
+         ngx_exit(res.status)
+      end
+      doc, err = gumbo_parse(res.body)
+      if not doc then
+         return err, 500
+      end
    end
    doc, err = self:update_document(doc, fn_update_node)
    if not doc then
