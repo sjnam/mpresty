@@ -21,7 +21,7 @@ local loc_capture = ngx.location.capture
 
 local work_dir = ngx_var.document_root.."/images"
 local gxn_script = ngx_config.prefix().."util/gxn.sh"
-local gxn_cache = lrucache.new(128)
+local gxn_cache = ngx.shared.gxn_cache or lrucache.new(128)
 
 local _M = {
    outputfmt = "svg",
