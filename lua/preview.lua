@@ -8,4 +8,4 @@ local cmd = gx == "graphviz" and string.format(" cmd='%s'", args.cmd) or ""
 local msg = string.format("<%s%s width='360' cache='no'>%s</%s>",
                           gx, cmd, args.msg, gx)
 
-ngx.say(gxn:set_document(gumbo_parse(msg)):update_document():serialize())
+ngx.say(gxn:update_document(gumbo_parse(msg)):serialize())

@@ -56,12 +56,6 @@ function _M:set_update_node (fn_update_node)
 end
 
 
-function _M:set_document (doc)
-   self.doc = doc
-   return self
-end
-
-
 function _M:get_content (node)
    local uri = node:getAttribute("src")
    if not uri then
@@ -114,8 +108,7 @@ local function figure_uri (self, node, fname)
 end
 
 
-function _M:update_document (fn_update_node)
-   local doc = self.doc
+function _M:update_document (doc, fn_update_node)
    for _, node in ipairs(doc:getElementsByTagName(self.tag_name)) do
       local update_node = fn_update_node or
          (self.cur_update_node or self.fn_update_node)
@@ -164,7 +157,7 @@ function _M:render (fn_update_node)
    if not doc then
       return err, 500
    end
-   doc, err = self:set_document(doc):update_document(fn_update_node)
+   doc, err = self:update_document(doc, fn_update_node)
    if not doc then
       return err, 500
    end

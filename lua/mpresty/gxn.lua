@@ -36,7 +36,7 @@ local render = function (self, fn_update_node)
       return err, 500
    end
    for _, v in ipairs(graphics) do
-      doc, err = self[v]:set_document(doc):update_document(fn_update_node)
+      doc, err = self[v]:update_document(doc, fn_update_node)
       if not doc then
          return err, 500
       end
