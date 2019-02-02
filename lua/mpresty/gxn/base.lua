@@ -2,6 +2,7 @@
 
 
 local gumbo = require "gumbo"
+local lrucache = require "resty.lrucache"
 local resty_shell = require "resty.shell"
 local resty_requests = require "resty.requests"
 
@@ -13,7 +14,6 @@ local ngx_var = ngx.var
 local ngx_exit = ngx.exit
 local hash = ngx.crc32_long
 local re_find = ngx.re.find
-local ngx_shared = ngx.shared
 local ngx_config = ngx.config
 local gumbo_parse = gumbo.parse
 local shell_run = resty_shell.run
@@ -22,8 +22,8 @@ local loc_capture = ngx.location.capture
 
 local img_dir = "/images"
 local work_dir = ngx_var.document_root..img_dir
-local gxn_cache = ngx_shared.gxn_cache
 local gxn_script = ngx_config.prefix().."util/gxn.sh"
+local gxn_cache = lrucache.new(128)
 
 
 local _M = {
