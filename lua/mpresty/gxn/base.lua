@@ -92,9 +92,13 @@ end
 
 
 local function figure_uri (self, node, fname)
+   local cmd = node:getAttribute("cmd") or ""
+   if cmd == "" then
+      cmd = self.cmd
+   end
    local ok, stdout = shell_run {
       gxn_script, work_dir, self.tag_name, fname,
-      self.ext, self.outputfmt, node:getAttribute("cmd") or self.cmd
+      self.ext, self.outputfmt, cmd
    }
    if not ok then
       return nil, stdout

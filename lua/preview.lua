@@ -2,10 +2,7 @@ local gumbo_parse = require("gumbo").parse
 
 ngx.req.read_body()
 local args = ngx.req.get_post_args()
-local gx = args.gx or "mplibcode"
-local gxn = require("gxn."..gx)
-local cmd = gx == "graphviz" and string.format(" cmd='%s'", args.cmd) or ""
-local html = string.format("<%s%s width='360' cache='no'>%s</%s>",
-                          gx, cmd, args.msg, gx)
+local html = string.format("<%s cmd='%s' width='400' cache='no'>%s</%s>",
+                           args.gx, args.cmd or "", args.msg, args.gx)
 
-ngx.say(gxn:render(nil, gumbo_parse(html)))
+ngx.say(require("gxn."..args.gx):render(nil, gumbo_parse(html)))
