@@ -1,3 +1,6 @@
+local gxn = require "gxn"
+
+--[[
 local function update_node_img_pre (self, node, uri, content)
    local doc = self.doc
    local img = doc:createElement("img")
@@ -17,9 +20,9 @@ local function update_node_img_pre (self, node, uri, content)
    node:appendChild(img)
    node:appendChild(pre)
 end
+--]]
 
--- main
-local html, err = (require "gxn"):render()
+local html, err = gxn:render()
 if err then
    ngx.log(ngx.ERR, "fail to render html: ", html)
    ngx.exit(err)

@@ -127,6 +127,7 @@ function _M:update_document (doc, fn_update_node)
       end
       node:removeAttribute("cmd")
       node:removeAttribute("src")
+      node:removeAttribute("cache")
       if node:hasChildNodes() then
          node:removeChild(node.childNodes[1])
       end
