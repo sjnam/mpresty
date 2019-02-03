@@ -45,12 +45,12 @@ function _M:set_update_node (fn_update_node)
    self.cur_update_node = fn_update_node
 end
 
-local function get_content (node)
+local function get_content (node, doCache)
    local uri = node:getAttribute("src")
    if not uri then
       return node.textContent, nil
    end
-   local content = gxn_cache:get(uri)
+   local content = doCache and gxn_cache:get(uri) or nil
    if not content then
       if not re_find(uri, "^https?://") then
          content = loc_capture(uri).body
@@ -61,7 +61,9 @@ local function get_content (node)
          end
          content = res:body()
       end
-      gxn_cache:set(uri, content)
+      if doCache then
+         gxn_cache:set(uri, content)
+      end
    end
    return content
 end
@@ -102,12 +104,12 @@ function _M:update_document (doc, fn_update_node)
    for _, node in ipairs(doc:getElementsByTagName(self.tag_name)) do
       local update_node = fn_update_node or
          (self.cur_update_node or self.fn_update_node)
-      local content, err = get_content(node)
+      local doCache = node:getAttribute("cache") ~= "no"
+      local content, err = get_content(node, doCache)
       if not content then
          return nil, err
       end
       local fname = hash(content)
-      local doCache = node:getAttribute("cache") ~= "no"
       local key = self.tag_name..fname
       local uri = doCache and gxn_cache:get(key) or nil
       if not uri then
