@@ -23,7 +23,11 @@ $ ./openrestyctl start
 
 Examples
 --------
-- Sample page,  http://localhost:8080/demo/sunflower.html
+- Sample page
+
+  - http://localhost:8080/demo/sunflower.html
+  - http://localhost:8080/demo/riemann.html
+
 - Preview page, http://localhost:8080/preview.html
 
 ````html
