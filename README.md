@@ -34,7 +34,7 @@ Examples
 <html>
 <body>
 <h1>mpresty examples</h1>
-<mplibcode width="300">
+<mplibcode>
 beginfig(1)
   pair A, B, C;
   A:=(0,0); B:=(1cm,0); C:=(0,1cm);
