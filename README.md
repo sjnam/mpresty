@@ -13,9 +13,8 @@ Synopsis
 <h1>mpresty examples</h1>
 <mplibcode>
 beginfig(1)
-  pair A, B, C;
-  A:=(0,0); B:=(1cm,0); C:=(0,1cm);
-  draw A--B--C;
+  draw (0,0) withpen pencircle scaled 4bp;
+  draw fullcircle scaled 1cm;
 endfig
 </mplibcode>
 </body>
@@ -33,8 +32,8 @@ Installation
 - Webapps
 
 ```bash
-$ git clone https://github.com/sjnam/mp-resty.git ./www
-$ cd ~/www
+$ git clone https://github.com/sjnam/mp-resty.git /path/to/mpresty
+$ cd /path/to/mpresty
 $ mkdir -p html/images logs
 $ ./openrestyctl start
 ```
