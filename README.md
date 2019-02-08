@@ -1,6 +1,6 @@
 mpresty
 =======
-A web application for TeX graphics such as metapost, graphviz or tikz
+A web application for TeX graphics such as metapost, tikz or graphviz
 
 No more setup for readers. It just works.
 
@@ -26,7 +26,7 @@ Examples
 - Sample page
 
   - http://localhost:8080/demo/sunflower.html
-  - http://localhost:8080/demo/riemann.html
+  - http://localhost:8080/demo/escher.html
 
 - Preview page, http://localhost:8080/preview.html
 
