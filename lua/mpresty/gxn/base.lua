@@ -1,9 +1,11 @@
 -- Copyright (C) 2018-2019, Soojin Nam
 
+
 local gumbo = require "gumbo"
 local lrucache = require "resty.lrucache"
 local resty_shell = require "resty.shell"
 local resty_requests = require "resty.requests"
+
 
 local fopen = io.open
 local ipairs = ipairs
@@ -19,9 +21,11 @@ local shell_run = resty_shell.run
 local http_get = resty_requests.get
 local loc_capture = ngx.location.capture
 
+
 local work_dir = ngx_var.document_root.."/images"
 local gxn_script = ngx_config.prefix().."util/gxn.sh"
 local gxn_cache = lrucache.new(128)
+
 
 local _M = {
    outputfmt = "svg",
@@ -37,13 +41,16 @@ local _M = {
    end
 }
 
+
 function _M:new (o)
    return setmetatable(o or {}, { __index = _M })
 end
 
+
 function _M:set_update_node (fn_update_node)
    self.cur_update_node = fn_update_node
 end
+
 
 local function get_content (node, doCache)
    local uri = node:getAttribute("src")
@@ -68,12 +75,14 @@ local function get_content (node, doCache)
    return content
 end
 
+
 local function error_fn_update_node (self, node, uri, content)
    node.localName = "pre"
    node.textContent = content
    node:setAttribute("style", "color:red")
    node:removeAttribute("width")
 end
+
 
 local function input_file (self, fname, content)
    local f, err = fopen(format("%s/%s.%s", work_dir, fname, self.ext), "w")
@@ -83,6 +92,7 @@ local function input_file (self, fname, content)
    f:write(format("%s\n%s\n%s", self.preamble, content, self.postamble))
    f:close()
 end
+
 
 local function figure_uri (self, node, fname)
    local cmd = node:getAttribute("cmd") or ""
@@ -98,6 +108,7 @@ local function figure_uri (self, node, fname)
    end
    return format("/images/%s.%s", fname, self.outputfmt)
 end
+
 
 function _M:update_document (doc, fn_update_node)
    self.doc = doc
@@ -140,6 +151,7 @@ function _M:update_document (doc, fn_update_node)
    return doc
 end
 
+
 function _M:render (fn_update_node, doc)
    local err
    if not doc then
@@ -158,5 +170,6 @@ function _M:render (fn_update_node, doc)
    end
    return doc:serialize()
 end 
+
 
 return _M
