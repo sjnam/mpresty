@@ -11,12 +11,32 @@ Synopsis
 <html>
 <body>
 <h1>mpresty examples</h1>
+
 <mplibcode>
 beginfig(1)
   draw (0,0) withpen pencircle scaled 4bp;
   draw fullcircle scaled 1cm;
 endfig
 </mplibcode>
+
+<hr>
+
+<tikzpicture>
+\begin{tikzpicture}
+\draw [blue] (0,0) rectangle (1.5,1);
+\draw [red, ultra thick] (3,0.5) circle [radius=0.5];;
+\draw [gray] (6,0) arc [radius=1, start angle=45, end angle= 120];
+\end{tikzpicture}
+</tikzpicture>
+
+<hr>
+
+<graphviz cmd="dot">
+digraph G {
+  Hello->World
+}
+</graphviz>
+
 </body>
 </html>
 ````
