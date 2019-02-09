@@ -21,7 +21,7 @@ endfig
 
 <hr>
 
-<tikzpicture>
+<tikzpicture width="400">
 \begin{tikzpicture}
 \draw [blue] (0,0) rectangle (1.5,1);
 \draw [red, ultra thick] (3,0.5) circle [radius=0.5];;
@@ -48,8 +48,6 @@ Installation
   - [TeX Live](https://www.tug.org/texlive/), An easy way to get up and running with the TeX document production system
   - [OpenResty](http://openresty.org/en/) v1.15.8, A full-fledged web platform that integrates the standard Nginx core, LuaJIT
   - [lua-gumbo](https://craigbarnes.gitlab.io/lua-gumbo/), A HTML5 parser and DOM library for Lua
-
-- Webapps
 
 ```bash
 $ git clone https://github.com/sjnam/mp-resty.git /path/to/mpresty
