@@ -23,9 +23,9 @@ endfig
 
 <tikzpicture width="400">
 \begin{tikzpicture}
-\draw [blue] (0,0) rectangle (1.5,1);
-\draw [red, ultra thick] (3,0.5) circle [radius=0.5];;
-\draw [gray] (6,0) arc [radius=1, start angle=45, end angle= 120];
+  \draw [blue] (0,0) rectangle (1.5,1);
+  \draw [red, ultra thick] (3,0.5) circle [radius=0.5];;
+  \draw [gray] (6,0) arc [radius=1, start angle=45, end angle= 120];
 \end{tikzpicture}
 </tikzpicture>
 
@@ -53,7 +53,7 @@ Installation
 $ git clone https://github.com/sjnam/mp-resty.git /path/to/mpresty
 $ cd /path/to/mpresty
 $ mkdir -p html/images logs
-$ ./openrestyctl start
+$ ./ngxctl start
 ```
 
 Examples
