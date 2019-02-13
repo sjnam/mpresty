@@ -1,4 +1,4 @@
-local gxn = require "gxn"
+local mpresty = require "mpresty"
 
 --[[
 local function update_node_img_pre (self, node, uri, content)
@@ -22,7 +22,7 @@ local function update_node_img_pre (self, node, uri, content)
 end
 --]]
 
-local html, err = gxn:render()
+local html, err = mpresty:render()
 if err then
    ngx.log(ngx.ERR, "fail to render html: ", html)
    ngx.exit(err)

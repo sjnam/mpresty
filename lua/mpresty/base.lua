@@ -23,8 +23,8 @@ local loc_capture = ngx.location.capture
 
 
 local work_dir = ngx_var.document_root.."/images"
-local gxn_script = ngx_config.prefix().."util/gxn.sh"
-local gxn_cache = ngx.shared.gxn_cache or lrucache.new(128)
+local mpresty_script = ngx_config.prefix().."util/mpresty.sh"
+local mpresty_cache = ngx.shared.mpresty_cache or lrucache.new(128)
 
 
 local _M = {
@@ -57,7 +57,7 @@ local function get_content (node, doCache)
    if not uri then
       return node.textContent, nil
    end
-   local content = doCache and gxn_cache:get(uri) or nil
+   local content = doCache and mpresty_cache:get(uri) or nil
    if not content then
       if not re_find(uri, "^https?://") then
          content = loc_capture(uri).body
@@ -69,7 +69,7 @@ local function get_content (node, doCache)
          content = res:body()
       end
       if doCache then
-         gxn_cache:set(uri, content)
+         mpresty_cache:set(uri, content)
       end
    end
    return content
@@ -100,7 +100,7 @@ local function figure_uri (self, node, fname)
       cmd = self.cmd
    end
    local ok, stdout = shell_run {
-      gxn_script, work_dir, self.tag_name, fname,
+      mpresty_script, work_dir, self.tag_name, fname,
       self.ext, self.outputfmt, cmd
    }
    if not ok then
@@ -122,7 +122,7 @@ function _M:update_document (doc, fn_update_node)
       end
       local fname = hash(content)
       local key = self.tag_name..fname
-      local uri = doCache and gxn_cache:get(key) or nil
+      local uri = doCache and mpresty_cache:get(key) or nil
       if not uri then
          local err = input_file(self, fname, content)
          if err then
@@ -134,7 +134,7 @@ function _M:update_document (doc, fn_update_node)
             content = err
          else
             if doCache then
-               gxn_cache:set(key, uri)
+               mpresty_cache:set(key, uri)
             end
          end
       end

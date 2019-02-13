@@ -22,7 +22,7 @@ local graphics = {
 
 
 for _, v in ipairs(graphics) do
-   _M[v] = require("gxn."..v)
+   _M[v] = require("mpresty."..v)
 end
 
 
