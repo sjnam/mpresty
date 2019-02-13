@@ -1,6 +1,6 @@
 mpresty
 =======
-A web application for TeX graphics such as metapost, tikz or graphviz
+A web application for TeX graphics such as metapost or tikz
 
 No more setup for readers. It just works.
 
@@ -29,14 +29,6 @@ endfig
 \end{tikzpicture}
 </tikzpicture>
 
-<hr>
-
-<graphviz cmd="dot">
-digraph G {
-  Hello->World
-}
-</graphviz>
-
 </body>
 </html>
 ````
@@ -61,8 +53,9 @@ Examples
 - Sample pages
 
   - http://localhost:8080/demo/sunflower.html
-  - http://localhost:8080/demo/escher.html
+  - http://localhost:8080/demo/riemann.html
 
 - Preview page, http://localhost:8080/preview.html
 
 Copyright (C) 2018-2019 Soojin Nam
+
