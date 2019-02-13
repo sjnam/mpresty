@@ -18,7 +18,7 @@ case $ARGV in
 	rm -rf $APP_HOME/html/images/*
         ;;
     *)
-        echo 'usage: ./openrestyctl start|stop|reload'
+        echo 'usage: ./ngxctl start|stop|reload'
 esac
 
 exit $ERROR
