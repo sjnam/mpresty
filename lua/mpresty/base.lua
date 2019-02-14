@@ -16,10 +16,12 @@ local ngx_exit = ngx.exit
 local hash = ngx.crc32_long
 local re_find = ngx.re.find
 local ngx_config = ngx.config
-local gumbo_parse = gumbo.parse
+local thread_wait = ngx.thread.wait
+local thread_spawn = ngx.thread.spawn
+local loc_capture = ngx.location.capture
 local shell_run = resty_shell.run
 local http_get = resty_requests.get
-local loc_capture = ngx.location.capture
+local gumbo_parse = gumbo.parse
 
 
 local work_dir = ngx_var.document_root.."/images"
@@ -151,11 +153,11 @@ function _M:update_document (doc, fn_update_node)
    local threads = {}
    self.doc = doc
    for _, node in ipairs(doc:getElementsByTagName(self.tag_name)) do
-      threads[#threads+1] = ngx.thread.spawn(do_update_node,
-                                             self, node, fn_update_node)
+      threads[#threads+1] = thread_spawn(do_update_node,
+                                         self, node, fn_update_node)
    end
    for i=1,#threads do
-      local ok, res = ngx.thread.wait(threads[i])
+      local ok, res = thread_wait(threads[i])
       if not ok then
          ngx.log(ngx.ERR, "fail to run: ", res)
       end
