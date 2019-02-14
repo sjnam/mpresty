@@ -53,7 +53,7 @@ Examples
 - Sample pages
 
   - http://localhost:8080/demo/sunflower.html
-  - http://localhost:8080/demo/riemann.html
+  - http://localhost:8080/demo/escher.html
 
 - Preview page, http://localhost:8080/preview.html
 
