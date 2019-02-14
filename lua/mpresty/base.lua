@@ -110,45 +110,58 @@ local function figure_uri (self, node, fname)
 end
 
 
-function _M:update_document (doc, fn_update_node)
-   self.doc = doc
-   for _, node in ipairs(doc:getElementsByTagName(self.tag_name)) do
-      local update_node = fn_update_node or
-         (self.cur_update_node or self.fn_update_node)
-      local doCache = node:getAttribute("cache") ~= "no"
-      local content, err = get_content(node, doCache)
-      if not content then
+local function do_update_node (self, node, fn_update_node)
+   local update_node = fn_update_node or
+      (self.cur_update_node or self.fn_update_node)
+   local doCache = node:getAttribute("cache") ~= "no"
+   local content, err = get_content(node, doCache)
+   if not content then
+      return nil, err
+   end
+   local fname = hash(content)
+   local key = self.tag_name..fname
+   local uri = doCache and mpresty_cache:get(key) or nil
+   if not uri then
+      local err = input_file(self, fname, content)
+      if err then
          return nil, err
       end
-      local fname = hash(content)
-      local key = self.tag_name..fname
-      local uri = doCache and mpresty_cache:get(key) or nil
-      if not uri then
-         local err = input_file(self, fname, content)
-         if err then
-            return nil, err
-         end
-         uri, err = figure_uri(self, node, fname)
-         if err then
-            update_node = error_fn_update_node
-            content = err
-         else
-            if doCache then
-               mpresty_cache:set(key, uri)
-            end
+      uri, err = figure_uri(self, node, fname)
+      if err then
+         update_node = error_fn_update_node
+         content = err
+      else
+         if doCache then
+            mpresty_cache:set(key, uri)
          end
       end
-      node:removeAttribute("cmd")
-      node:removeAttribute("src")
-      node:removeAttribute("cache")
-      if node:hasChildNodes() then
-         node:removeChild(node.childNodes[1])
+   end
+   node:removeAttribute("cmd")
+   node:removeAttribute("src")
+   node:removeAttribute("cache")
+   if node:hasChildNodes() then
+      node:removeChild(node.childNodes[1])
+   end
+   update_node(self, node, uri, content)
+   update_node = nil
+end
+
+
+function _M:update_document (doc, fn_update_node)
+   local threads = {}
+   self.doc = doc
+   for _, node in ipairs(doc:getElementsByTagName(self.tag_name)) do
+      threads[#threads+1] = ngx.thread.spawn(do_update_node,
+                                             self, node, fn_update_node)
+   end
+   for i=1,#threads do
+      local ok, res = ngx.thread.wait(threads[i])
+      if not ok then
+         ngx.log(ngx.ERR, "fail to run: ", res)
       end
-      update_node(self, node, uri, content)
-      update_node = nil
    end
    self.cur_update_node = nil
-   return doc
+   return self.doc
 end
 
 
