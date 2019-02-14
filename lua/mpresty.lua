@@ -10,7 +10,7 @@ local gumbo_parse = require("gumbo").parse
 
 
 local _M = {
-   version = "0.5.3"
+   version = "0.6.4"
 }
 
 
