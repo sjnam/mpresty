@@ -2,9 +2,8 @@
 
 
 local gumbo = require "gumbo"
-local lrucache = require "resty.lrucache"
-local resty_shell = require "resty.shell"
-local resty_requests = require "resty.requests"
+local shell = require "resty.shell"
+local requests = require "resty.requests"
 
 
 local fopen = io.open
@@ -19,14 +18,14 @@ local ngx_config = ngx.config
 local thread_wait = ngx.thread.wait
 local thread_spawn = ngx.thread.spawn
 local loc_capture = ngx.location.capture
-local shell_run = resty_shell.run
-local http_get = resty_requests.get
+local shell_run = shell.run
+local http_get = requests.get
 local gumbo_parse = gumbo.parse
 
 
 local work_dir = ngx_var.document_root.."/images"
 local mpresty_script = ngx_config.prefix().."util/mpresty.sh"
-local mpresty_cache = ngx.shared.mpresty_cache or lrucache.new(128)
+local mpresty_cache = ngx.shared.mpresty_cache
 
 
 local _M = {
