@@ -1,6 +1,6 @@
-mpresty
+Metapost in all browsers
 =======
-A web application for TeX graphics such as metapost or tikz
+A web application for metapost that works in all browsers.
 
 No more setup for readers. It just works.
 
@@ -14,20 +14,20 @@ Synopsis
 
 <mplibcode>
 beginfig(1)
-  draw (0,0) withpen pencircle scaled 4bp;
-  draw fullcircle scaled 1cm;
+  pair A,B,C; u:=3cm;
+  A=u*dir(-30); B=u*dir(90); C=u*dir(210);
+
+  transform T;
+  A transformed T = 1/6[A,B];
+  B transformed T = 1/6[B,C];
+  C transformed T = 1/6[C,A];
+
+  path p; p = A--B--C--cycle;
+  for i=0 upto 20:
+    draw p; p:= p transformed T;
+  endfor;
 endfig
 </mplibcode>
-
-<hr>
-
-<tikzpicture width="400">
-\begin{tikzpicture}
-  \draw [blue] (0,0) rectangle (1.5,1);
-  \draw [red, ultra thick] (3,0.5) circle [radius=0.5];;
-  \draw [gray] (6,0) arc [radius=1, start angle=45, end angle= 120];
-\end{tikzpicture}
-</tikzpicture>
 
 </body>
 </html>
@@ -50,12 +50,9 @@ $ ./ngxctl start
 
 Examples
 --------
-- Sample pages
-
-  - http://localhost:8080/demo/sunflower.html
-  - http://localhost:8080/demo/escher.html
-
-- Preview page, http://localhost:8080/preview.html
+- http://localhost:8080/demo/sunflower.html
+- http://localhost:8080/demo/escher.html
+- http://localhost:8080/preview.html
 
 Copyright (C) 2018-2019 Soojin Nam
 
