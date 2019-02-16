@@ -10,9 +10,9 @@ Synopsis
 ````html
 <html>
 <body>
-<h1>mpresty examples</h1>
+<h1>Examples</h1>
 
-<mplibcode>
+<mplibcode width="300">
 beginfig(1)
   pair A,B,C; u:=3cm;
   A=u*dir(-30); B=u*dir(90); C=u*dir(210);
@@ -29,6 +29,9 @@ beginfig(1)
 endfig
 </mplibcode>
 
+<hr>
+
+<mplibcode src="http://www.cs.ucc.ie/~dongen/mpost/mp/Escher87.mp"></mplibcode>
 </body>
 </html>
 ````
