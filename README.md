@@ -29,9 +29,6 @@ beginfig(1)
 endfig
 </mplibcode>
 
-<hr>
-
-<mplibcode src="http://www.cs.ucc.ie/~dongen/mpost/mp/Escher87.mp"></mplibcode>
 </body>
 </html>
 ````
@@ -54,7 +51,6 @@ $ ./ngxctl start
 Examples
 --------
 - http://localhost:8080/demo/sunflower.html
-- http://localhost:8080/demo/escher.html
 - http://localhost:8080/preview.html
 
 Copyright (C) 2018-2019 Soojin Nam
