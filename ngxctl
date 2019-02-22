@@ -15,11 +15,15 @@ case $ARGV in
     stop|reload)
         $OPENRESTY -p $APP_HOME/ -c $APP_HOME/conf/nginx.conf -s $ARGV
         ERROR=$?
-	rm -rf $APP_HOME/html/images/*
         ;;
     *)
         echo 'usage: ./ngxctl start|stop|reload'
 esac
+
+if [ $ARGV == stop ]
+then
+	rm -rf $APP_HOME/html/images/*
+fi
 
 exit $ERROR
 
