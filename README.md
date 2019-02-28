@@ -50,11 +50,11 @@ $ ./ngxctl start
 
 Examples
 --------
-- http://localhost:8080/demo/sunflower.html
-- http://localhost:8080/demo/all.html
-- http://localhost:8080/preview.html
+- *preview*, http://localhost:8080/preview.html
+- *with MathJax*, http://localhost:8080/demo/sunflower.html
+- *sample with url*, http://localhost:8080/demo/all.html
 
-![alt text](http://ktug.org/~sjnam/images/all.png "mpresty")
+![alt text](http://ktug.org/~sjnam/images/all.png "all.html")
 
 Copyright (C) 2018-2019 Soojin Nam
 
