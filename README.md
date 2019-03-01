@@ -4,7 +4,7 @@ A web application for metapost that works in all browsers.
 
 No more setup for readers. It just works.
 
-![alt text](http://ktug.org/~sjnam/images/mpresty.png "samples")
+[mpresty sample page](http://ktug.org/~sjnam/mpresty/all.html)
 
 Synopsis
 ---------
@@ -54,6 +54,6 @@ Examples
 --------
 - http://localhost:8080/demo/sunflower.html
 - http://localhost:8080/preview.html
-- http://localhost:8080/demo/all.html (http://ktug.org/~sjnam/mpresty/all.html)
+- http://localhost:8080/demo/all.html
 
 Copyright (C) 2018-2019 Soojin Nam
