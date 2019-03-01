@@ -52,8 +52,8 @@ $ ./ngxctl start
 
 Examples
 --------
-- **preview**, http://localhost:8080/preview.html
-- **with MathJax**, http://localhost:8080/demo/sunflower.html
-- **sample with url**, http://localhost:8080/demo/all.html
+- http://localhost:8080/demo/sunflower.html
+- http://localhost:8080/demo/all.html
+- http://localhost:8080/preview.html
 
 Copyright (C) 2018-2019 Soojin Nam
