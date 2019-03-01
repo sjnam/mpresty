@@ -4,6 +4,8 @@ A web application for metapost that works in all browsers.
 
 No more setup for readers. It just works.
 
+![alt text](http://ktug.org/~sjnam/images/all.png "all.html")
+
 Synopsis
 ---------
 
@@ -54,7 +56,4 @@ Examples
 - **with MathJax**, http://localhost:8080/demo/sunflower.html
 - **sample with url**, http://localhost:8080/demo/all.html
 
-![alt text](http://ktug.org/~sjnam/images/all.png "all.html")
-
 Copyright (C) 2018-2019 Soojin Nam
-
