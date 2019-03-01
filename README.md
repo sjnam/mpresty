@@ -4,7 +4,7 @@ A web application for metapost that works in all browsers.
 
 No more setup for readers. It just works.
 
-![alt text](http://ktug.org/~sjnam/images/all.png "all.html")
+![alt text](http://ktug.org/~sjnam/images/mpresty.png "samples")
 
 Synopsis
 ---------
