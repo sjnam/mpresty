@@ -17,6 +17,6 @@ case $2 in
         echo 'NOT SUPPORTED'
 esac
 
-rm -rf *.mp *.mpx *.gv *.log
+rm -rf $3.mp $3.mpx $3.gv $3.log
 
 exit $ERROR
