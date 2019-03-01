@@ -38,7 +38,6 @@ local _M = {
       if not node:hasAttribute("width") then
          node:setAttribute("width", "300")
       end
-      node:setAttribute("alt", content)
    end
 }
 
