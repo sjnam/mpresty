@@ -53,7 +53,7 @@ $ ./ngxctl start
 Examples
 --------
 - http://localhost:8080/demo/sunflower.html
-- http://localhost:8080/demo/all.html
 - http://localhost:8080/preview.html
+- http://localhost:8080/demo/all.html (http://ktug.org/~sjnam/mpresty/all.html)
 
 Copyright (C) 2018-2019 Soojin Nam
