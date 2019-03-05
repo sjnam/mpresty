@@ -12,6 +12,7 @@ Synopsis
 ````html
 <html>
 <body>
+
 <h1>Examples</h1>
 
 <mplibcode width="300">
@@ -30,6 +31,10 @@ beginfig(1)
   endfor;
 endfig
 </mplibcode>
+
+<hr>
+
+<mplibcode src="http://www.cs.ucc.ie/~dongen/mpost/mp/Escher87.mp"></mplibcode>
 
 </body>
 </html>
