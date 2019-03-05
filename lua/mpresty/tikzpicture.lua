@@ -5,7 +5,9 @@ return require("mpresty.base"):new {
    preamble = [[
                 \documentclass[tikz]{standalone}
                 \usepackage{pgfplots}
-                \usetikzlibrary{calc,intersections}
+                \usepackage{fourier}
+                \usepackage{xifthen}
+                \usetikzlibrary{arrows,backgrounds,calc,intersections,matrix,mindmap,positioning,shapes}
                 \begin{document}
               ]],
    postamble = "\\end{document}",
