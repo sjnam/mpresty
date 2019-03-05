@@ -17,7 +17,8 @@ local _M = {
 
 local grx = {
    "mplibcode",
-   "graphviz"
+   "graphviz",
+   "tikzpicture"
 }
 
 
