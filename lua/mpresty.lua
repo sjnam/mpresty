@@ -1,10 +1,11 @@
 -- Copyright (C) 2018-2019, Soojin Nam
 
 
-local ipairs = ipairs
 local setmetatable = setmetatable
 local ngx_var = ngx.var
 local ngx_exit = ngx.exit
+local thread_wait = ngx.thread.wait
+local thread_spawn = ngx.thread.spawn
 local loc_capture = ngx.location.capture
 local gumbo_parse = require("gumbo").parse
 
@@ -14,14 +15,20 @@ local _M = {
 }
 
 
-local graphics = {
+local grx = {
    "mplibcode",
    "graphviz"
 }
 
 
-for _, v in ipairs(graphics) do
+for i=1,#grx do
+   local v = grx[i]
    _M[v] = require("mpresty."..v)
+end
+
+
+local update_document = function (mpx, doc, fn_update_node)
+   return mpx:update_document(doc, fn_update_node)
 end
 
 
@@ -37,8 +44,13 @@ local render = function (self, fn_update_node, doc)
          return err, 500
       end
    end
-   for _, v in ipairs(graphics) do
-      doc, err = self[v]:update_document(doc, fn_update_node)
+   local threads = {}
+   for i=1,#grx do
+      threads[#threads+1] = thread_spawn(update_document, self[grx[i]],
+                                         doc, fn_update_node)
+   end
+   for i=1,#threads do
+      local doc, err = thread_wait(threads[i])
       if not doc then
          return err, 500
       end
