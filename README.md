@@ -34,7 +34,7 @@ endfig
 
 <hr>
 
-<mplibcode src="http://www.cs.ucc.ie/~dongen/mpost/mp/Escher87.mp"></mplibcode>
+<mplibcode src="http://ktug.org/~sjnam/source/tree.mp"></mplibcode>
 
 </body>
 </html>
