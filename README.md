@@ -61,9 +61,7 @@ Examples
 - http://localhost:8080/preview.html
 - http://localhost:8080/demo/all.html
 
-Copyright & License
+License
 -------
-Copyright (C) 2018-2019 Soojin Nam
-
-public domain
+Public Domain
 
