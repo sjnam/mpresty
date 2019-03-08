@@ -12,7 +12,7 @@ local format = string.format
 local setmetatable = setmetatable
 local ngx_var = ngx.var
 local ngx_exit = ngx.exit
-local hash = ngx.crc32_long
+local digest = ngx.md5
 local re_find = ngx.re.find
 local ngx_config = ngx.config
 local thread_wait = ngx.thread.wait
@@ -118,7 +118,7 @@ local function do_update_node (self, node, fn_update_node)
    if not content then
       return nil, err
    end
-   local fname = hash(content)
+   local fname = digest(content)
    local key = self.tag_name..fname
    local uri = doCache and mpresty_cache:get(key) or nil
    if not uri then
