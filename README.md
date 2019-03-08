@@ -45,7 +45,7 @@ Installation
 - Prerequisites
   
   - [TeX Live](https://www.tug.org/texlive/), An easy way to get up and running with the TeX document production system
-  - [OpenResty](http://openresty.org/en/) v1.15.8, A dynamic web platform based on NGINX and LuaJIT
+  - [OpenResty](https://openresty.org/en/ann-1015008001rc1.html) v1.15.8.1, A dynamic web platform based on NGINX and LuaJIT
   - [lua-gumbo](https://craigbarnes.gitlab.io/lua-gumbo/), A HTML5 parser and DOM library for Lua
 
 ```bash
