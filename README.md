@@ -61,6 +61,10 @@ Examples
 - http://localhost:8080/preview.html
 - http://localhost:8080/demo/all.html
 
+Author
+------
+Soojin Nam
+
 License
 -------
 Public Domain
