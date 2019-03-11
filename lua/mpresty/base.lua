@@ -41,6 +41,7 @@ local _M = {
       end
       if node:hasAttribute("code") then
          node:setAttribute("alt", content)
+         node:removeAttribute("code")
       end
    end
 }
@@ -61,6 +62,7 @@ local function get_content (node, doCache)
    if not uri then
       return node.textContent, nil
    end
+   node:removeAttribute("src")
    local content = doCache and mpresty_cache:get(uri) or nil
    if not content then
       if not re_find(uri, "^https?://") then
@@ -103,6 +105,7 @@ local function figure_uri (self, node, fname)
    if cmd == "" then
       cmd = self.cmd
    end
+   node:removeAttribute("cmd")
    local ok, stdout = shell_run {
       mpresty_script, work_dir, self.tag_name, fname,
       self.ext, self.outputfmt, cmd
@@ -118,6 +121,7 @@ local function do_update_node (self, node, fn_update_node)
    local update_node = fn_update_node or
       (self.cur_update_node or self.fn_update_node)
    local doCache = node:getAttribute("cache") ~= "no"
+   node:removeAttribute("cache")
    local content, err = get_content(node, doCache)
    if not content then
       return nil, err
@@ -140,9 +144,6 @@ local function do_update_node (self, node, fn_update_node)
          end
       end
    end
-   node:removeAttribute("cmd")
-   node:removeAttribute("src")
-   node:removeAttribute("cache")
    if node:hasChildNodes() then
       node:removeChild(node.childNodes[1])
    end
