@@ -63,7 +63,7 @@ Examples
 
 Author
 ------
-Soojin Nam
+Soojin Nam jsunam@gmail.com
 
 License
 -------
