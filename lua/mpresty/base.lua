@@ -1,4 +1,5 @@
--- Copyright (C) 2018-2019, Soojin Nam
+-- Soojin Nam jsunam@gmail.com
+-- Public Domain
 
 
 local gumbo = require "gumbo"
@@ -182,7 +183,8 @@ function _M:render (fn_update_node, doc)
       return err, 500
    end
    return doc:serialize()
-end 
+end
 
 
 return _M
+

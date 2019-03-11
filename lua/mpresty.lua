@@ -1,4 +1,5 @@
--- Copyright (C) 2018-2019, Soojin Nam
+-- Soojin Nam jsunam@gmail.com
+-- Public Domain
 
 
 local setmetatable = setmetatable
@@ -64,3 +65,4 @@ _M.render = render
 
 
 return setmetatable(_M, { __call = render })
+
