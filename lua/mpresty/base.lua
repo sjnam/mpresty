@@ -144,8 +144,8 @@ local function do_update_node (self, node, fn_update_node)
          end
       end
    end
-   if node:hasChildNodes() then
-      node:removeChild(node.childNodes[1])
+   for _, c in ipairs(node.childNodes) do
+      c:remove();
    end
    update_node(self, node, uri, content)
    update_node = nil
