@@ -19,20 +19,16 @@ Synopsis
 beginfig(1)
   pair A,B,C; u:=3cm;
   A=u*dir(-30); B=u*dir(90); C=u*dir(210);
-
   transform T;
   A transformed T = 1/6[A,B];
   B transformed T = 1/6[B,C];
   C transformed T = 1/6[C,A];
-
   path p; p = A--B--C--cycle;
   for i=0 upto 20:
     draw p; p:= p transformed T;
   endfor;
 endfig
 </mplibcode>
-
-<hr>
 
 <mplibcode src="http://ktug.org/~sjnam/source/tree.mp"></mplibcode>
 
@@ -47,6 +43,7 @@ Installation
   - [TeX Live](https://www.tug.org/texlive/), An easy way to get up and running with the TeX document production system
   - [OpenResty](https://openresty.org/en/ann-1015008001rc1.html) v1.15.8.1, A dynamic web platform based on NGINX and LuaJIT
   - [lua-gumbo](https://craigbarnes.gitlab.io/lua-gumbo/), A HTML5 parser and DOM library for Lua
+  - [lua-resty-requests](https://github.com/tokers/lua-resty-requests), Yet Another HTTP Library for OpenResty
 
 ```bash
 $ git clone https://github.com/sjnam/mp-resty.git /path/to/mpresty
