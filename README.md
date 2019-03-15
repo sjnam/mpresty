@@ -54,8 +54,8 @@ $ ./ngxctl start
 
 Examples
 --------
-- http://localhost:8080/demo/sunflower.html
-- http://localhost:8080/demo/all.html
+- http://localhost:8080/sample/sunflower.html
+- http://localhost:8080/sample/all.html
 - http://localhost:8080/preview.html
 
 Author
