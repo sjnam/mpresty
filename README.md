@@ -1,6 +1,6 @@
-Metapost in all browsers
+TeX graphics in all browsers
 =======
-A web application for metapost, tikz and graphviz that works in all browsers.
+A web application for TeX graphics that works in all browsers.
 
 No more setup for readers. It just works.
 
@@ -46,8 +46,8 @@ Installation
   - [lua-resty-requests](https://github.com/tokers/lua-resty-requests), Yet Another HTTP Library for OpenResty
 
 ```bash
-$ git clone https://github.com/sjnam/mp-resty.git /path/to/mpresty
-$ cd /path/to/mpresty
+$ git clone https://github.com/sjnam/tex-graphics.git
+$ cd tex-graphics
 $ mkdir -p html/images logs
 $ ./ngxctl start
 ```
