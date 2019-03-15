@@ -4,7 +4,7 @@ A web application for TeX graphics that works in all browsers.
 
 No more setup for readers. It just works.
 
-[gxn sample page](http://ktug.org/~sjnam/mpresty/all.html)
+[Sample page](http://ktug.org/~sjnam/mpresty/all.html)
 
 Synopsis
 ---------
