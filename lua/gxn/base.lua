@@ -24,8 +24,8 @@ local gumbo_parse = gumbo.parse
 
 
 local work_dir = ngx_var.document_root.."/images"
-local mpresty_script = ngx_config.prefix().."util/mpresty.sh"
-local mpresty_cache = ngx.shared.mpresty_cache
+local gxn_script = ngx_config.prefix().."util/gxn.sh"
+local gxn_cache = ngx.shared.gxn_cache
 
 
 local _M = {
@@ -63,7 +63,7 @@ local function get_content (node, doCache)
       return node.textContent, nil
    end
    node:removeAttribute("src")
-   local content = doCache and mpresty_cache:get(uri) or nil
+   local content = doCache and gxn_cache:get(uri) or nil
    if not content then
       if not re_find(uri, "^https?://") then
          content = loc_capture(uri).body
@@ -75,7 +75,7 @@ local function get_content (node, doCache)
          content = res:body()
       end
       if doCache then
-         mpresty_cache:set(uri, content)
+         gxn_cache:set(uri, content)
       end
    end
    return content
@@ -107,7 +107,7 @@ local function figure_uri (self, node, fname)
    end
    node:removeAttribute("cmd")
    local ok, stdout = shell_run {
-      mpresty_script, work_dir, self.tag_name, fname,
+      gxn_script, work_dir, self.tag_name, fname,
       self.ext, self.outputfmt, cmd
    }
    if not ok then
@@ -128,7 +128,7 @@ local function do_update_node (self, node, fn_update_node)
    end
    local fname = digest(content)
    local key = self.tag_name..fname
-   local uri = doCache and mpresty_cache:get(key) or nil
+   local uri = doCache and gxn_cache:get(key) or nil
    if not uri then
       local err = input_file(self, fname, content)
       if err then
@@ -140,7 +140,7 @@ local function do_update_node (self, node, fn_update_node)
          content = err
       else
          if doCache then
-            mpresty_cache:set(key, uri)
+            gxn_cache:set(key, uri)
          end
       end
    end

@@ -2,7 +2,7 @@
 -- Public Domain
 
 
-local base = require "mpresty.base"
+local base = require "gxn.base"
 
 
 local setmetatable = setmetatable
@@ -13,7 +13,7 @@ local loc_capture = ngx.location.capture
 local gumbo_parse = require("gumbo").parse
 
 
-local grx = {
+local gx = {
    "mplibcode",
    "graphviz",
    "tikzpicture"
@@ -33,7 +33,7 @@ local render = function (self, fn_update_node, doc)
    local threads = {}
    for i=1,#grx do
       threads[#threads+1] = thread_spawn(update_document,
-                                         require("mpresty."..grx[i]),
+                                         require("gxn."..gx[i]),
                                          doc, fn_update_node)
    end
    for i=1,#threads do
