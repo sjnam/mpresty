@@ -12,7 +12,6 @@ local ipairs = ipairs
 local format = string.format
 local setmetatable = setmetatable
 local ngx_var = ngx.var
-local ngx_exit = ngx.exit
 local digest = ngx.md5
 local re_find = ngx.re.find
 local ngx_config = ngx.config
@@ -30,6 +29,7 @@ local mpresty_cache = ngx.shared.mpresty_cache
 
 
 local _M = {
+   version = "0.8.4",
    outputfmt = "svg",
    preamble = "",
    postamble = "",
@@ -152,6 +152,19 @@ local function do_update_node (self, node, fn_update_node)
 end
 
 
+function _M.get_document ()
+   local res = loc_capture("/source/"..ngx_var.uri)
+   if res.status ~= 200 then
+      return nil, res.status
+   end
+   local doc, err = gumbo_parse(res.body)
+   if not doc then
+      return err, 500
+   end
+   return doc
+end
+
+
 function _M:update_document (doc, fn_update_node)
    local threads = {}
    self.doc = doc
@@ -171,16 +184,9 @@ end
 
 
 function _M:render (fn_update_node, doc)
-   local err
-   if not doc then
-      local res = loc_capture("/source/"..ngx_var.uri)
-      if res.status ~= 200 then
-         ngx_exit(res.status)
-      end
-      doc, err = gumbo_parse(res.body)
-      if not doc then
-         return err, 500
-      end
+   local doc, err = doc or self.get_document()
+   if err then
+      return nil, err
    end
    doc, err = self:update_document(doc, fn_update_node)
    if not doc then
@@ -191,4 +197,3 @@ end
 
 
 return _M
-

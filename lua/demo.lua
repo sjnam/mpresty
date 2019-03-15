@@ -22,7 +22,7 @@ local function update_node_img_pre (self, node, uri, content)
 end
 --]]
 
-local html, err = mpresty:render()
+local html, err = mpresty()
 if err then
    ngx.log(ngx.ERR, "fail to render html: ", html)
    ngx.exit(err)
