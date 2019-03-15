@@ -1,6 +1,6 @@
 Metapost in all browsers
 =======
-A web application for metapost that works in all browsers.
+A web application for metapost, tikz and graphviz that works in all browsers.
 
 No more setup for readers. It just works.
 
