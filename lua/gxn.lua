@@ -6,10 +6,8 @@ local base = require "gxn.base"
 
 
 local setmetatable = setmetatable
-local ngx_var = ngx.var
 local thread_wait = ngx.thread.wait
 local thread_spawn = ngx.thread.spawn
-local loc_capture = ngx.location.capture
 local gumbo_parse = require("gumbo").parse
 
 
@@ -37,8 +35,8 @@ local render = function (self, fn_update_node, doc)
                                          doc, fn_update_node)
    end
    for i=1,#threads do
-      local doc, err = thread_wait(threads[i])
-      if not doc then
+      local ok, err = thread_wait(threads[i])
+      if not ok then
          return err, 500
       end
    end
