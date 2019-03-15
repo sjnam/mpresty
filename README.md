@@ -4,7 +4,7 @@ A web application for metapost that works in all browsers.
 
 No more setup for readers. It just works.
 
-[mpresty sample page](http://ktug.org/~sjnam/mpresty/all.html)
+[gxn sample page](http://ktug.org/~sjnam/mpresty/all.html)
 
 Synopsis
 ---------
@@ -55,8 +55,8 @@ $ ./ngxctl start
 Examples
 --------
 - http://localhost:8080/demo/sunflower.html
-- http://localhost:8080/preview.html
 - http://localhost:8080/demo/all.html
+- http://localhost:8080/preview.html
 
 Author
 ------

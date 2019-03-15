@@ -31,7 +31,7 @@ local render = function (self, fn_update_node, doc)
       return nil, err
    end
    local threads = {}
-   for i=1,#grx do
+   for i=1,#gx do
       threads[#threads+1] = thread_spawn(update_document,
                                          require("gxn."..gx[i]),
                                          doc, fn_update_node)
