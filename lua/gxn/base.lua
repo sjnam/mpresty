@@ -6,7 +6,6 @@ local shell = require "resty.shell"
 local requests = require "resty.requests"
 local fopen = io.open
 local ipairs = ipairs
-local format = string.format
 local setmetatable = setmetatable
 local ngx_var = ngx.var
 local digest = ngx.md5
@@ -87,11 +86,11 @@ end
 
 
 local function input_file (self, fname, content)
-   local f, err = fopen(format("%s/%s.%s", work_dir, fname, self.ext), "w")
+   local f, err = fopen(work_dir.."/"..fname.."."..self.ext, "w")
    if not f then
       return err
    end
-   f:write(format("%s\n%s\n%s", self.preamble, content, self.postamble))
+   f:write(self.preamble.."\n"..content.."\n"..self.postamble)
    f:close()
 end
 
@@ -109,7 +108,7 @@ local function figure_uri (self, node, fname)
    if not ok then
       return nil, stdout
    end
-   return format("/images/%s.%s", fname, self.outputfmt)
+   return "/images/"..fname.."."..self.outputfmt
 end
 
 
