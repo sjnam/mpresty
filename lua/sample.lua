@@ -1,5 +1,3 @@
-local gxn = require "gxn"
-
 --[[
 local function update_node_img_pre (self, node, uri, content)
    local doc = self.doc
@@ -22,11 +20,4 @@ local function update_node_img_pre (self, node, uri, content)
 end
 --]]
 
-local html, err = gxn()
-if err then
-   ngx.log(ngx.ERR, "fail to render html: ", html)
-   ngx.exit(err)
-end
-
-ngx.say(html)
-
+(require "gxn")()

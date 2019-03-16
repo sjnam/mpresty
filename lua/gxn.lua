@@ -48,7 +48,7 @@ end
 local function render (self, fn_update_node, doc)
    local doc, err = doc or get_document()
    if err then
-      return nil, err
+      ngx.exit(err)
    end
    local threads = {}
    for _, gx in ipairs(gxs) do
@@ -56,17 +56,18 @@ local function render (self, fn_update_node, doc)
                                          gx, doc, fn_update_node)
    end
    for _, th in ipairs(threads) do
-      local ok, err = thread_wait(th)
+      local ok, doc, err = thread_wait(th)
       if not ok then
-         return err, 500
+         ngx.log(ngx.ERR, "fail to render html: ", err)
+         ngx.exit(500)
       end
    end
-   return doc:serialize()
+   say(doc:serialize())
 end
 
 
 function _M:preview (html)
-   say(render(self, nil, gumbo_parse(html)))
+   render(self, nil, gumbo_parse(html))
 end
 
 
