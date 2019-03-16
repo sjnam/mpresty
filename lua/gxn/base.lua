@@ -29,7 +29,7 @@ local gxn_cache = ngx.shared.gxn_cache
 
 
 local _M = {
-   version = "0.8.4",
+   version = "0.9.1",
    outputfmt = "svg",
    preamble = "",
    postamble = "",
@@ -180,19 +180,6 @@ function _M:update_document (doc, fn_update_node)
    end
    self.cur_update_node = nil
    return self.doc
-end
-
-
-function _M:render (fn_update_node, doc)
-   local doc, err = doc or self.get_document()
-   if err then
-      return nil, err
-   end
-   doc, err = self:update_document(doc, fn_update_node)
-   if not doc then
-      return err, 500
-   end
-   return doc:serialize()
 end
 
 
