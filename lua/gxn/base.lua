@@ -4,8 +4,6 @@
 
 local shell = require "resty.shell"
 local requests = require "resty.requests"
-
-
 local fopen = io.open
 local ipairs = ipairs
 local format = string.format
@@ -14,6 +12,7 @@ local ngx_var = ngx.var
 local digest = ngx.md5
 local re_find = ngx.re.find
 local ngx_config = ngx.config
+local ngx_shared = ngx.shared
 local thread_wait = ngx.thread.wait
 local thread_spawn = ngx.thread.spawn
 local loc_capture = ngx.location.capture
@@ -23,7 +22,7 @@ local http_get = requests.get
 
 local work_dir = ngx_var.document_root.."/images"
 local gxn_script = ngx_config.prefix().."util/gxn.sh"
-local gxn_cache = ngx.shared.gxn_cache
+local gxn_cache = ngx_shared.gxn_cache
 
 
 local _M = {
@@ -156,10 +155,10 @@ function _M:update_document (doc, fn_update_node)
       threads[#threads+1] = thread_spawn(do_update_node,
                                          self, node, fn_update_node)
    end
-   for i=1,#threads do
-      local ok, res = thread_wait(threads[i])
+   for _, th in ipairs(threads) do
+      local ok, res, err = thread_wait(th)
       if not ok then
-         ngx.log(ngx.ERR, "fail to run: ", res)
+         return nil, err
       end
    end
    self.cur_update_node = nil
