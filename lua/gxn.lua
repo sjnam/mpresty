@@ -5,16 +5,17 @@
 local base = require "gxn.base"
 
 
+local ipairs = ipairs
 local setmetatable = setmetatable
 local thread_wait = ngx.thread.wait
 local thread_spawn = ngx.thread.spawn
 local gumbo_parse = require("gumbo").parse
 
 
-local gx = {
-   "mplibcode",
-   "graphviz",
-   "tikzpicture"
+local gxs = {
+   require "gxn.mplibcode",
+   require "gxn.graphviz",
+   require "gxn.tikzpicture"
 }
 
 
@@ -29,10 +30,9 @@ local render = function (self, fn_update_node, doc)
       return nil, err
    end
    local threads = {}
-   for i=1,#gx do
+   for _, gx in ipairs(gxs) do
       threads[#threads+1] = thread_spawn(update_document,
-                                         require("gxn."..gx[i]),
-                                         doc, fn_update_node)
+                                         gx, doc, fn_update_node)
    end
    for i=1,#threads do
       local ok, err = thread_wait(threads[i])
