@@ -2,7 +2,6 @@
 -- Public Domain
 
 
-local gumbo = require "gumbo"
 local shell = require "resty.shell"
 local requests = require "resty.requests"
 
@@ -20,7 +19,6 @@ local thread_spawn = ngx.thread.spawn
 local loc_capture = ngx.location.capture
 local shell_run = shell.run
 local http_get = requests.get
-local gumbo_parse = gumbo.parse
 
 
 local work_dir = ngx_var.document_root.."/images"
@@ -29,7 +27,6 @@ local gxn_cache = ngx.shared.gxn_cache
 
 
 local _M = {
-   version = "0.9.1",
    outputfmt = "svg",
    preamble = "",
    postamble = "",
@@ -149,19 +146,6 @@ local function do_update_node (self, node, fn_update_node)
    end
    update_node(self, node, uri, content)
    update_node = nil
-end
-
-
-function _M.get_document ()
-   local res = loc_capture("/source/"..ngx_var.uri)
-   if res.status ~= 200 then
-      return nil, res.status
-   end
-   local doc, err = gumbo_parse(res.body)
-   if not doc then
-      return err, 500
-   end
-   return doc
 end
 
 

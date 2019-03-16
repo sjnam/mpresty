@@ -2,13 +2,16 @@
 -- Public Domain
 
 
-local base = require "gxn.base"
+local gumbo = require "gumbo"
 
 
 local ipairs = ipairs
 local setmetatable = setmetatable
+local ngx_var = ngx.var
 local thread_wait = ngx.thread.wait
 local thread_spawn = ngx.thread.spawn
+local loc_capture = ngx.location.capture
+local gumbo_parse = gumbo.parse
 
 
 local gxs = {
@@ -23,8 +26,21 @@ local update_document = function (gx, doc, fn_update_node)
 end
 
 
+local function get_document ()
+   local res = loc_capture("/source/"..ngx_var.uri)
+   if res.status ~= 200 then
+      return nil, res.status
+   end
+   local doc, err = gumbo_parse(res.body)
+   if not doc then
+      return err, 500
+   end
+   return doc
+end
+
+
 local render = function (self, fn_update_node, doc)
-   local doc, err = doc or base.get_document()
+   local doc, err = doc or get_document()
    if err then
       return nil, err
    end
@@ -44,7 +60,7 @@ end
 
 
 local _M = {
-   version = base.version,
+   version = "0.9.1",
    render = render
 }
 
