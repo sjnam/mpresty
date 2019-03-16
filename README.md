@@ -5,7 +5,7 @@ in all browsers.
 
 No more setup for readers. It just works.
 
-[Sample page](http://ktug.org/~sjnam/gxn/all.html)
+A [sample page](http://ktug.org/~sjnam/gxn/all.html) redered by this web application, tex-graphics
 
 Synopsis
 ---------
