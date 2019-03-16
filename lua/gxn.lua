@@ -7,6 +7,7 @@ local gumbo = require "gumbo"
 
 local ipairs = ipairs
 local setmetatable = setmetatable
+local say = ngx.say
 local ngx_var = ngx.var
 local thread_wait = ngx.thread.wait
 local thread_spawn = ngx.thread.spawn
@@ -21,7 +22,12 @@ local gxs = {
 }
 
 
-local update_document = function (gx, doc, fn_update_node)
+local _M = {
+   version = "0.9.4"
+}
+
+
+local function update_document (gx, doc, fn_update_node)
    return gx:update_document(doc, fn_update_node)
 end
 
@@ -39,7 +45,7 @@ local function get_document ()
 end
 
 
-local render = function (self, fn_update_node, doc)
+local function render (self, fn_update_node, doc)
    local doc, err = doc or get_document()
    if err then
       return nil, err
@@ -49,8 +55,8 @@ local render = function (self, fn_update_node, doc)
       threads[#threads+1] = thread_spawn(update_document,
                                          gx, doc, fn_update_node)
    end
-   for i=1,#threads do
-      local ok, err = thread_wait(threads[i])
+   for _, th in ipairs(threads) do
+      local ok, err = thread_wait(th)
       if not ok then
          return err, 500
       end
@@ -59,10 +65,12 @@ local render = function (self, fn_update_node, doc)
 end
 
 
-local _M = {
-   version = "0.9.1",
-   render = render
-}
+function _M:preview (html)
+   say(render(self, nil, gumbo_parse(html)))
+end
+
+
+_M.render = render
 
 
 return setmetatable(_M, { __call = render })
