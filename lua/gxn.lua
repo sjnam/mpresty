@@ -1,5 +1,5 @@
--- Soojin Nam jsunam@gmail.com
--- Public Domain
+-- Author:  Soojin Nam, jsunam@gmail.com
+-- License: Public Domain
 
 
 local gumbo = require "gumbo"

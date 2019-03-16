@@ -1,10 +1,11 @@
 TeX graphics in all browsers
 =======
-A web application for TeX graphics that works in all browsers.
+A web application for TeX graphics(metapost, TikZ, Graphviz) that works
+in all browsers.
 
 No more setup for readers. It just works.
 
-[Sample page](http://ktug.org/~sjnam/mpresty/all.html)
+[Sample page](http://ktug.org/~sjnam/gxn/all.html)
 
 Synopsis
 ---------
@@ -13,8 +14,7 @@ Synopsis
 <html>
 <body>
 
-<h1>Examples</h1>
-
+<h3>Metapost</h3>
 <mplibcode width="300">
 beginfig(1)
   pair A,B,C; u:=3cm;
@@ -29,8 +29,15 @@ beginfig(1)
   endfor;
 endfig
 </mplibcode>
-
 <mplibcode src="http://ktug.org/~sjnam/source/tree.mp"></mplibcode>
+
+<h3>Graphviz</h3>
+<graphviz src="http://ktug.org/~sjnam/source/fsm.gv" cmd="dot" width="150"></graphviz>
+<graphviz src="https://graphviz.gitlab.io/_pages/Gallery/undirected/philo.gv.txt" cmd="neato" width="150"></graphviz>
+
+<h3>TikZ</h3>
+<tikzpicture src="http://ktug.org/~sjnam/source/sine.tex" width="150"></tikzpicture>
+<tikzpicture src="http://ktug.org/~sjnam/source/func.tex" width="150"></tikzpicture>
 
 </body>
 </html>
@@ -41,7 +48,7 @@ Installation
 - Prerequisites
   
   - [TeX Live](https://www.tug.org/texlive/), An easy way to get up and running with the TeX document production system
-  - [OpenResty](https://openresty.org/en/ann-1015008001rc1.html) v1.15.8.1, A dynamic web platform based on NGINX and LuaJIT
+  - [OpenResty 1.15.8.1](https://openresty.org/en/ann-1015008001rc1.html), A dynamic web platform based on NGINX and LuaJIT
   - [lua-gumbo](https://craigbarnes.gitlab.io/lua-gumbo/), A HTML5 parser and DOM library for Lua
   - [lua-resty-requests](https://github.com/tokers/lua-resty-requests), Yet Another HTTP Library for OpenResty
 
@@ -60,7 +67,7 @@ Examples
 
 Author
 ------
-Soojin Nam jsunam@gmail.com
+Soojin Nam, jsunam@gmail.com
 
 License
 -------
