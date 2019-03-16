@@ -29,15 +29,16 @@ beginfig(1)
   endfor;
 endfig
 </mplibcode>
-<mplibcode src="http://ktug.org/~sjnam/source/tree.mp"></mplibcode>
+<mplibcode src="http://ktug.org/~sjnam/source/tree.mp" cache="no"></mplibcode>
 
 <h3>Graphviz</h3>
-<graphviz src="http://ktug.org/~sjnam/source/fsm.gv" cmd="dot" width="150"></graphviz>
-<graphviz src="https://graphviz.gitlab.io/_pages/Gallery/undirected/philo.gv.txt" cmd="neato" width="150"></graphviz>
+<graphviz src="http://ktug.org/~sjnam/source/fsm.gv" cmd="dot"></graphviz>
+<graphviz src="https://graphviz.gitlab.io/_pages/Gallery/undirected/philo.gv.txt"
+          cmd="neato"></graphviz>
 
 <h3>TikZ</h3>
-<tikzpicture src="http://ktug.org/~sjnam/source/sine.tex" width="150"></tikzpicture>
-<tikzpicture src="http://ktug.org/~sjnam/source/func.tex" width="150"></tikzpicture>
+<tikzpicture src="http://ktug.org/~sjnam/source/sine.tex"></tikzpicture>
+<tikzpicture src="http://ktug.org/~sjnam/source/func.tex"></tikzpicture>
 
 </body>
 </html>
