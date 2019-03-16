@@ -19,8 +19,8 @@ local gxs = {
 }
 
 
-local update_document = function (mpx, doc, fn_update_node)
-   return mpx:update_document(doc, fn_update_node)
+local update_document = function (gx, doc, fn_update_node)
+   return gx:update_document(doc, fn_update_node)
 end
 
 
