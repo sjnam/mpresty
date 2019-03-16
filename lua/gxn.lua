@@ -9,7 +9,6 @@ local ipairs = ipairs
 local setmetatable = setmetatable
 local thread_wait = ngx.thread.wait
 local thread_spawn = ngx.thread.spawn
-local gumbo_parse = require("gumbo").parse
 
 
 local gxs = {
