@@ -100,7 +100,6 @@ local function figure_uri (self, node, fname)
    if cmd == "" then
       cmd = self.cmd
    end
-   node:removeAttribute("cmd")
    local ok, stdout = shell_run {
       gxn_script, work_dir, self.tag_name, fname,
       self.ext, self.outputfmt, cmd
@@ -139,6 +138,7 @@ local function do_update_node (self, node, fn_update_node)
          end
       end
    end
+   node:removeAttribute("cmd")
    for _, c in ipairs(node.childNodes) do
       c:remove();
    end
