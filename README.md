@@ -1,6 +1,6 @@
 TeX graphics in all browsers
 =======
-A web application for TeX graphics(Metapost, TikZ, Graphviz) that works
+A web application for TeX graphics (Metapost, TikZ, Graphviz) that works
 in all browsers.
 
 No more setup for readers. It just works.
