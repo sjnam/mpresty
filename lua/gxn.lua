@@ -4,7 +4,6 @@
 
 local gumbo = require "gumbo"
 local ipairs = ipairs
-local setmetatable = setmetatable
 local say = ngx.say
 local log = ngx.log
 local ERR = ngx.ERR
@@ -46,7 +45,7 @@ local function get_document ()
 end
 
 
-local function render (self, fn_update_node, doc)
+local function go (fn_update_node, doc)
    local doc, err = doc or get_document()
    if err then
       log(ERR, "fail to get document: ", doc)
@@ -68,12 +67,12 @@ local function render (self, fn_update_node, doc)
 end
 
 
-function _M:preview (html)
-   render(self, nil, gumbo_parse(html))
+function _M.preview (html)
+   go(nil, gumbo_parse(html))
 end
 
 
-_M.render = render
+_M.go = go
 
 
-return setmetatable(_M, { __call = render })
+return _M
