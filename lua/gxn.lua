@@ -16,9 +16,6 @@ local loc_capture = ngx.location.capture
 local gumbo_parse = gumbo.parse
 
 
-local src_dir = ngx_var.src_dir or "source"
-
-
 local gxs = {
    require "gxn.mplibcode",
    require "gxn.graphviz",
@@ -41,15 +38,19 @@ local function go (fn_update_node, doc)
       log(ERR, "Declare a shared memory zone, \"gxn_cache\" !!!")
       exit(500)
    end
-   local res = loc_capture("/"..src_dir..ngx_var.uri)
-   if res.status ~= 200 then
-      exit(res.status)
-   end
 
-   local doc, err = gumbo_parse(res.body)
    if not doc then
-      log(ERR, err)
-      exit(500)
+      local err
+      local res = loc_capture("/source"..ngx_var.uri)
+      if res.status ~= 200 then
+         exit(res.status)
+      end
+
+      doc, err = gumbo_parse(res.body)
+      if not doc then
+         log(ERR, err)
+         exit(500)
+      end
    end
 
    local threads = {}

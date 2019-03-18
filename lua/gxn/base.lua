@@ -19,11 +19,8 @@ local shell_run = shell.run
 local http_get = requests.get
 
 
-local img_dir = ngx_var.img_dir or "images"
-local script_file = ngx_var.script_file or "util/gxn.sh"
-
-local work_dir = ngx_var.document_root.."/"..img_dir
-local gxn_script = ngx_config.prefix().."/"..script_file
+local work_dir = ngx_var.document_root.."/images"
+local gxn_script = ngx_config.prefix().."/util/gxn.sh"
 local gxn_cache = ngx_shared.gxn_cache
 
 
