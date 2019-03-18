@@ -16,7 +16,7 @@ Synopsis
 
 <H1>Metapost</H1>
 
-<mplibcode width="300" code>
+<mplibcode width="300">
 beginfig(1)
   pair A,B,C; u:=3cm;
   A=u*dir(-30); B=u*dir(90); C=u*dir(210);
@@ -31,11 +31,11 @@ beginfig(1)
 endfig
 </mplibcode>
 
-<mplibcode src="http://ktug.org/~sjnam/source/tree.mp" cache="no" code></mplibcode>
+<mplibcode src="http://ktug.org/~sjnam/source/tree.mp" cache="no"></mplibcode>
 
 <H1>Graphviz</H1>
 
-<graphviz code>
+<graphviz>
 digraph G {
     main -> parse -> execute;
     main -> init;
@@ -49,11 +49,11 @@ digraph G {
 </graphviz>
 
 <graphviz src="https://graphviz.gitlab.io/_pages/Gallery/undirected/philo.gv.txt"
-          cmd="neato" code></graphviz>
+          cmd="neato"></graphviz>
 
 <H1>TikZ</H1>
 
-<tikzpicture code>
+<tikzpicture>
 \begin{tikzpicture}[scale=3]
   \draw[step=.5cm, gray, very thin] (-1.2,-1.2) grid (1.2,1.2); 
   \filldraw[fill=green!20,draw=green!50!black] (0,0) -- (3mm,0mm) arc (0:30:3mm) -- cycle; 
@@ -70,7 +70,7 @@ digraph G {
 \end{tikzpicture}
 </tikzpicture>
 
-<tikzpicture src="http://ktug.org/~sjnam/source/func.tex" code></tikzpicture>
+<tikzpicture src="http://ktug.org/~sjnam/source/func.tex"></tikzpicture>
 
 </body>
 </html>
