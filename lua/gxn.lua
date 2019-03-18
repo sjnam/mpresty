@@ -7,6 +7,7 @@ local ipairs = ipairs
 local say = ngx.say
 local log = ngx.log
 local ERR = ngx.ERR
+local WARN = ngx.WARN
 local exit = ngx.exit
 local ngx_var = ngx.var
 local ngx_shared = ngx.shared
@@ -35,8 +36,7 @@ end
 
 local function go (fn_update_node, doc)
    if not ngx_shared.gxn_cache then
-      log(ERR, "Declare a shared memory zone, \"gxn_cache\" !!!")
-      exit(500)
+      log(WARN, "Declare a shared memory zone, \"gxn_cache\" !!!")
    end
 
    if not doc then

@@ -114,7 +114,7 @@ end
 local function do_update_node (self, node, fn_update_node)
    local update_node = fn_update_node or
       (self.cur_update_node or self.fn_update_node)
-   local doCache = node:getAttribute("cache") ~= "no"
+   local doCache = gxn_cache and node:getAttribute("cache") ~= "no"
    node:removeAttribute("cache")
    local content, err = get_content(node, doCache)
    if not content then
