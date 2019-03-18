@@ -14,8 +14,9 @@ Synopsis
 <html>
 <body>
 
-<h3>Metapost</h3>
-<mplibcode width="300">
+<H1>Metapost</H1>
+
+<mplibcode width="300" code>
 beginfig(1)
   pair A,B,C; u:=3cm;
   A=u*dir(-30); B=u*dir(90); C=u*dir(210);
@@ -29,16 +30,47 @@ beginfig(1)
   endfor;
 endfig
 </mplibcode>
-<mplibcode src="http://ktug.org/~sjnam/source/tree.mp" cache="no"></mplibcode>
 
-<h3>Graphviz</h3>
-<graphviz src="http://ktug.org/~sjnam/source/fsm.gv" cmd="dot"></graphviz>
+<mplibcode src="http://ktug.org/~sjnam/source/tree.mp" cache="no" code></mplibcode>
+
+<H1>Graphviz</H1>
+
+<graphviz code>
+digraph G {
+    main -> parse -> execute;
+    main -> init;
+    main -> cleanup;
+    execute -> make_string;
+    execute -> printf
+    init -> make_string;
+    main -> printf;
+    execute -> compare;
+}
+</graphviz>
+
 <graphviz src="https://graphviz.gitlab.io/_pages/Gallery/undirected/philo.gv.txt"
-          cmd="neato"></graphviz>
+          cmd="neato" code></graphviz>
 
-<h3>TikZ</h3>
-<tikzpicture src="http://ktug.org/~sjnam/source/sine.tex"></tikzpicture>
-<tikzpicture src="http://ktug.org/~sjnam/source/func.tex"></tikzpicture>
+<H1>TikZ</H1>
+
+<tikzpicture code>
+\begin{tikzpicture}[scale=3]
+  \draw[step=.5cm, gray, very thin] (-1.2,-1.2) grid (1.2,1.2); 
+  \filldraw[fill=green!20,draw=green!50!black] (0,0) -- (3mm,0mm) arc (0:30:3mm) -- cycle; 
+  \draw[->] (-1.25,0) -- (1.25,0) coordinate (x axis);
+  \draw[->] (0,-1.25) -- (0,1.25) coordinate (y axis);
+  \draw (0,0) circle (1cm);
+  \draw[very thick,red] (30:1cm) -- node[left,fill=white] {$\sin \alpha$} (30:1cm |- x axis);
+  \draw[very thick,blue] (30:1cm |- x axis) -- node[below=2pt,fill=white] {$\cos \alpha$} (0,0);
+  \draw (0,0) -- (30:1cm);
+  \foreach \x/\xtext in {-1, -0.5/-\frac{1}{2}, 1} 
+    \draw (\x cm,1pt) -- (\x cm,-1pt) node[anchor=north,fill=white] {$\xtext$};
+  \foreach \y/\ytext in {-1, -0.5/-\frac{1}{2}, 0.5/\frac{1}{2}, 1} 
+    \draw (1pt,\y cm) -- (-1pt,\y cm) node[anchor=east,fill=white] {$\ytext$};
+\end{tikzpicture}
+</tikzpicture>
+
+<tikzpicture src="http://ktug.org/~sjnam/source/func.tex" code></tikzpicture>
 
 </body>
 </html>
