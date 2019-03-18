@@ -9,10 +9,14 @@ local log = ngx.log
 local ERR = ngx.ERR
 local exit = ngx.exit
 local ngx_var = ngx.var
+local ngx_shared = ngx.shared
 local thread_wait = ngx.thread.wait
 local thread_spawn = ngx.thread.spawn
 local loc_capture = ngx.location.capture
 local gumbo_parse = gumbo.parse
+
+
+local src_dir = ngx_var.src_dir or "source"
 
 
 local gxs = {
@@ -32,25 +36,22 @@ local function update_document (gx, doc, fn_update_node)
 end
 
 
-local function get_document ()
-   local res = loc_capture("/source/"..ngx_var.uri)
-   if res.status ~= 200 then
-      return "not found", res.status
+local function go (fn_update_node, doc)
+   if not ngx_shared.gxn_cache then
+      log(ERR, "Declare a shared memory zone, \"gxn_cache\" !!!")
+      exit(500)
    end
+   local res = loc_capture("/"..src_dir..ngx_var.uri)
+   if res.status ~= 200 then
+      exit(res.status)
+   end
+
    local doc, err = gumbo_parse(res.body)
    if not doc then
-      return err, 500
+      log(ERR, err)
+      exit(500)
    end
-   return doc
-end
 
-
-local function go (fn_update_node, doc)
-   local doc, err = doc or get_document()
-   if err then
-      log(ERR, "fail to get document: ", doc)
-      exit(err)
-   end
    local threads = {}
    for _, gx in ipairs(gxs) do
       threads[#threads+1] = thread_spawn(update_document,
