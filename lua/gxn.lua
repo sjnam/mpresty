@@ -59,7 +59,7 @@ local function go (fn_update_node, doc)
                                          gx, doc, fn_update_node)
    end
    for _, th in ipairs(threads) do
-      local ok, doc, err = thread_wait(th)
+      local ok, res, err = thread_wait(th)
       if not ok then
          log(ERR, "fail to render html: ", err)
          exit(500)

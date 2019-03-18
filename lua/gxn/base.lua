@@ -4,11 +4,11 @@
 
 local shell = require "resty.shell"
 local requests = require "resty.requests"
-local fopen = io.open
 local ipairs = ipairs
+local io_open = io.open
 local setmetatable = setmetatable
-local ngx_var = ngx.var
 local digest = ngx.md5
+local ngx_var = ngx.var
 local re_find = ngx.re.find
 local ngx_config = ngx.config
 local ngx_shared = ngx.shared
@@ -27,23 +27,25 @@ local gxn_cache = ngx_shared.gxn_cache
 local _M = {
    outputfmt = "svg",
    preamble = "",
-   postamble = "",
-   fn_update_node = function (self, node, uri, content)
-      node.localName = "img"
-      node:setAttribute("src", uri)
-      if not node:hasAttribute("width") then
-         node:setAttribute("width", "300")
-      end
-      if node:hasAttribute("code") then
-         node:setAttribute("alt", content)
-         node:removeAttribute("code")
-      end
-   end
+   postamble = ""
 }
 
 
 function _M:new (o)
    return setmetatable(o or {}, { __index = _M })
+end
+
+
+function _M:fn_update_node (node, uri, content)
+   node.localName = "img"
+   node:setAttribute("src", uri)
+   if not node:hasAttribute("width") then
+      node:setAttribute("width", "300")
+   end
+   if node:hasAttribute("code") then
+      node:setAttribute("alt", content)
+      node:removeAttribute("code")
+   end
 end
 
 
@@ -86,7 +88,7 @@ end
 
 
 local function input_file (self, fname, content)
-   local f, err = fopen(work_dir.."/"..fname.."."..self.ext, "w")
+   local f, err = io_open(work_dir.."/"..fname.."."..self.ext, "w")
    if not f then
       return err
    end
@@ -124,7 +126,7 @@ local function do_update_node (self, node, fn_update_node)
    local key = self.tag_name..fname
    local uri = doCache and gxn_cache:get(key) or nil
    if not uri then
-      local err = input_file(self, fname, content)
+      err = input_file(self, fname, content)
       if err then
          return nil, err
       end
@@ -148,8 +150,8 @@ end
 
 
 function _M:update_document (doc, fn_update_node)
-   local threads = {}
    self.doc = doc
+   local threads = {}
    for _, node in ipairs(doc:getElementsByTagName(self.tag_name)) do
       threads[#threads+1] = thread_spawn(do_update_node,
                                          self, node, fn_update_node)
