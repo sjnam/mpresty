@@ -63,6 +63,7 @@ $ ./ngxctl start
 Examples
 --------
 - http://localhost:8080/sample/sunflower.html
+- http://localhost:8080/sample/small.html
 - http://localhost:8080/sample/all.html
 - http://localhost:8080/preview.html
 
