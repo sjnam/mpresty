@@ -60,6 +60,7 @@ local function get_content (node, doCache)
       return node.textContent, nil
    end
    node:removeAttribute("src")
+
    local content = doCache and gxn_cache:get(uri) or nil
    if not content then
       if not re_find(uri, "^https?://") then
@@ -102,6 +103,7 @@ local function figure_uri (self, node, fname)
    if cmd == "" then
       cmd = self.cmd
    end
+
    local ok, stdout = shell_run {
       gxn_script, work_dir, self.tag_name, fname,
       self.ext, self.outputfmt, cmd
@@ -116,12 +118,15 @@ end
 local function do_update_node (self, node, fn_update_node)
    local update_node = fn_update_node or
       (self.cur_update_node or self.fn_update_node)
+
    local doCache = gxn_cache and node:getAttribute("cache") ~= "no"
    node:removeAttribute("cache")
+
    local content, err = get_content(node, doCache)
    if not content then
       return nil, err
    end
+
    local fname = digest(content)
    local key = self.tag_name..fname
    local uri = doCache and gxn_cache:get(key) or nil
@@ -141,6 +146,7 @@ local function do_update_node (self, node, fn_update_node)
       end
    end
    node:removeAttribute("cmd")
+
    for _, c in ipairs(node.childNodes) do
       c:remove();
    end
@@ -156,6 +162,7 @@ function _M:update_document (doc, fn_update_node)
       threads[#threads+1] = thread_spawn(do_update_node,
                                          self, node, fn_update_node)
    end
+
    for _, th in ipairs(threads) do
       local ok, res, err = thread_wait(th)
       if not ok then

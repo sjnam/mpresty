@@ -57,6 +57,7 @@ local function go (fn_update_node, doc)
       threads[#threads+1] = thread_spawn(update_document,
                                          gx, doc, fn_update_node)
    end
+
    for _, th in ipairs(threads) do
       ok, res, err = thread_wait(th)
       if not ok then
