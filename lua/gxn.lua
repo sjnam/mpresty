@@ -39,13 +39,12 @@ local function go (fn_update_node, doc)
       log(WARN, "Declare a shared memory zone, \"gxn_cache\" !!!")
    end
 
+   local ok, res, err
    if not doc then
-      local err
-      local res = loc_capture("/source"..ngx_var.uri)
+      res = loc_capture("/source"..ngx_var.uri)
       if res.status ~= 200 then
          exit(res.status)
       end
-
       doc, err = gumbo_parse(res.body)
       if not doc then
          log(ERR, err)
@@ -59,7 +58,7 @@ local function go (fn_update_node, doc)
                                          gx, doc, fn_update_node)
    end
    for _, th in ipairs(threads) do
-      local ok, res, err = thread_wait(th)
+      ok, res, err = thread_wait(th)
       if not ok then
          log(ERR, "fail to render html: ", err)
          exit(500)
