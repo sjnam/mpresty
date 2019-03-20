@@ -3,5 +3,5 @@ return require("gxn.base"):new {
    cmd = "mpost",
    ext = "mp",
    preamble = [[prologues:=3; outputtemplate:="%j.svg"; outputformat:="svg";]],
-   postamble = "end;",
+   postamble = "end",
 }

@@ -36,7 +36,7 @@ function _M:new (o)
 end
 
 
-function _M:fn_update_node (node, uri, content)
+function _M.fn_update_node (node, uri, content)
    node.localName = "img"
    node:setAttribute("src", uri)
    if not node:hasAttribute("width") then
@@ -54,7 +54,7 @@ function _M:set_update_node (fn_update_node)
 end
 
 
-local function get_content (node, doCache)
+local function get_contents (node, doCache)
    local uri = node:getAttribute("src")
    if not uri then
       return node.textContent, nil
@@ -80,7 +80,7 @@ local function get_content (node, doCache)
 end
 
 
-local function error_fn_update_node (self, node, uri, content)
+local function error_fn_update_node (node, uri, content)
    node.localName = "pre"
    node.textContent = content
    node:setAttribute("style", "color:red")
@@ -88,7 +88,7 @@ local function error_fn_update_node (self, node, uri, content)
 end
 
 
-local function input_file (self, fname, content)
+local function make_input_file (self, fname, content)
    local f, err = io_open(work_dir.."/"..fname.."."..self.ext, "w")
    if not f then
       return err
@@ -98,7 +98,7 @@ local function input_file (self, fname, content)
 end
 
 
-local function figure_uri (self, node, fname)
+local function get_figure_uri (self, node, fname)
    local cmd = node:getAttribute("cmd") or ""
    if cmd == "" then
       cmd = self.cmd
@@ -115,14 +115,14 @@ local function figure_uri (self, node, fname)
 end
 
 
-local function do_update_node (self, node, fn_update_node)
+local function do_update_document (self, node, fn_update_node)
    local update_node = fn_update_node or
       (self.cur_update_node or self.fn_update_node)
 
    local doCache = gxn_cache and node:getAttribute("cache") ~= "no"
    node:removeAttribute("cache")
 
-   local content, err = get_content(node, doCache)
+   local content, err = get_contents(node, doCache)
    if not content then
       return nil, err
    end
@@ -131,11 +131,11 @@ local function do_update_node (self, node, fn_update_node)
    local key = self.tag_name..fname
    local uri = doCache and gxn_cache:get(key) or nil
    if not uri then
-      err = input_file(self, fname, content)
+      err = make_input_file(self, fname, content)
       if err then
          return nil, err
       end
-      uri, err = figure_uri(self, node, fname)
+      uri, err = get_figure_uri(self, node, fname)
       if err then
          update_node = error_fn_update_node
          content = err
@@ -150,7 +150,7 @@ local function do_update_node (self, node, fn_update_node)
    for _, c in ipairs(node.childNodes) do
       c:remove();
    end
-   update_node(self, node, uri, content)
+   update_node(node, uri, content)
    update_node = nil
 end
 
@@ -159,7 +159,7 @@ function _M:update_document (doc, fn_update_node)
    self.doc = doc
    local threads = {}
    for _, node in ipairs(doc:getElementsByTagName(self.tag_name)) do
-      threads[#threads+1] = thread_spawn(do_update_node,
+      threads[#threads+1] = thread_spawn(do_update_document,
                                          self, node, fn_update_node)
    end
 

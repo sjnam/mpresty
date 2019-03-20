@@ -34,7 +34,7 @@ local function update_document (gx, doc, fn_update_node)
 end
 
 
-local function go (fn_update_node, doc)
+local function render (fn_update_node, doc)
    if not ngx_shared.gxn_cache then
       log(WARN, "Declare a shared memory zone, \"gxn_cache\" !!!")
    end
@@ -70,11 +70,11 @@ end
 
 
 function _M.preview (html)
-   go(nil, gumbo_parse(html))
+   render(nil, gumbo_parse(html))
 end
 
 
-_M.go = go
+_M.render = render
 
 
 return _M
