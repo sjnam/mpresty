@@ -18,58 +18,58 @@ local parse = gumbo.parse
 
 
 local gxs = {
-   require "gxn.mplibcode",
-   require "gxn.graphviz",
-   require "gxn.tikzpicture"
+    require "gxn.mplibcode",
+    require "gxn.graphviz",
+    require "gxn.tikzpicture"
 }
 
 
 local _M = {
-   version = "0.9.4"
+    version = "0.9.4"
 }
 
 
 local function update_document (gx, doc, fn_update_node)
-   return gx:update_document(doc, fn_update_node)
+    return gx:update_document(doc, fn_update_node)
 end
 
 
 local function render (fn_update_node, doc)
-   if not ngx_shared.gxn_cache then
-      log(WARN, "Declare a shared memory zone, \"gxn_cache\" !!!")
-   end
+    if not ngx_shared.gxn_cache then
+        log(WARN, "Declare a shared memory zone, \"gxn_cache\" !!!")
+    end
 
-   local ok, res, err
-   if not doc then
-      res = capture("/source"..ngx_var.uri)
-      if res.status ~= 200 then
-         exit(res.status)
-      end
-      doc, err = parse(res.body)
-      if not doc then
-         log(ERR, err)
-         exit(500)
-      end
-   end
+    local ok, res, err
+    if not doc then
+        res = capture("/source"..ngx_var.uri)
+        if res.status ~= 200 then
+            exit(res.status)
+        end
+        doc, err = parse(res.body)
+        if not doc then
+            log(ERR, err)
+            exit(500)
+        end
+    end
 
-   local threads = {}
-   for _, gx in ipairs(gxs) do
-      threads[#threads+1] = spawn(update_document, gx, doc, fn_update_node)
-   end
+    local threads = {}
+    for _, gx in ipairs(gxs) do
+        threads[#threads + 1] = spawn(update_document, gx, doc, fn_update_node)
+    end
 
-   for _, th in ipairs(threads) do
-      ok, res, err = wait(th)
-      if not ok then
-         log(ERR, "fail to render html: ", err)
-         exit(500)
-      end
-   end
-   say(doc:serialize())
+    for _, th in ipairs(threads) do
+        ok, res, err = wait(th)
+        if not ok then
+            log(ERR, "fail to render html: ", err)
+            exit(500)
+        end
+    end
+    say(doc:serialize())
 end
 
 
 function _M.preview (html)
-   render(nil, parse(html))
+    render(nil, parse(html))
 end
 
 
