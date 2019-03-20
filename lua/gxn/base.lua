@@ -12,14 +12,14 @@ local ngx_var = ngx.var
 local re_find = ngx.re.find
 local ngx_config = ngx.config
 local ngx_shared = ngx.shared
-local thread_wait = ngx.thread.wait
-local thread_spawn = ngx.thread.spawn
-local loc_capture = ngx.location.capture
-local shell_run = shell.run
-local http_get = requests.get
+local wait = ngx.thread.wait
+local spawn = ngx.thread.spawn
+local capture = ngx.location.capture
+local run = shell.run
+local http_request = requests.get
 
 
-local work_dir = ngx_var.document_root.."/images"
+local image_dir = ngx_var.document_root.."/images"
 local gxn_script = ngx_config.prefix().."/util/gxn.sh"
 local gxn_cache = ngx_shared.gxn_cache
 
@@ -27,52 +27,40 @@ local gxn_cache = ngx_shared.gxn_cache
 local _M = {
    outputfmt = "svg",
    preamble = "",
-   postamble = ""
+   postamble = "",
+   fn_update_node = function (node, uri, content)
+      node.localName = "img"
+      node:setAttribute("src", uri)
+      if not node:hasAttribute("width") then
+         node:setAttribute("width", "300")
+      end
+      if node:hasAttribute("code") then
+         node:setAttribute("alt", content)
+         node:removeAttribute("code")
+      end
+   end
 }
 
 
-function _M:new (o)
-   return setmetatable(o or {}, { __index = _M })
-end
-
-
-function _M.fn_update_node (node, uri, content)
-   node.localName = "img"
-   node:setAttribute("src", uri)
-   if not node:hasAttribute("width") then
-      node:setAttribute("width", "300")
-   end
-   if node:hasAttribute("code") then
-      node:setAttribute("alt", content)
-      node:removeAttribute("code")
-   end
-end
-
-
-function _M:set_update_node (fn_update_node)
-   self.cur_update_node = fn_update_node
-end
-
-
-local function get_contents (node, doCache)
+local function get_contents (node, use_cache)
    local uri = node:getAttribute("src")
    if not uri then
       return node.textContent, nil
    end
    node:removeAttribute("src")
 
-   local content = doCache and gxn_cache:get(uri) or nil
+   local content = use_cache and gxn_cache:get(uri) or nil
    if not content then
       if not re_find(uri, "^https?://") then
-         content = loc_capture(uri).body
+         content = capture(uri).body
       else
-         local res, err = http_get(uri)
+         local res, err = http_request(uri)
          if not res then
             return nil, err
          end
          content = res:body()
       end
-      if doCache then
+      if use_cache then
          gxn_cache:set(uri, content)
       end
    end
@@ -89,7 +77,7 @@ end
 
 
 local function make_input_file (self, fname, content)
-   local f, err = io_open(work_dir.."/"..fname.."."..self.ext, "w")
+   local f, err = io_open(image_dir.."/"..fname.."."..self.ext, "w")
    if not f then
       return err
    end
@@ -98,14 +86,14 @@ local function make_input_file (self, fname, content)
 end
 
 
-local function get_figure_uri (self, node, fname)
+local function get_image_uri (self, node, fname)
    local cmd = node:getAttribute("cmd") or ""
    if cmd == "" then
       cmd = self.cmd
    end
 
-   local ok, stdout = shell_run {
-      gxn_script, work_dir, self.tag_name, fname,
+   local ok, stdout = run {
+      gxn_script, image_dir, self.tag_name, fname,
       self.ext, self.outputfmt, cmd
    }
    if not ok then
@@ -119,28 +107,28 @@ local function do_update_document (self, node, fn_update_node)
    local update_node = fn_update_node or
       (self.cur_update_node or self.fn_update_node)
 
-   local doCache = gxn_cache and node:getAttribute("cache") ~= "no"
+   local use_cache = gxn_cache and node:getAttribute("cache") ~= "no"
    node:removeAttribute("cache")
 
-   local content, err = get_contents(node, doCache)
+   local content, err = get_contents(node, use_cache)
    if not content then
       return nil, err
    end
 
    local fname = digest(content)
    local key = self.tag_name..fname
-   local uri = doCache and gxn_cache:get(key) or nil
+   local uri = use_cache and gxn_cache:get(key) or nil
    if not uri then
       err = make_input_file(self, fname, content)
       if err then
          return nil, err
       end
-      uri, err = get_figure_uri(self, node, fname)
+      uri, err = get_image_uri(self, node, fname)
       if err then
          update_node = error_fn_update_node
          content = err
       else
-         if doCache then
+         if use_cache then
             gxn_cache:set(key, uri)
          end
       end
@@ -159,18 +147,27 @@ function _M:update_document (doc, fn_update_node)
    self.doc = doc
    local threads = {}
    for _, node in ipairs(doc:getElementsByTagName(self.tag_name)) do
-      threads[#threads+1] = thread_spawn(do_update_document,
-                                         self, node, fn_update_node)
+      threads[#threads+1] = spawn(do_update_document, self, node, fn_update_node)
    end
 
    for _, th in ipairs(threads) do
-      local ok, res, err = thread_wait(th)
+      local ok, res, err = wait(th)
       if not ok then
          return nil, err
       end
    end
    self.cur_update_node = nil
    return self.doc
+end
+
+
+function _M:new (gx)
+   return setmetatable(gx or {}, { __index = _M })
+end
+
+
+function _M:set_fn_update_node (fn_update_node)
+   self.cur_update_node = fn_update_node
 end
 
 
