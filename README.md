@@ -5,8 +5,6 @@ in all browsers.
 
 No more setup for readers. It just works.
 
-A [sample page](http://ktug.org/~sjnam/gxn/all.html) redered by this web application, tex-graphics
-
 Synopsis
 ---------
 
@@ -81,7 +79,7 @@ Installation
 - Prerequisites
   
   - [TeX Live](https://www.tug.org/texlive/), An easy way to get up and running with the TeX document production system
-  - [OpenResty 1.15.8.1 RC2](https://openresty.org/en/ann-1015008001rc2.html), A dynamic web platform based on NGINX and LuaJIT
+  - [OpenResty 1.15.8.1](https://openresty.org/en/ann-1015008001rc2.html), A dynamic web platform based on NGINX and LuaJIT
   - [lua-gumbo](https://craigbarnes.gitlab.io/lua-gumbo/), A HTML5 parser and DOM library for Lua
   - [lua-resty-requests](https://github.com/tokers/lua-resty-requests), Yet Another HTTP Library for OpenResty
 
