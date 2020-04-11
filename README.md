@@ -76,25 +76,17 @@ digraph G {
 
 Installation
 ------------
-- Prerequisites
-  
-  - [TeX Live](https://www.tug.org/texlive/), An easy way to get up and running with the TeX document production system
-  - [OpenResty 1.15.8.2](https://openresty.org/en/ann-1015008002.html), A dynamic web platform based on NGINX and LuaJIT
-  - [lua-gumbo](https://craigbarnes.gitlab.io/lua-gumbo/), A HTML5 parser and DOM library for Lua
-  - [lua-resty-requests](https://github.com/tokers/lua-resty-requests), Yet Another HTTP Library for OpenResty
-
+- Docker
 ```bash
-$ git clone https://github.com/sjnam/tex-graphics.git
-$ cd tex-graphics
-$ mkdir -p html/images logs
-$ ./ngxctl start
+% docker build -t mpresty .
+% docker run -d -p 80:80 --name gxn mpresty
 ```
 
 Examples
 --------
-- http://localhost:8080/sample/sunflower.html
-- http://localhost:8080/sample/all.html
-- http://localhost:8080/preview.html
+- http://localhost/sample/sunflower.html
+- http://localhost/sample/all.html
+- http://localhost/preview.html
 
 Author
 ------
