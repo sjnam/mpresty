@@ -12,4 +12,4 @@ RUN mkdir -p html/images logs && chown -R nobody /webapps
 
 EXPOSE 80
 
-CMD ["/webapps/gxn/ngxctl", "start"]
+CMD ["./ngxctl", "start"]
