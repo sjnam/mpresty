@@ -1,10 +1,14 @@
-FROM openresty/openresty:latest
+FROM openresty/openresty:xenial
+
+LABEL maintainer="Soojin Nam <jsunam@gmail.com>"
+
+ARG LUAJIT="/usr/local/openresty/luajit/bin/luarocks"
 
 RUN apt-get -y update && \
-apt-get -y install texlive texlive-metapost graphviz luarocks libgumbo-dev git && \
-luarocks install gumbo && \
-luarocks install lua-resty-socket && \
-luarocks install lua-resty-requests
+    apt-get -y install texlive-metapost graphviz libgumbo-dev && \
+    ${LUAJIT} install gumbo && \
+    ${LUAJIT} install lua-resty-socket && \
+    ${LUAJIT} install lua-resty-requests
 
 WORKDIR /webapps/gxn
 COPY . .
@@ -12,4 +16,6 @@ RUN mkdir -p html/images logs && chown -R nobody /webapps
 
 EXPOSE 80
 
-CMD ["./ngxctl", "start"]
+CMD ["/webapps/gxn/ngxctl", "start"]
+
+STOPSIGNAL SIGQUIT
