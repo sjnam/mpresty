@@ -5,7 +5,7 @@ LABEL maintainer="Soojin Nam <jsunam@gmail.com>"
 ARG LUAJIT="/usr/local/openresty/luajit/bin/luarocks"
 
 RUN apt-get -y update && \
-    apt-get -y install texlive-metapost graphviz libgumbo-dev && \
+    apt-get -y --no-install-recommends install texlive-metapost graphviz libgumbo-dev && \
     ${LUAJIT} install gumbo && \
     ${LUAJIT} install lua-resty-socket && \
     ${LUAJIT} install lua-resty-requests
