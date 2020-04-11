@@ -9,7 +9,7 @@ mkdir -p /webapps/gxn
 
 WORKDIR /webapps/gxn
 COPY . .
-RUN chown -R nobody /webapps
+RUN mkdir -p html/images logs && chown -R nobody /webapps
 
 EXPOSE 80
 
