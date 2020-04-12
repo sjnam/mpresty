@@ -4,8 +4,9 @@ LABEL maintainer="Soojin Nam <jsunam@gmail.com>"
 
 ARG LUAJIT="/usr/local/openresty/luajit/bin/luarocks"
 
-RUN apt-get -y update \
-    && apt-get -y --no-install-recommends install texlive-metapost graphviz libgumbo-dev \
+RUN DEBIAN_FRONTEND=noninteractive apt-get update \
+    && DEBIAN_FRONTEND=noninteractive apt-get --no-install-recommends -y install \
+       texlive-metapost graphviz libgumbo-dev \
     && ${LUAJIT} install gumbo \
     && ${LUAJIT} install lua-resty-socket \
     && ${LUAJIT} install lua-resty-requests
