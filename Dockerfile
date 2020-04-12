@@ -20,6 +20,6 @@ RUN mkdir -p html/images logs \
 
 EXPOSE 80
 
-CMD ["/webapps/gxn/ngxctl", "start"]
+CMD ["./ngxctl", "start"]
 
 STOPSIGNAL SIGQUIT
