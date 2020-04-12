@@ -58,14 +58,19 @@ Installation
 - Docker
 ```bash
 % docker build -t mpresty .
-% docker run -d -p 80:80 --name gxn mpresty
+% docker run -d -p 8080:80 \
+  -v /path/to/html:/webapps/gxn/html \
+  --name gxn \
+  mpresty
+% cp -r html/* /path/to/html
+% mkdir -p /path/to/html/images
 ```
 
 Examples
 --------
-- http://localhost/sample/sunflower.html
-- http://localhost/sample/all.html
-- http://localhost/preview.html
+- http://localhost:8080/sample/sunflower.html
+- http://localhost:8080/sample/all.html
+- http://localhost:8080/preview.html
 
 Author
 ------
