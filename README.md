@@ -63,8 +63,6 @@ Installation
   -v /path/to/html:/webapps/gxn/html \
   --name gxn \
   mpresty
-% cp -r html/* /path/to/html
-% mkdir -p /path/to/html/images
 ```
 
 Examples
