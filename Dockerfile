@@ -1,15 +1,15 @@
-FROM openresty/openresty:bionic
+FROM openresty/openresty:focal
 
 LABEL maintainer="Soojin Nam <jsunam@gmail.com>"
 
-ARG LUAJIT="/usr/local/openresty/luajit/bin/luarocks"
+ARG LUAROCKS="/usr/local/openresty/luajit/bin/luarocks"
 
 RUN DEBIAN_FRONTEND=noninteractive apt-get update \
     && DEBIAN_FRONTEND=noninteractive apt-get --no-install-recommends -y install \
        texlive-metapost graphviz libgumbo-dev \
-    && ${LUAJIT} install gumbo \
-    && ${LUAJIT} install lua-resty-socket \
-    && ${LUAJIT} install lua-resty-requests
+    && ${LUAROCKS} install gumbo \
+    && ${LUAROCKS} install lua-resty-socket \
+    && ${LUAROCKS} install lua-resty-requests
 
 WORKDIR /webapps/gxn
 COPY . .
