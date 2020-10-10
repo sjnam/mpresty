@@ -4,6 +4,7 @@
 
 local gumbo = require "gumbo"
 local ipairs = ipairs
+local io_open = io.open
 local say = ngx.say
 local log = ngx.log
 local ERR = ngx.ERR
@@ -13,9 +14,7 @@ local ngx_var = ngx.var
 local ngx_shared = ngx.shared
 local wait = ngx.thread.wait
 local spawn = ngx.thread.spawn
-local capture = ngx.location.capture
 local parse = gumbo.parse
-
 
 local gxs = {
     require "gxn.mplibcode",
@@ -34,6 +33,18 @@ local function update_document (gx, doc, fn_update_node)
 end
 
 
+local function capture (path)
+    local f = io_open(path, "rb")
+    if not f then
+       return nil
+    end
+
+    local content = f:read("*all")
+    f:close()
+    return content
+end
+
+
 local function render (fn_update_node, doc)
     if not ngx_shared.gxn_cache then
         log(WARN, "Declare a shared memory zone, \"gxn_cache\" !!!")
@@ -41,11 +52,11 @@ local function render (fn_update_node, doc)
 
     local ok, res, err
     if not doc then
-        res = capture("/source"..ngx_var.uri)
-        if res.status ~= 200 then
-            exit(res.status)
+        body = capture("/webapps/source"..ngx_var.uri)
+        if not body then
+            exit(404)
         end
-        doc, err = parse(res.body)
+        doc, err = parse(body)
         if not doc then
             log(ERR, err)
             exit(500)

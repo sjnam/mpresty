@@ -58,9 +58,11 @@ Installation
 ```bash
 % git clone https://github.com/sjnam/tex-graphics.git
 % cd tex-graphics
+% mkdir -p /path/to
+% cp -r source /path/to
 % docker build -t mpresty .
 % docker run -d -p 8080:80 \
-  -v /path/to/html:/webapps/gxn/html \
+  -v /path/to/source:/webapps/source \
   --name gxn \
   mpresty
 ```

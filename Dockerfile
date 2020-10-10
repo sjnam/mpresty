@@ -11,7 +11,8 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update \
 
 WORKDIR /webapps/gxn
 COPY . .
-RUN mkdir -p logs \
+RUN mkdir -p html/images logs \
+    && rm -rf source \
     && ln -sf /dev/stdout logs/access.log \
     && ln -sf /dev/stderr logs/error.log \
     && chown -R nobody /webapps
