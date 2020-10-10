@@ -46,8 +46,8 @@ digraph G {
 }
 </graphviz>
 
-<graphviz src="https://graphviz.gitlab.io/_pages/Gallery/undirected/philo.gv.txt"
-          cmd="neato"></graphviz>
+<graphviz src="https://graphviz.org/Gallery/directed/Linux_kernel_diagram.gv.txt"
+          cmd="dot"></graphviz>
 
 </body>
 </html>
