@@ -59,10 +59,7 @@ Installation
 % git clone https://github.com/sjnam/tex-graphics.git
 % cd tex-graphics
 % docker build -t mpresty .
-% docker run -d -p 8080:80 \
-  -v /path/to/html:/webapps/gxn/html \
-  --name gxn \
-  mpresty
+% docker run -d -p 8080:80 --name gxn mpresty
 ```
 
 Examples
