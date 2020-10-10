@@ -12,7 +12,7 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update \
 WORKDIR /webapps/gxn
 COPY . .
 RUN mkdir -p html/images logs \
-    && rm -rf source \
+    && rm -rf source Dockerfile README.md \
     && ln -sf /dev/stdout logs/access.log \
     && ln -sf /dev/stderr logs/error.log \
     && chown -R nobody /webapps
