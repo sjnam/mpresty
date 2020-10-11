@@ -65,7 +65,7 @@ Installation
   -v /path/to/source:/webapps/source \
   --name gxn \
   mpresty
-
+% docker start gxn
 ```
 
 Examples
