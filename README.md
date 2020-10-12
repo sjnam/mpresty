@@ -70,8 +70,8 @@ Installation
 
 Examples
 --------
-- http://localhost:8080/sample/sunflower.html
-- http://localhost:8080/sample/all.html
+- http://localhost:8080/gxn/sunflower.html
+- http://localhost:8080/gxn/test.html
 - http://localhost:8080/preview.html
 
 Author
