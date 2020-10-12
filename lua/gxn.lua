@@ -52,7 +52,7 @@ local function render (fn_update_node, doc)
 
     local ok, res, err
     if not doc then
-        body = capture("/webapps/source"..ngx_var.uri)
+        body = capture("/webapps/workspace"..ngx_var.uri)
         if not body then
             exit(404)
         end
