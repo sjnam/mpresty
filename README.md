@@ -61,7 +61,7 @@ Installation
 % mkdir -p /path/to
 % cp -r workspace /path/to
 % docker build -t mpresty .
-% docker run -d -p 8080:80 \
+% docker run -d -p 8080:8080 \
   -v /path/to/workspace:/webapps/workspace \
   --name gxn \
   mpresty

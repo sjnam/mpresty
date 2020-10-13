@@ -2,7 +2,7 @@
 
 ARGV="$@"
 
-OPENRESTY="openresty"
+OPENRESTY="/usr/local/openresty/bin/openresty"
 APP_HOME=`pwd`
 
 ERROR=0
