@@ -74,7 +74,7 @@ Examples
 - http://localhost:8080/gxn/test.html
 - http://localhost:8080/preview.html
 
-Create a `sample.html` file with the above __Synopsis__ and put it in the `/path/to/workspace/gxn` directory and run the following.
+Create a `sample.html` file with the above [Synopsis](#Synopsis) and put it in the `/path/to/workspace/gxn` directory and run the following.
 - http://localhost:8080/gxn/sample.html
 
 Author
