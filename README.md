@@ -59,10 +59,10 @@ Installation
 % git clone https://github.com/sjnam/tex-graphics.git
 % cd tex-graphics
 % mkdir -p /path/to
-% cp -r workspace /path/to
+% cp -r playground /path/to
 % docker build -t mpresty .
 % docker run -d -p 8080:8080 \
-  -v /path/to/workspace:/webapps/workspace \
+  -v /path/to/playground:/webapps/playground \
   --name gxn \
   mpresty
 % docker start gxn
@@ -74,7 +74,7 @@ Examples
 - http://localhost:8080/gxn/test.html
 - http://localhost:8080/preview.html
 
-Create a `sample.html` file with the above [Synopsis](#Synopsis) and put it in the `/path/to/workspace/gxn` directory and run the following.
+Create a `sample.html` file with the above [Synopsis](#Synopsis) and put it in the `/path/to/playground/gxn` directory and run the following.
 - http://localhost:8080/gxn/sample.html
 
 Author
