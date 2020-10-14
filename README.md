@@ -58,7 +58,7 @@ Installation
 ```bash
 % git clone https://github.com/sjnam/tex-graphics.git
 % cd tex-graphics
-% mkdir -p /path/to
+% mkdir -p /path/to  --The name of directory "/path/to" can be made by any name as you want.
 % cp -r playground /path/to
 % docker build -t mpresty .
 % docker run -d -p 8080:8080 \
