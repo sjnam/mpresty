@@ -74,8 +74,7 @@ Examples
 - http://localhost:8080/gxn/test.html
 - http://localhost:8080/preview.html
 
-Create a `sample.html` file with the above [Synopsis](#Synopsis) and put it in the `/path/to/playground/gxn` directory and run the following.
-- http://localhost:8080/gxn/sample.html
+Create a `sample.html` file with the above [Synopsis](#Synopsis) and put it in the `/path/to/playground/gxn` directory and visit the page http://localhost:8080/gxn/sample.html
 
 Author
 ------
