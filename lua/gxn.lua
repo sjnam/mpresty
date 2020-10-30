@@ -3,6 +3,8 @@
 
 
 local gumbo = require "gumbo"
+
+
 local ipairs = ipairs
 local io_open = io.open
 local say = ngx.say
@@ -15,6 +17,9 @@ local ngx_shared = ngx.shared
 local wait = ngx.thread.wait
 local spawn = ngx.thread.spawn
 local parse = gumbo.parse
+local HTTP_NOT_FOUND = ngx.HTTP_NOT_FOUND
+local HTTP_INTERNAL_SERVER_ERROR = ngx.HTTP_INTERNAL_SERVER_ERROR
+
 
 local gxs = {
     require "gxn.mplibcode",
@@ -28,13 +33,16 @@ local _M = {
 }
 
 
+local DIR_PLAYGROUND = "/webapps/playground"
+
+
 local function update_document (gx, doc, fn_update_node)
     return gx:update_document(doc, fn_update_node)
 end
 
 
 local function capture (path)
-    local f = io_open(path, "rb")
+    local f = io_open(DIR_PLAYGROUND..path, "rb")
     if not f then
        return nil
     end
@@ -47,19 +55,19 @@ end
 
 local function render (fn_update_node, doc)
     if not ngx_shared.gxn_cache then
-        log(WARN, "Declare a shared memory zone, \"gxn_cache\" !!!")
+        log(WARN, "Declare a shared memory zone, \"gxn_cache\" in a file 'nginx.conf.'")
     end
 
     local ok, res, err
     if not doc then
-        local body = capture("/webapps/playground"..ngx_var.uri)
+        local body = capture(ngx_var.uri)
         if not body then
-            exit(404)
+            exit(ngx.HTTP_NOT_FOUND)
         end
         doc, err = parse(body)
         if not doc then
             log(ERR, err)
-            exit(500)
+            exit(HTTP_INTERNAL_SERVER_ERROR)
         end
     end
 
@@ -72,7 +80,7 @@ local function render (fn_update_node, doc)
         ok, res, err = wait(th)
         if not ok then
             log(ERR, "fail to render html: ", err)
-            exit(500)
+            exit(HTTP_INTERNAL_SERVER_ERROR)
         end
     end
     say(doc:serialize())

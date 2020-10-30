@@ -4,8 +4,11 @@
 
 local shell = require "resty.shell"
 local requests = require "resty.requests"
+
+
 local ipairs = ipairs
 local io_open = io.open
+local concat = table.concat
 local setmetatable = setmetatable
 local digest = ngx.md5
 local ngx_var = ngx.var
@@ -77,11 +80,11 @@ end
 
 
 local function make_input_file (self, fname, content)
-    local f, err = io_open(image_dir.."/"..fname.."."..self.ext, "w")
+    local f, err = io_open(concat{image_dir, "/", fname, ".", self.ext}, "w")
     if not f then
         return err
     end
-    f:write(self.preamble.."\n"..content.."\n"..self.postamble)
+    f:write(concat({self.preamble, content, self.postamble}, "\n"))
     f:close()
 end
 
@@ -99,7 +102,7 @@ local function get_image_uri (self, node, fname)
     if not ok then
         return nil, stdout
     end
-    return "/images/"..fname.."."..self.outputfmt
+    return concat{"/images/", fname, ".", self.outputfmt}
 end
 
 
