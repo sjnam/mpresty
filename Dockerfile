@@ -6,7 +6,6 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update \
     && DEBIAN_FRONTEND=noninteractive apt-get --no-install-recommends -y install \
        texlive-metapost graphviz libgumbo-dev \
     && luarocks install gumbo \
-    && luarocks install lua-resty-socket \
     && luarocks install lua-resty-requests
 
 WORKDIR /webapps/gxn
