@@ -60,11 +60,11 @@ Installation
 % cd tex-graphics
 % mkdir -p /path/to  #The name of directory "/path/to" can be made by any name as you want.
 % cp -r playground /path/to
-% docker build -t mpresty .
+% docker pull sjnam/mpresty
 % docker run -d -p 8080:8080 \
   -v /path/to/playground:/webapps/playground \
   --name gxn \
-  mpresty
+  sjnam/mpresty
 % docker start gxn
 ```
 
