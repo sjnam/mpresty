@@ -53,23 +53,20 @@ digraph G {
 </html>
 ````
 
-Installation
-------------
+Run
+---
 ```bash
-% git clone https://github.com/sjnam/tex-graphics.git
-% cd tex-graphics
-% mkdir -p /path/to  #The name of directory "/path/to" can be made by any name as you want.
-% cp -r playground /path/to
+#The name of directory "/path/to" can be made by any name as you want.
+% mkdir -p /path/to/playground/gxn
 % docker pull sjnam/mpresty
 % docker run -d -p 8080:8080 \
   -v /path/to/playground:/webapps/playground \
-  --name gxn \
-  sjnam/mpresty
+  --name gxn sjnam/mpresty
 % docker start gxn
 ```
+Copy the files in a `playground/gxn` to `/path/to/playground/gxn`.
 
-Examples
---------
+Try to visit the following pages
 - http://localhost:8080/gxn/sunflower.html
 - http://localhost:8080/gxn/test.html
 - http://localhost:8080/preview.html
