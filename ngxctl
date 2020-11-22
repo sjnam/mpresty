@@ -3,17 +3,16 @@
 ARGV="$@"
 
 OPENRESTY="/usr/local/openresty/bin/openresty"
-APP_HOME=`pwd`
 
 ERROR=0
 
 case $ARGV in
     start)
-        $OPENRESTY -p $APP_HOME/
+        $OPENRESTY -p $PWD/
         ERROR=$?
         ;;
     stop|reload)
-        $OPENRESTY -p $APP_HOME/ -s $ARGV
+        $OPENRESTY -p $PWD/ -s $ARGV
         ERROR=$?
         ;;
     *)
