@@ -9,11 +9,11 @@ ERROR=0
 
 case $ARGV in
     start)
-        $OPENRESTY -p $APP_HOME -c $APP_HOME/conf/nginx.conf
+        $OPENRESTY -p $APP_HOME/
         ERROR=$?
         ;;
     stop|reload)
-        $OPENRESTY -p $APP_HOME -c $APP_HOME/conf/nginx.conf -s $ARGV
+        $OPENRESTY -p $APP_HOME/ -s $ARGV
         ERROR=$?
         ;;
     *)
