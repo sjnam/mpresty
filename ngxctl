@@ -2,7 +2,7 @@
 
 ARGV="$@"
 
-OPENRESTY="/usr/local/openresty/bin/openresty"
+OPENRESTY="openresty"
 
 ERROR=0
 
