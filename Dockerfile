@@ -16,8 +16,6 @@ RUN mkdir -p html/images logs \
     && ln -sf /dev/stderr /webapps/gxn/logs/error.log \
     && chown -R nobody /webapps
 
-EXPOSE 80
-
-CMD ["./ngxctl", "start"]
+CMD ["openresty", "-p", "/webapps/gxn/", "-g", "daemon off;"]
 
 STOPSIGNAL SIGQUIT
