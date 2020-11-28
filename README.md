@@ -66,7 +66,6 @@ $ cp -r playground/* /path/to/playground
 % docker run -d -p 8080:8080 \
   -v /path/to/playground:/webapps/playground \
   --name gxn mpresty
-% docker start gxn
 ```
 
 Try to visit the following pages
