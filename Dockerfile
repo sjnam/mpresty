@@ -10,7 +10,7 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update \
 
 WORKDIR /webapps/gxn
 COPY . .
-RUN mkdir -p html/images logs \
+RUN mkdir -p logs \
     && rm -rf playground Dockerfile README.md \
     && ln -sf /dev/stdout /webapps/gxn/logs/access.log \
     && ln -sf /dev/stderr /webapps/gxn/logs/error.log \
