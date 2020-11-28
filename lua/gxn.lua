@@ -29,7 +29,7 @@ local gxs = {
 
 
 local _M = {
-    version = "0.9.4"
+    version = "0.10.2"
 }
 
 
