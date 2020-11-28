@@ -45,7 +45,7 @@ beginfig(1)
 endfig
 </mplibcode>
 
-<mplibcode src="http://ktug.org/~sjnam/source/tree.mp" cache="no"></mplibcode>
+<mplibcode src="/source/tree.mp" cache="no"></mplibcode>
 
 <H1>Graphviz</H1>
 
@@ -80,7 +80,7 @@ $ cp -r playground/* /path/to/playground
 % docker build -t mpresty .
 % docker run -d -p 8080:8080 \
   -v /path/to/playground:/webapps/playground \
-  --name gxn sjnam/mpresty
+  --name gxn mpresty
 % docker start gxn
 ```
 
