@@ -10,7 +10,9 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update \
 
 WORKDIR /webapps/gxn
 
-COPY . .
+COPY conf conf
+COPY lua  lua
+COPY util util
 
 RUN mkdir -p logs \
     && ln -sf /dev/stdout /webapps/gxn/logs/access.log \
