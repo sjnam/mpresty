@@ -58,22 +58,24 @@ Run
 ---
 ```bash
 #The name of directory "/path/to" can be made by any name as you want.
+% mkdir -p /path/to
+% cd /path/to
 % git clone https://github.com/sjnam/tex-graphics.git
 % cd tex-graphics
-% mkdir -p /path/to/playground
-$ cp -r playground/* /path/to/playground
 % docker build -t mpresty .
-% docker run -d -p 8080:8080 \
-  -v /path/to/playground:/webapps/playground \
+% docker run -d -p 80:80 \
+  -v /path/to/lua:/usr/local/openresty/nginx/lua \
+  -v /path/to/playground:/playground \
+  -v /path/to/conf.d:/etc/nginx/conf.d \  
   --name gxn mpresty
 ```
 
 Try to visit the following pages
-- http://localhost:8080/gxn/sunflower.html
-- http://localhost:8080/gxn/test.html
-- http://localhost:8080/preview.html
+- http://localhost/gxn/sunflower.html
+- http://localhost/gxn/test.html
+- http://localhost/preview.html
 
-Create a `sample.html` file with the above [Synopsis](#Synopsis) and put it in the `/path/to/playground/gxn` directory and visit the page http://localhost:8080/gxn/sample.html
+Create a `sample.html` file with the above [Synopsis](#Synopsis) and put it in the `/path/to/playground/gxn` directory and visit the page http://localhost/gxn/sample.html
 
 Author
 ------

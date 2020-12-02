@@ -13,7 +13,6 @@ local setmetatable = setmetatable
 local digest = ngx.md5
 local ngx_var = ngx.var
 local re_find = ngx.re.find
-local ngx_config = ngx.config
 local ngx_shared = ngx.shared
 local wait = ngx.thread.wait
 local spawn = ngx.thread.spawn
@@ -23,7 +22,7 @@ local http_request = requests.get
 
 
 local image_dir = ngx_var.document_root.."/images"
-local gxn_script = ngx_config.prefix().."/util/gxn.sh"
+local gxn_script = "gxn.sh"
 local gxn_cache = ngx_shared.gxn_cache
 
 
@@ -102,6 +101,7 @@ local function get_image_uri (self, node, fname)
     if not ok then
         return nil, stdout
     end
+
     return concat{"/images/", fname, ".", self.outputfmt}
 end
 

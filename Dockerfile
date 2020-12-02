@@ -8,17 +8,5 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update \
     && luarocks install gumbo \
     && luarocks install lua-resty-requests
 
-WORKDIR /webapps/gxn
-
-COPY conf conf
-COPY lua  lua
-COPY util util
-
-RUN mkdir -p logs \
-    && ln -sf /dev/stdout /webapps/gxn/logs/access.log \
-    && ln -sf /dev/stderr /webapps/gxn/logs/error.log \
-    && chown -R nobody /webapps
-
-CMD ["openresty", "-p", "/webapps/gxn/", "-g", "daemon off;"]
-
-STOPSIGNAL SIGQUIT
+COPY nginx.conf /usr/local/openresty/nginx/conf/nginx.conf
+COPY gxn.sh /usr/local/bin/gxn.sh

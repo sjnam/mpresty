@@ -29,11 +29,11 @@ local gxs = {
 
 
 local _M = {
-    version = "0.10.2"
+    version = "0.10.3"
 }
 
 
-local DIR_PLAYGROUND = "/webapps/playground"
+local DIR_PLAYGROUND = "/playground"
 
 
 local function update_document (gx, doc, fn_update_node)
