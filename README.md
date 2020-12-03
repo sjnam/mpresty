@@ -32,6 +32,8 @@ endfig
 
 <mplibcode src="/source/tree.mp" cache="no"></mplibcode>
 
+<mplibcode src="http://ktug.org/~sjnam/source/rgb.mp" width="300"></mplibcode>
+
 <H1>Graphviz</H1>
 
 <graphviz>
@@ -49,6 +51,8 @@ digraph G {
 
 <graphviz src="https://graphviz.org/Gallery/directed/Linux_kernel_diagram.gv.txt"
           cmd="dot"></graphviz>
+
+<graphviz src="http://ktug.org/~sjnam/source/neato.gv" cmd="neato" width="300"></graphviz>
 
 </body>
 </html>
