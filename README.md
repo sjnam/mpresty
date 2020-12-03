@@ -63,19 +63,19 @@ Run
 % git clone https://github.com/sjnam/tex-graphics.git
 % cd tex-graphics
 % docker build -t mpresty .
-% docker run -d -p 80:80 \
-  -v /path/to/lua:/usr/local/openresty/nginx/lua \
-  -v /path/to/playground:/playground \
-  -v /path/to/conf.d:/etc/nginx/conf.d \  
+% docker run -d -p 8080:80 \
+  -v /path/to/tex-graphics/lua:/usr/local/openresty/nginx/lua \
+  -v /path/to/tex-graphics/playground:/playground \
+  -v /path/to/tex-graphics/conf.d:/etc/nginx/conf.d \  
   --name gxn mpresty
 ```
 
 Try to visit the following pages
-- http://localhost/gxn/sunflower.html
-- http://localhost/gxn/test.html
-- http://localhost/preview.html
+- http://localhost:8080/gxn/sunflower.html
+- http://localhost:8080/gxn/test.html
+- http://localhost:8080/preview.html
 
-Create a `sample.html` file with the above [Synopsis](#Synopsis) and put it in the `/path/to/playground/gxn` directory and visit the page http://localhost/gxn/sample.html
+Create a `sample.html` file with the above [Synopsis](#Synopsis) and put it in the `/path/to/playground/gxn` directory and visit the page http://localhost:8080/gxn/sample.html
 
 Author
 ------
