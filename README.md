@@ -57,17 +57,16 @@ digraph G {
 Run
 ---
 ```bash
-#The name of directory "/path/to" can be made by any name as you want.
-% mkdir -p /path/to
-% cd /path/to
-% git clone https://github.com/sjnam/tex-graphics.git
-% cd tex-graphics
+% pwd
+/path/to
+% git clone https://github.com/sjnam/tex-graphics.git mpresty
+% cd mpresty
 % docker build -t mpresty .
 % docker run -d -p 8080:80 \
-  -v /path/to/tex-graphics/lua:/usr/local/openresty/nginx/lua \
-  -v /path/to/tex-graphics/playground:/playground \
-  -v /path/to/tex-graphics/conf.d:/etc/nginx/conf.d \  
-  --name gxn mpresty
+-v /path/to/mpresty/lua:/usr/local/openresty/nginx/lua \
+-v /path/to/mpresty/playground:/playground \
+-v /path/to/mpresty/conf.d:/etc/nginx/conf.d \
+--name gxn mpresty
 ```
 
 Try to visit the following pages
