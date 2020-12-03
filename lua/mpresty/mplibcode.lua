@@ -1,4 +1,4 @@
-return require("gxn.base"):new {
+return require("mpresty.base"):new {
     tag_name = "mplibcode",
     cmd = "mpost",
     ext = "mp",

@@ -22,8 +22,8 @@ local http_request = requests.get
 
 
 local image_dir = ngx_var.document_root.."/images"
-local gxn_script = "gxn.sh"
-local gxn_cache = ngx_shared.gxn_cache
+local mpresty_script = "mpresty.sh"
+local mpresty_cache = ngx_shared.mpresty_cache
 
 
 local _M = {
@@ -51,7 +51,7 @@ local function get_contents (node, use_cache)
     end
     node:removeAttribute("src")
 
-    local content = use_cache and gxn_cache:get(uri) or nil
+    local content = use_cache and mpresty_cache:get(uri) or nil
     if not content then
         if not re_find(uri, "^https?://") then
             content = capture(uri).body
@@ -63,7 +63,7 @@ local function get_contents (node, use_cache)
             content = res:body()
         end
         if use_cache then
-            gxn_cache:set(uri, content)
+            mpresty_cache:set(uri, content)
         end
     end
     return content
@@ -95,7 +95,7 @@ local function get_image_uri (self, node, fname)
     end
 
     local ok, stdout = run {
-        gxn_script, image_dir, self.tag_name, fname,
+        mpresty_script, image_dir, self.tag_name, fname,
         self.ext, self.outputfmt, cmd
     }
     if not ok then
@@ -110,7 +110,7 @@ local function do_update_document (self, node, fn_update_node)
     local update_node = fn_update_node or
         (self.cur_update_node or self.fn_update_node)
 
-    local use_cache = gxn_cache and node:getAttribute("cache") ~= "no"
+    local use_cache = mpresty_cache and node:getAttribute("cache") ~= "no"
     node:removeAttribute("cache")
 
     local content, err = get_contents(node, use_cache)
@@ -120,7 +120,7 @@ local function do_update_document (self, node, fn_update_node)
 
     local fname = digest(content)
     local key = self.tag_name..fname
-    local uri = use_cache and gxn_cache:get(key) or nil
+    local uri = use_cache and mpresty_cache:get(key) or nil
     if not uri then
         err = make_input_file(self, fname, content)
         if err then
@@ -132,7 +132,7 @@ local function do_update_document (self, node, fn_update_node)
             content = err
         else
             if use_cache then
-                gxn_cache:set(key, uri)
+                mpresty_cache:set(key, uri)
             end
         end
     end
