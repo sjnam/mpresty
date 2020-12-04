@@ -1,8 +1,8 @@
 return require("mpresty.base"):new {
-    tag_name = "tikzpicture",
-    cmd = "pdflatex",
-    ext = "tex",
-    preamble = [[
+   tag_name = "tikzpicture",
+   cmd = "pdflatex",
+   ext = "tex",
+   preamble = [[
                  \documentclass[tikz]{standalone}
                  \usepackage{pgfplots}
                  \usepackage{fourier}
@@ -11,5 +11,5 @@ return require("mpresty.base"):new {
                  \usetikzlibrary{matrix, mindmap, positioning, shapes}
                  \begin{document}
                ]],
-    postamble = "\\end{document}",
+   postamble = "\\end{document}",
 }
