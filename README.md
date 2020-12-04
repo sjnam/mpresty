@@ -63,12 +63,10 @@ Run
 ```bash
 % git clone https://github.com/sjnam/mpresty.git
 % cd mpresty
-% pwd
-/path/to/mpresty
 % docker run -d -p 8080:80 \
--v /path/to/mpresty/lua:/usr/local/openresty/nginx/lua \
--v /path/to/mpresty/playground:/playground \
--v /path/to/mpresty/conf.d:/etc/nginx/conf.d \
+-v $(pwd)/lua:/usr/local/openresty/nginx/lua \
+-v $(pwd)/playground:/playground \
+-v $(pwd)/conf.d:/etc/nginx/conf.d \
 sjnam/mpresty
 ```
 
