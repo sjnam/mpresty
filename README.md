@@ -61,7 +61,7 @@ digraph G {
 Run
 ---
 ```bash
-% git clone https://github.com/sjnam/tex-graphics.git mpresty
+% git clone https://github.com/sjnam/mpresty.git
 % cd mpresty
 % pwd
 /path/to/mpresty
