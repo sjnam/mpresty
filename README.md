@@ -61,16 +61,15 @@ digraph G {
 Run
 ---
 ```bash
-% pwd
-/path/to
 % git clone https://github.com/sjnam/tex-graphics.git mpresty
 % cd mpresty
-% docker build -t mpresty .
+% pwd
+/path/to/mpresty
 % docker run -d -p 8080:80 \
 -v /path/to/mpresty/lua:/usr/local/openresty/nginx/lua \
 -v /path/to/mpresty/playground:/playground \
 -v /path/to/mpresty/conf.d:/etc/nginx/conf.d \
---name gxn mpresty
+sjnam/mpresty
 ```
 
 Try to visit the following pages
