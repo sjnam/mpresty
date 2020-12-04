@@ -5,8 +5,8 @@
 local gumbo = require "gumbo"
 
 
+local open = io.open
 local ipairs = ipairs
-local io_open = io.open
 local say = ngx.say
 local log = ngx.log
 local ERR = ngx.ERR
@@ -24,7 +24,7 @@ local HTTP_INTERNAL_SERVER_ERROR = ngx.HTTP_INTERNAL_SERVER_ERROR
 local gxs = {
    require "mpresty.mplibcode",
    require "mpresty.graphviz",
-   require "mpresty.tikzpicture"
+--   require "mpresty.tikzpicture"
 }
 
 
@@ -42,7 +42,7 @@ end
 
 
 local function capture (path)
-   local f = io_open(DIR_PLAYGROUND..path, "rb")
+   local f = open(DIR_PLAYGROUND..path, "rb")
    if not f then
       return nil
    end
@@ -53,7 +53,7 @@ local function capture (path)
 end
 
 
-local function render (fn_update_node, doc)
+function _M.render (fn_update_node, doc)
    if not ngx_shared.mpresty_cache then
       log(WARN, "Declare a shared memory zone, \"mpresty_cache\" in a file 'nginx.conf.'")
    end
@@ -87,12 +87,5 @@ local function render (fn_update_node, doc)
 end
 
 
-function _M.preview (html)
-   render(nil, parse(html))
-end
-
-
-_M.render = render
-
-
 return _M
+

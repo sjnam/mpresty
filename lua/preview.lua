@@ -1,18 +1,15 @@
+local gumbo = require "gumbo"
 local mpresty = require "mpresty"
 
+ngx.req.read_body()
 
-local ngx_req = ngx.req
-local concat = table.concat
+local args = ngx.req.get_post_args()
+local str = table.concat {
+   "<", args.gx, " cmd='", args.cmd, "'", " width='400'>",
+   args.code,
+   "</", args.gx, ">"
+}
+local doc = gumbo.parse(str)
 
-
-ngx_req.read_body()
-
-local args = ngx_req.get_post_args()
-
-mpresty.preview(
-   concat{
-      "<", args.gx, " cmd='", args.cmd, "'", " width='400'>",
-      args.code,
-      "</", args.gx, ">"
-})
+mpresty.render(nil, doc)
 
