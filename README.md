@@ -1,4 +1,4 @@
-TeX graphics in all browsers
+mpresty
 =======
 An openresty web application for TeX graphics (`metapost`, `graphviz`) that works
 in all browsers.
