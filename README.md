@@ -71,11 +71,11 @@ sjnam/mpresty
 ```
 
 Try to visit the following pages
-- http://localhost:8080/gxn/sunflower.html
-- http://localhost:8080/gxn/test.html
+- http://localhost:8080/sample/sunflower.html
+- http://localhost:8080/sample/all.html
 - http://localhost:8080/preview.html
 
-Create a `sample.html` file with the above [Synopsis](#Synopsis) and put it in the `/path/to/playground/gxn` directory and visit the page http://localhost:8080/gxn/sample.html
+Create a `fun.html` file with the above [Synopsis](#Synopsis) and put it in the `$(pwd)/playground/mpresty/sample` directory and visit the page http://localhost:8080/sample/fun.html
 
 Author
 ------

@@ -33,7 +33,7 @@ local _M = {
 }
 
 
-local DIR_PLAYGROUND = "/playground"
+local DIR_PLAYGROUND = "/playground/mpresty"
 
 
 local function update_document (gx, doc, fn_update_node)
