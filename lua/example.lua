@@ -19,10 +19,16 @@ mpresty.render(
       pre.localName = "pre"
       pre.textContent = content
 
+      -- hr
+      local hr = node:cloneNode()
+      hr.localName = "hr"
+      hr:setAttribute("width", "100%")
+
       -- div
-      node.localName = "div"
+      node.localName = "p"
       node:appendChild(pre)
       node:appendChild(img)
+      node:appendChild(hr)
    end
 )
 
