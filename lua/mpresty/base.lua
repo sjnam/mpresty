@@ -33,7 +33,7 @@ local _M = {
    outputfmt = "svg",
    preamble = "",
    postamble = "",
-   fn_update_node = function (node, uri, content)
+   fn_update_node = function (doc, node, uri, content)
       node.localName = "img"
       node:setAttribute("src", uri)
       if not node:hasAttribute("width") then
@@ -74,7 +74,7 @@ local function get_contents (node, use_cache)
 end
 
 
-local function error_fn_update_node (node, uri, content)
+local function error_fn_update_node (doc, node, uri, content)
    node.localName = "pre"
    node.textContent = content
    node:setAttribute("style", "color:red")
@@ -149,7 +149,7 @@ local function do_update_document (self, node, fn_update_node)
    for _, c in ipairs(node.childNodes) do
       c:remove();
    end
-   update_node(node, uri, content)
+   update_node(self.doc, node, uri, content)
    update_node = nil
 end
 
