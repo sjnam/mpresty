@@ -1,6 +1,4 @@
-local mpresty = require "mpresty"
-
-mpresty.render(
+require "mpresty".render(
    function (node, uri, content)
       -- img
       local img = node:cloneNode()
