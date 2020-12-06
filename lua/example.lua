@@ -15,7 +15,6 @@ mpresty.render(
       hr.localName = "hr"
       hr:setAttribute("width", "100%")
 
-      -- div
       node.localName = "p"
       node:appendChild(pre)
       node:appendChild(img)
