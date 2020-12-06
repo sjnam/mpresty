@@ -1,6 +1,7 @@
 require "mpresty".render(
    function (doc, node, uri, content)
       node.localName = "p"
+      node:removeAttribute("width")
       -- pre
       local pre = doc:createElement("pre")
       pre.textContent = content
@@ -12,7 +13,6 @@ require "mpresty".render(
       node:appendChild(img)
       -- hr
       local hr = doc:createElement("hr")
-      hr:setAttribute("width", "100%")
       node:appendChild(hr)
    end
 )
