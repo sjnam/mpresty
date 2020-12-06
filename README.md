@@ -76,7 +76,7 @@ Try to visit the following pages
 - http://localhost:8080/preview.html
 - [example/all.html](https://github.com/sjnam/mpresty/blob/master/html/example/all.html): http://localhost:8080/example/all.html
 
-Create a `fun.html` file with the above [Getting started](#Getting started) and put it in the `$(pwd)/html/sample` directory and visit the page http://localhost:8080/sample/fun.html
+Create a `fun.html` file with the above [Getting started](#getting-started) and put it in the `$(pwd)/html/sample` directory and visit the page http://localhost:8080/sample/fun.html
 
 Author
 ------
