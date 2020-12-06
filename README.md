@@ -65,8 +65,8 @@ Run
 % cd mpresty
 % docker run -d -p 8080:80 \
 -v $(pwd)/lua:/usr/local/openresty/nginx/lua \
--v $(pwd)/playground:/playground \
--v $(pwd)/conf.d:/etc/nginx/conf.d \
+-v $(pwd)/html:/usr/local/openresty/nginx/html \
+-v $(pwd)/conf:/etc/nginx/conf.d \
 sjnam/mpresty
 ```
 
@@ -75,7 +75,7 @@ Try to visit the following pages
 - http://localhost:8080/sample/all.html
 - http://localhost:8080/preview.html
 
-Create a `fun.html` file with the above [Synopsis](#Synopsis) and put it in the `$(pwd)/playground/mpresty/sample` directory and visit the page http://localhost:8080/sample/fun.html
+Create a `fun.html` file with the above [Synopsis](#Synopsis) and put it in the `$(pwd)/html/sample` directory and visit the page http://localhost:8080/sample/fun.html
 
 Author
 ------

@@ -7,8 +7,7 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update \
        texlive-metapost graphviz libgumbo-dev \
     && luarocks install gumbo \
     && luarocks install lua-resty-requests \
-    && mkdir -p /playground \
-    && chown -R nobody /playground
+    && chown -R nobody /usr/local/openresty/nginx/html
 
 COPY nginx.conf /usr/local/openresty/nginx/conf/nginx.conf
 COPY mpresty.sh /usr/local/bin/mpresty.sh

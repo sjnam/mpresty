@@ -33,16 +33,13 @@ local _M = {
 }
 
 
-local DIR_PLAYGROUND = "/playground/mpresty"
-
-
 local function update_document (gx, doc, fn_update_node)
    return gx:update_document(doc, fn_update_node)
 end
 
 
 local function capture (path)
-   local f = open(DIR_PLAYGROUND..path, "rb")
+   local f = open(ngx_var.document_root..path, "rb")
    if not f then
       return nil
    end
