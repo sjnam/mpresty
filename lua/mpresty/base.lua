@@ -23,7 +23,8 @@ local run = shell.run
 local http_request = requests.get
 
 
-local image_dir = ngx_var.document_root.."/images"
+local img_fmt = "/svgs"
+local image_dir = ngx_var.document_root..img_fmt
 local mpresty_script = "mpresty.sh"
 local mpresty_cache = ngx_shared.mpresty_cache
 
@@ -107,7 +108,7 @@ local function get_image_uri (self, node, fname)
       return nil, stdout
    end
 
-   return concat{"/images/", fname, ".", self.outputfmt}
+   return concat{img_fmt, "/", fname, ".", self.outputfmt}
 end
 
 
