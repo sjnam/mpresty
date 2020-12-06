@@ -3,7 +3,6 @@ mpresty
 An openresty web application for TeX graphics (`metapost`, `graphviz`) that works
 in all browsers.
 
-No more setup for readers. It just works.
 
 Synopsis
 ---------
