@@ -50,7 +50,7 @@ local function capture (path)
 end
 
 
-function _M.render (fn_update_node, doc)
+local function render (fn_update_node, doc)
    if not ngx_shared.mpresty_cache then
       log(WARN, "Declare a shared memory zone, \"mpresty_cache\" in a file 'nginx.conf.'")
    end
@@ -82,6 +82,14 @@ function _M.render (fn_update_node, doc)
    end
    say(doc:serialize())
 end
+
+
+function _M.preview (str)
+   render(nil, gumbo.parse(str))
+end
+
+
+_M.render = render
 
 
 return _M
