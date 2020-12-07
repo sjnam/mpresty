@@ -65,7 +65,7 @@ Run
 % mkdir -p html/svgs
 % docker run -d -p 8080:80 \
 -v $(pwd)/lua:/usr/local/openresty/nginx/lua \
--v $(pwd)/html:/usr/local/openresty/nginx/html \
+-v $(pwd)/html:/html \
 -v $(pwd)/conf.d:/etc/nginx/conf.d \
 sjnam/mpresty
 ```
