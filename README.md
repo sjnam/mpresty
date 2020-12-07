@@ -67,7 +67,7 @@ Run
 -v $(pwd)/lua:/usr/local/openresty/nginx/lua \
 -v $(pwd)/html:/html \
 -v $(pwd)/conf.d:/etc/nginx/conf.d \
-sjnam/mpresty
+--name mpresty sjnam/mpresty
 ```
 
 Try to visit the following pages
