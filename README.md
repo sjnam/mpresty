@@ -63,9 +63,10 @@ Run
 % git clone https://github.com/sjnam/mpresty.git
 % cd mpresty
 % mkdir -p html/svgs
+% sudo chown -R nobody html/svgs
 % docker run -d -p 8080:80 \
 -v $(pwd)/lua:/usr/local/openresty/nginx/lua \
--v $(pwd)/html:/html \
+-v $(pwd)/html:/usr/local/openresty/nginx/html \
 -v $(pwd)/conf.d:/etc/nginx/conf.d \
 --name mpresty sjnam/mpresty
 ```
