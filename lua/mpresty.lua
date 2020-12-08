@@ -4,7 +4,6 @@
 
 local gumbo = require "gumbo"
 
-
 local type = type
 local open = io.open
 local pairs = pairs
@@ -23,7 +22,7 @@ local HTTP_NOT_FOUND = ngx.HTTP_NOT_FOUND
 local HTTP_INTERNAL_SERVER_ERROR = ngx.HTTP_INTERNAL_SERVER_ERROR
 
 
-local gxs = {
+local graphics = {
    ['metapost'] = require "mpresty.mplibcode",
    ['graphviz'] = require "mpresty.graphviz",
    ['tikz'] = require "mpresty.tikzpicture"
@@ -33,11 +32,6 @@ local gxs = {
 local _M = {
    version = "0.10.5"
 }
-
-
-local function update_document (gx, doc, fn_update_node)
-   return gx:update_document(doc, fn_update_node)
-end
 
 
 local function capture (path)
@@ -54,10 +48,10 @@ end
 
 local function render (fn_update_node, doc)
    if not ngx_shared.mpresty_cache then
-      log(WARN, "Declare a shared memory zone, \"mpresty_cache\" in a file 'nginx.conf.'")
+      log(WARN, "Declare a shared memory zone, \"mpresty_cache\" ",
+          "in a file 'nginx.conf.'")
    end
 
-   local ok, res, err
    if not doc then
       local body = capture(ngx_var.uri)
       if not body then
@@ -70,17 +64,12 @@ local function render (fn_update_node, doc)
       end
    end
 
-   local threads = {}
-   for key, gx in pairs(gxs) do
+   for k, g in pairs(graphics) do
       local fn = fn_update_node
       if type(fn_update_node) == "table" then
-         fn = fn_update_node[key]
+         fn = fn_update_node[k]
       end
-      threads[#threads + 1] = spawn(update_document, gx, doc, fn)
-   end
-
-   for _, th in ipairs(threads) do
-      ok, res, err = wait(th)
+      local ok, res, err = wait(spawn(g.update_document, g, doc, fn))
       if not ok then
          log(ERR, "fail to render html: ", err)
          exit(HTTP_INTERNAL_SERVER_ERROR)
