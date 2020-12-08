@@ -1,11 +1,10 @@
 metapost-openresty
-=======
-An openresty web application for TeX graphics (`metapost`, `graphviz`) that works
-in all browsers.
-
+==================
+An openresty web application for TeX graphics (`metapost`, `graphviz`, `tikz`)
+that works in all browsers.
 
 Getting started
----------
+---------------
 
 ````html
 <html>
@@ -72,7 +71,7 @@ digraph G {
 \end{tikzpicture}
 </tikzpicture>
 <tikzpicture src="http://ktug.org/~sjnam/source/bissector.tex"></tikzpicture>
-<tikzpicture src="http://ktug.org/~sjnam/source/contours.tex"></tikzpicture>
+<tikzpicture src="http://ktug.org/~sjnam/source/mosaic.tex"></tikzpicture>
 
 </body>
 </html>
