@@ -158,15 +158,14 @@ function _M:update_document (doc, fn_update_node)
    self.doc = doc
    local threads = {}
    for _, node in ipairs(doc:getElementsByTagName(self.tag_name)) do
-      threads[#threads + 1] = spawn(do_update_document,
-                                    self, node, fn_update_node)
+      threads[#threads+1] = spawn(do_update_document,
+                                  self, node, fn_update_node)
    end
-
-   for _, th in ipairs(threads) do
-      local ok, res, err = wait(th)
+   for i=1,#threads do
+      local ok, res = wait(threads[i])
       if not ok then
-         log(ERR, "error: ", err)
-         return nil, err
+         log(ERR, "error: ", res)
+         return nil, res
       end
    end
    self.cur_update_node = nil
@@ -174,8 +173,8 @@ function _M:update_document (doc, fn_update_node)
 end
 
 
-function _M:new (gx)
-   return setmetatable(gx or {}, { __index = _M })
+function _M:new (o)
+   return setmetatable(o or {}, { __index = _M })
 end
 
 
