@@ -5,7 +5,9 @@
 local gumbo = require "gumbo"
 
 
+local type = type
 local open = io.open
+local pairs = pairs
 local ipairs = ipairs
 local say = ngx.say
 local log = ngx.log
@@ -22,9 +24,9 @@ local HTTP_INTERNAL_SERVER_ERROR = ngx.HTTP_INTERNAL_SERVER_ERROR
 
 
 local gxs = {
-   require "mpresty.mplibcode",
-   require "mpresty.graphviz",
-   require "mpresty.tikzpicture"
+   ['metapost'] = require "mpresty.mplibcode",
+   ['graphviz'] = require "mpresty.graphviz",
+   ['tikz'] = require "mpresty.tikzpicture"
 }
 
 
@@ -69,8 +71,12 @@ local function render (fn_update_node, doc)
    end
 
    local threads = {}
-   for _, gx in ipairs(gxs) do
-      threads[#threads + 1] = spawn(update_document, gx, doc, fn_update_node)
+   for key, gx in pairs(gxs) do
+      local fn = fn_update_node
+      if type(fn_update_node) == "table" then
+         fn = fn_update_node[key]
+      end
+      threads[#threads + 1] = spawn(update_document, gx, doc, fn)
    end
 
    for _, th in ipairs(threads) do
