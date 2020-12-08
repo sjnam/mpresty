@@ -24,7 +24,7 @@ local HTTP_INTERNAL_SERVER_ERROR = ngx.HTTP_INTERNAL_SERVER_ERROR
 local gxs = {
    require "mpresty.mplibcode",
    require "mpresty.graphviz",
---   require "mpresty.tikzpicture"
+   require "mpresty.tikzpicture"
 }
 
 
