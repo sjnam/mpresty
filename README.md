@@ -53,6 +53,12 @@ digraph G {
 
 <graphviz src="http://ktug.org/~sjnam/source/neato.gv" cmd="neato" width="300"></graphviz>
 
+<H1>tikzpicture</H1>
+
+<tikzpicture src="http://ktug.org/~sjnam/source/func.tex"></tikzpicture>
+<tikzpicture src="http://ktug.org/~sjnam/source/bissector.tex"></tikzpicture>
+<tikzpicture src="http://ktug.org/~sjnam/source/contours.tex"></tikzpicture>
+
 </body>
 </html>
 ````
