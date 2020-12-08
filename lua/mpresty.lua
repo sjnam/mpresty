@@ -63,7 +63,10 @@ local function render (fn_update_node, doc)
    end
    local threads = {}
    for k, g in pairs(graphics) do
-      local fn = update_nodes and update_nodes[k] or fn_update_node
+      local fn = fn_update_node
+      if update_nodes then
+         fn = update_nodes[k]
+      end
       threads[#threads+1] = spawn(g.update_document, g, doc, fn)
    end
    for i=1,#threads do
