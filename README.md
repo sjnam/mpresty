@@ -25,7 +25,7 @@ beginfig(1)
     fill p withcolor 0.2*white; p:=p transformed T;
     fill p withcolor white;     p:=p transformed T;
   endfor;
-endfig
+endfig;
 </mplibcode>
 
 <mplibcode src="/source/tree.mp" cache="no"></mplibcode>
