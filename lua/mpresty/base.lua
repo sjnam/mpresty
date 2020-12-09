@@ -10,17 +10,17 @@ local ipairs = ipairs
 local io_open = io.open
 local concat = table.concat
 local setmetatable = setmetatable
-local digest = ngx.md5
 local log = ngx.log
 local ERR = ngx.ERR
+local run = shell.run
+local digest = ngx.md5
 local ngx_var = ngx.var
 local re_find = ngx.re.find
-local ngx_shared = ngx.shared
 local wait = ngx.thread.wait
+local ngx_shared = ngx.shared
 local spawn = ngx.thread.spawn
-local capture = ngx.location.capture
-local run = shell.run
 local http_request = requests.get
+local capture = ngx.location.capture
 
 
 local img_fmt = "/svgs"
@@ -30,21 +30,20 @@ local mpresty_cache = ngx_shared.mpresty_cache
 
 
 local _M = {
-   outputfmt = "svg",
-   preamble = "",
-   postamble = "",
-   fn_update_node = function (doc, node, uri, content)
+   ['outputfmt'] = "svg",
+   ['preamble'] = "",
+   ['postamble'] = "",
+   ['fn_update_node'] = function (doc, node, uri, content)
       node.localName = "img"
       node:setAttribute("src", uri)
       if not node:hasAttribute("width") then
          node:setAttribute("width", "300")
       end
-      if node:hasAttribute("code") then
-         node:setAttribute("alt", content)
-         node:removeAttribute("code")
-      end
    end
 }
+
+
+local mt = { __index = _M }
 
 
 local function get_contents (node, use_cache)
@@ -54,7 +53,10 @@ local function get_contents (node, use_cache)
    end
    node:removeAttribute("src")
 
-   local content = use_cache and mpresty_cache:get(uri) or nil
+   local content
+   if use_cache then
+      content = mpresty_cache:get(uri)
+   end
    if not content then
       if not re_find(uri, "^https?://") then
          content = capture(uri).body
@@ -82,13 +84,15 @@ local function error_fn_update_node (doc, node, uri, content)
 end
 
 
-local function make_input_file (self, fname, content)
+local function source_file (self, fname, content)
    local f, err = io_open(concat{image_dir, "/", fname, ".", self.ext}, "w")
    if not f then
       log(ERR, "error: ", err)
       return err
    end
-   f:write(concat({self.preamble, content, self.postamble}, "\n"))
+   f:write(self.preamble)
+   f:write(content)
+   f:write(self.postamble)
    f:close()
 end
 
@@ -98,7 +102,6 @@ local function get_image_uri (self, node, fname)
    if cmd == "" then
       cmd = self.cmd
    end
-
    local ok, stdout = run {
       mpresty_script, image_dir, self.tag_name, fname,
       self.ext, self.outputfmt, cmd
@@ -127,9 +130,12 @@ local function do_update_document (self, node, fn_update_node)
 
    local fname = digest(content)
    local key = self.tag_name..fname
-   local uri = use_cache and mpresty_cache:get(key) or nil
+   local uri
+   if use_cache then
+      uri = mpresty_cache:get(key)
+   end
    if not uri then
-      err = make_input_file(self, fname, content)
+      err = source_file(self, fname, content)
       if err then
          log(ERR, "error: ", err)
          return nil, err
@@ -174,7 +180,7 @@ end
 
 
 function _M:new (o)
-   return setmetatable(o or {}, { __index = _M })
+   return setmetatable(o or {}, mt)
 end
 
 
