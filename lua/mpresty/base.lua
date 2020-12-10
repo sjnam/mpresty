@@ -23,16 +23,14 @@ local http_request = requests.get
 local capture = ngx.location.capture
 
 
-local img_fmt = "/svgs"
-local image_dir = ngx_var.document_root..img_fmt
+local imgdir = "/svgs"
+local image_dir = ngx_var.document_root..imgdir
 local mpresty_script = "mpresty.sh"
 local mpresty_cache = ngx_shared.mpresty_cache
 
 
 local _M = {
    ['outputfmt'] = "svg",
-   ['preamble'] = "",
-   ['postamble'] = "",
    ['fn_update_node'] = function (doc, node, uri, content)
       node.localName = "img"
       node:setAttribute("src", uri)
@@ -90,14 +88,14 @@ local function source_file (self, fname, content)
       log(ERR, "error: ", err)
       return err
    end
-   f:write(self.preamble)
+   f:write(self.preamble or "")
    f:write(content)
-   f:write(self.postamble)
+   f:write(self.postamble or "")
    f:close()
 end
 
 
-local function get_image_uri (self, node, fname)
+local function image_uri (self, node, fname)
    local cmd = node:getAttribute("cmd") or ""
    if cmd == "" then
       cmd = self.cmd
@@ -110,12 +108,11 @@ local function get_image_uri (self, node, fname)
       log(ERR, "error: fail to run command")
       return nil, stdout
    end
-
-   return concat{img_fmt, "/", fname, ".", self.outputfmt}
+   return concat{imgdir, "/", fname, ".", self.outputfmt}
 end
 
 
-local function do_update_document (self, node, fn_update_node)
+local function update_doc (self, node, fn_update_node)
    local update_node = fn_update_node or
       (self.cur_update_node or self.fn_update_node)
 
@@ -140,7 +137,7 @@ local function do_update_document (self, node, fn_update_node)
          log(ERR, "error: ", err)
          return nil, err
       end
-      uri, err = get_image_uri(self, node, fname)
+      uri, err = image_uri(self, node, fname)
       if err then
          update_node = error_fn_update_node
          content = err
@@ -152,8 +149,8 @@ local function do_update_document (self, node, fn_update_node)
    end
    node:removeAttribute("cmd")
 
-   for _, c in ipairs(node.childNodes) do
-      c:remove();
+   for _, n in ipairs(node.childNodes) do
+      n:remove();
    end
    update_node(self.doc, node, uri, content)
    update_node = nil
@@ -164,8 +161,7 @@ function _M:update_document (doc, fn_update_node)
    self.doc = doc
    local threads = {}
    for _, node in ipairs(doc:getElementsByTagName(self.tag_name)) do
-      threads[#threads+1] = spawn(do_update_document,
-                                  self, node, fn_update_node)
+      threads[#threads+1] = spawn(update_doc, self, node, fn_update_node)
    end
    for i=1,#threads do
       local ok, res = wait(threads[i])

@@ -81,7 +81,7 @@ end
 
 
 function _M.preview (str)
-   render(nil, gumbo.parse(str))
+   render(nil, parse(str))
 end
 
 
