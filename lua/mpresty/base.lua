@@ -6,17 +6,17 @@ local shell = require "resty.shell"
 local requests = require "resty.requests"
 
 
+local open = io.open
 local ipairs = ipairs
-local io_open = io.open
 local concat = table.concat
 local setmetatable = setmetatable
 local log = ngx.log
 local ERR = ngx.ERR
 local run = shell.run
-local digest = ngx.crc32_long
 local ngx_var = ngx.var
 local re_find = ngx.re.find
 local wait = ngx.thread.wait
+local digest = ngx.crc32_long
 local ngx_shared = ngx.shared
 local spawn = ngx.thread.spawn
 local http_request = requests.get
@@ -30,8 +30,7 @@ local mpresty_cache = ngx_shared.mpresty_cache
 
 
 local _M = {
-   ['outputfmt'] = "svg",
-   ['fn_update_node'] = function (doc, node, uri, content)
+   fn_update_node = function (doc, node, uri, content)
       node.localName = "img"
       node:setAttribute("src", uri)
       if not node:hasAttribute("width") then
@@ -51,10 +50,7 @@ local function get_contents (node, use_cache)
    end
    node:removeAttribute("src")
 
-   local content
-   if use_cache then
-      content = mpresty_cache:get(uri)
-   end
+   local content = use_cache and mpresty_cache:get(uri)
    if not content then
       if not re_find(uri, "^https?://") then
          content = capture(uri).body
@@ -83,7 +79,7 @@ end
 
 
 local function source_file (self, fname, content)
-   local f, err = io_open(concat{image_dir, "/", fname, ".", self.ext}, "w")
+   local f, err = open(concat{image_dir, "/", fname, ".", self.ext}, "w")
    if not f then
       log(ERR, "error: ", err)
       return err
@@ -102,13 +98,13 @@ local function image_uri (self, node, fname)
    end
    local ok, stdout = run {
       mpresty_script, image_dir, self.tag_name, fname,
-      self.ext, self.outputfmt, cmd
+      self.ext, "svg", cmd
    }
    if not ok then
       log(ERR, "error: fail to run command")
       return nil, stdout
    end
-   return concat{imgdir, "/", fname, ".", self.outputfmt}
+   return concat{imgdir, "/", fname, ".svg"}
 end
 
 
@@ -127,10 +123,7 @@ local function update_doc (self, node, fn_update_node)
 
    local fname = digest(content)
    local key = self.tag_name..fname
-   local uri
-   if use_cache then
-      uri = mpresty_cache:get(key)
-   end
+   local uri = use_cache and mpresty_cache:get(key)
    if not uri then
       err = source_file(self, fname, content)
       if err then
@@ -150,7 +143,7 @@ local function update_doc (self, node, fn_update_node)
    node:removeAttribute("cmd")
 
    for _, n in ipairs(node.childNodes) do
-      n:remove();
+      n:remove()
    end
    update_node(self.doc, node, uri, content)
    update_node = nil
