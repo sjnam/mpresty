@@ -29,7 +29,7 @@ local graphics = {
 
 
 local _M = {
-   version = "0.10.7"
+   version = "0.10.8"
 }
 
 
