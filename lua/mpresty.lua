@@ -8,6 +8,7 @@ local type = type
 local pairs = pairs
 local open = io.open
 local ipairs = ipairs
+local setmetatable = setmetatable
 local say = ngx.print
 local log = ngx.log
 local ERR = ngx.ERR
@@ -32,6 +33,9 @@ local _M = {
 }
 
 
+local mt = { __index = _M }
+
+
 local function capture (path)
    local f = open(ngx_var.document_root..path, "rb")
    if not f then
@@ -44,7 +48,10 @@ local function capture (path)
 end
 
 
-local function render (fn_update_node, doc)
+function _M:render ()
+   local doc = self.doc
+   local fn_update_node = self.fn_update_node
+
    if not doc then
       local body = capture(ngx_var.uri)
       if not body then
@@ -80,12 +87,9 @@ local function render (fn_update_node, doc)
 end
 
 
-function _M.preview (str)
-   render(nil, parse(str))
+function _M.new (o)
+   return setmetatable(o or {}, mt)
 end
-
-
-_M.render = render
 
 
 return _M

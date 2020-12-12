@@ -1,3 +1,6 @@
+local mpresty = require "mpresty"
+
+
 local function fn_update_node (doc, node, uri, content)
    node.localName = "p"
    node:removeAttribute("width")
@@ -15,8 +18,12 @@ local function fn_update_node (doc, node, uri, content)
    node:appendChild(hr)
 end
 
-require "mpresty".render {
-   ['metapost'] = fn_update_node,
-   ['tikz'] = fn_update_node
+
+local gx = mpresty.new {
+   fn_update_node = {
+      ['metapost'] = fn_update_node,
+      ['tikz'] = fn_update_node
+   }
 }
 
+gx:render()
