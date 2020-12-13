@@ -41,7 +41,6 @@ local function capture (path)
    if not f then
       return nil
    end
-
    local content = f:read("*all")
    f:close()
    return content
@@ -49,9 +48,7 @@ end
 
 
 function _M:render ()
-   local doc = self.doc
-   local fn_update_node = self.fn_update_node
-
+   local doc, fn_update_node = self.doc, self.fn_update_node
    if not doc then
       local body = capture(ngx_var.uri)
       if not body then
@@ -63,7 +60,6 @@ function _M:render ()
          exit(500)
       end
    end
-
    local update_nodes
    if type(fn_update_node) == "table" then
       update_nodes = fn_update_node

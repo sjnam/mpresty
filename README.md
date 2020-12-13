@@ -55,7 +55,7 @@ digraph G {
 <H1>tikz</H1>
 
 <tikz>
-\begin{tikz}[scale=3]
+\begin{tikzpicture}[scale=3]
   \draw[step=.5cm, gray, very thin] (-1.2,-1.2) grid (1.2,1.2); 
   \filldraw[fill=green!20,draw=green!50!black] (0,0) -- (3mm,0mm) arc (0:30:3mm) -- cycle; 
   \draw[->] (-1.25,0) -- (1.25,0) coordinate (x axis);
@@ -68,7 +68,7 @@ digraph G {
     \draw (\x cm,1pt) -- (\x cm,-1pt) node[anchor=north,fill=white] {$\xtext$};
   \foreach \y/\ytext in {-1, -0.5/-\frac{1}{2}, 0.5/\frac{1}{2}, 1} 
     \draw (1pt,\y cm) -- (-1pt,\y cm) node[anchor=east,fill=white] {$\ytext$};
-\end{tikz}
+\end{tikzpicture}
 </tikz>
 <tikz src="http://ktug.org/~sjnam/source/bissector.tex"></tikz>
 <tikz src="http://ktug.org/~sjnam/source/mosaic.tex"></tikz>

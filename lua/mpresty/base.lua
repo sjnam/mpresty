@@ -5,7 +5,6 @@
 local shell = require "resty.shell"
 local requests = require "resty.requests"
 
-
 local open = io.open
 local ipairs = ipairs
 local concat = table.concat
@@ -23,8 +22,6 @@ local ngx_shared = ngx.shared
 local spawn = ngx.thread.spawn
 local http_request = requests.get
 local capture = ngx.location.capture
-
-
 local mpresty_cache = ngx_shared.mpresty_cache
 
 
@@ -93,10 +90,7 @@ end
 
 
 local function image_uri (self, node, fname)
-   local cmd = node:getAttribute("cmd") or ""
-   if cmd == "" then
-      cmd = self.cmd
-   end
+   local cmd = node:getAttribute("cmd") or self.cmd
    local run_script = sformat(self.run, ngx_var.document_root..self.workdir, cmd)
    local script, n, err = re_gsub(run_script, "_FNAME_", fname, "i")
    if not script then
@@ -184,3 +178,4 @@ end
 
 
 return _M
+
