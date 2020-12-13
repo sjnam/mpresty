@@ -1,5 +1,5 @@
 return require("mpresty.base"):new {
-   tag_name = "mplibcode",
+   tag_name = "metapost",
    cmd = "mpost",
    ext = "mp",
    preamble = [[

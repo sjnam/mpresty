@@ -1,5 +1,5 @@
 return require("mpresty.base"):new {
-   tag_name = "tikzpicture",
+   tag_name = "tikz",
    cmd = "pdflatex",
    ext = "tex",
    preamble = [[

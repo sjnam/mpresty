@@ -11,7 +11,7 @@ Getting started
 <body>
 
 <H1>Metapost</H1>
-<mplibcode width="300">
+<metapost width="300">
 beginfig(1)
   u:=1.3cm; transform T; z1=(0,2u); n:=5;
   for i=1 upto n-1: z[i+1]=z1 rotated (360*i/n);
@@ -26,11 +26,11 @@ beginfig(1)
     fill p withcolor white;     p:=p transformed T;
   endfor;
 endfig;
-</mplibcode>
+</metapost>
 
-<mplibcode src="/source/tree.mp" cache="no"></mplibcode>
+<metapost src="/source/tree.mp" cache="no"></metapost>
 
-<mplibcode src="http://ktug.org/~sjnam/source/rgb.mp" width="300"></mplibcode>
+<metapost src="http://ktug.org/~sjnam/source/rgb.mp" width="300"></metapost>
 
 <H1>Graphviz</H1>
 
@@ -52,10 +52,10 @@ digraph G {
 
 <graphviz src="http://ktug.org/~sjnam/source/neato.gv" cmd="neato" width="300"></graphviz>
 
-<H1>tikzpicture</H1>
+<H1>tikz</H1>
 
-<tikzpicture>
-\begin{tikzpicture}[scale=3]
+<tikz>
+\begin{tikz}[scale=3]
   \draw[step=.5cm, gray, very thin] (-1.2,-1.2) grid (1.2,1.2); 
   \filldraw[fill=green!20,draw=green!50!black] (0,0) -- (3mm,0mm) arc (0:30:3mm) -- cycle; 
   \draw[->] (-1.25,0) -- (1.25,0) coordinate (x axis);
@@ -68,10 +68,10 @@ digraph G {
     \draw (\x cm,1pt) -- (\x cm,-1pt) node[anchor=north,fill=white] {$\xtext$};
   \foreach \y/\ytext in {-1, -0.5/-\frac{1}{2}, 0.5/\frac{1}{2}, 1} 
     \draw (1pt,\y cm) -- (-1pt,\y cm) node[anchor=east,fill=white] {$\ytext$};
-\end{tikzpicture}
-</tikzpicture>
-<tikzpicture src="http://ktug.org/~sjnam/source/bissector.tex"></tikzpicture>
-<tikzpicture src="http://ktug.org/~sjnam/source/mosaic.tex"></tikzpicture>
+\end{tikz}
+</tikz>
+<tikz src="http://ktug.org/~sjnam/source/bissector.tex"></tikz>
+<tikz src="http://ktug.org/~sjnam/source/mosaic.tex"></tikz>
 
 </body>
 </html>

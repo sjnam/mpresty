@@ -22,9 +22,9 @@ local spawn = ngx.thread.spawn
 
 
 local graphics = {
-   ['metapost'] = require "mpresty.mplibcode",
+   ['metapost'] = require "mpresty.metapost",
    ['graphviz'] = require "mpresty.graphviz",
-   ['tikz'] = require "mpresty.tikzpicture"
+   ['tikz'] = require "mpresty.tikz"
 }
 
 
