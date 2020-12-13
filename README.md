@@ -91,12 +91,12 @@ Run
 ```
 
 Try to visit the following pages
-- [sunflower.html](https://github.com/sjnam/mpresty/blob/master/html/sample/sunflower.html): http://localhost:8080/sample/sunflower.html
-- [sample/all.html](https://github.com/sjnam/mpresty/blob/master/html/sample/all.html): http://localhost:8080/sample/all.html
+- http://localhost:8080/mpresty/sunflower.html
+- http://localhost:8080/mpresty/all.html
 - http://localhost:8080/preview.html
-- [example/all.html](https://github.com/sjnam/mpresty/blob/master/html/example/all.html): http://localhost:8080/example/all.html
+- http://localhost:8080/upnode/all.html
 
-Create a `fun.html` file with the above [Getting started](#getting-started) and put it in the `$(pwd)/html/sample` directory and visit the page http://localhost:8080/sample/fun.html
+Create a `fun.html` file with the above [Getting started](#getting-started) and put it in the `$(pwd)/html/mpresty` directory and visit the page http://localhost:8080/mpresty/fun.html
 
 Author
 ------
