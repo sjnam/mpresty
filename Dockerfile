@@ -10,4 +10,3 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update \
     && luarocks install lua-resty-requests
 
 COPY nginx.conf /usr/local/openresty/nginx/conf/nginx.conf
-COPY mpresty.sh /usr/local/bin/mpresty.sh

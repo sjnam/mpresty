@@ -11,4 +11,5 @@ return require("mpresty.base"):new {
                  \begin{document}
                ]],
    postamble = "\\end{document}",
+   run = [[cd %s && %s _FNAME_.tex && pdf2svg _FNAME_.pdf _FNAME_.svg && rm _FNAME_.tex _FNAME_.aux _FNAME_.pdf _FNAME_.log]],
 }

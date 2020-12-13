@@ -9,12 +9,14 @@ local requests = require "resty.requests"
 local open = io.open
 local ipairs = ipairs
 local concat = table.concat
+local sformat = string.format
 local setmetatable = setmetatable
 local log = ngx.log
 local ERR = ngx.ERR
 local run = shell.run
 local ngx_var = ngx.var
 local re_find = ngx.re.find
+local re_gsub = ngx.re.gsub
 local wait = ngx.thread.wait
 local digest = ngx.crc32_long
 local ngx_shared = ngx.shared
@@ -25,7 +27,6 @@ local capture = ngx.location.capture
 
 local imgdir = "/svgs"
 local image_dir = ngx_var.document_root..imgdir
-local mpresty_script = "mpresty.sh"
 local mpresty_cache = ngx_shared.mpresty_cache
 
 
@@ -96,10 +97,14 @@ local function image_uri (self, node, fname)
    if cmd == "" then
       cmd = self.cmd
    end
-   local ok, stdout = run {
-      mpresty_script, image_dir, self.tag_name, fname,
-      self.ext, "svg", cmd
-   }
+   local run_script = sformat(self.run, image_dir, cmd)
+   local script, n, err = re_gsub(run_script, "_FNAME_", fname, "i")
+   if not script then
+      log(ERR, "error: ", err)
+      return nil, err
+   end
+
+   local ok, stdout = run(script)
    if not ok then
       log(ERR, "error: fail to run command")
       return nil, stdout
