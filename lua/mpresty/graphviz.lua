@@ -1,4 +1,4 @@
-return require("mpresty.base"):new {
+return require("base"):new {
    tag_name = "graphviz",
    cmd = "dot",
    ext = "gv",

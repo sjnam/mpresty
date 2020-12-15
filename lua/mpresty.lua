@@ -7,6 +7,7 @@ local gumbo = require "gumbo"
 local type = type
 local pairs = pairs
 local open = io.open
+local popen = io.popen
 local ipairs = ipairs
 local setmetatable = setmetatable
 local say = ngx.print
@@ -14,22 +15,29 @@ local log = ngx.log
 local ERR = ngx.ERR
 local exit = ngx.exit
 local ngx_var = ngx.var
+local ngx_config = ngx.config
+local re_match = ngx.re.match
 local parse = gumbo.parse
 local wait = ngx.thread.wait
 local ngx_shared = ngx.shared
 local spawn = ngx.thread.spawn
 
 
-
-local graphics = {
-   ['metapost'] = require "mpresty.metapost",
-   ['graphviz'] = require "mpresty.graphviz",
-   ['tikz'] = require "mpresty.tikz"
-}
+local graphics = {}
+local p = popen('find "'..ngx_config.prefix().."/lua/mpresty"..'" -type f')
+for file in p:lines() do
+   local m, err = re_match(file, "(\\w+)\\.lua$", "i")
+   if err then
+      log(ERR, "error: ", err)
+      return
+   end
+   local mod = m[1]
+   graphics[mod] = require("mpresty."..mod)
+end
 
 
 local _M = {
-   version = "0.11.0"
+   version = "0.11.1"
 }
 
 
