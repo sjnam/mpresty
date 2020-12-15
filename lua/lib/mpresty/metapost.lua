@@ -1,4 +1,4 @@
-return require("base"):new {
+return require("mpresty.base"):new {
    tag_name = "metapost",
    cmd = "mpost",
    ext = "mp",

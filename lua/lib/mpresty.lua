@@ -24,7 +24,7 @@ local spawn = ngx.thread.spawn
 
 
 local gxs = {}
-local p = popen('find "'..ngx_config.prefix().."/lua/mpresty"..'" -type f')
+local p = popen('find "'..ngx_config.prefix().."/lua/lib/mpresty"..'" -type f')
 for file in p:lines() do
    local m, err = re_match(file, "(\\w+)\\.lua$", "i")
    if err then
@@ -32,7 +32,9 @@ for file in p:lines() do
       return
    end
    local mod = m[1]
-   gxs[mod] = require("mpresty."..mod)
+   if mod ~= "base" then
+      gxs[mod] = require("mpresty."..mod)
+   end
 end
 
 
