@@ -23,16 +23,16 @@ local ngx_shared = ngx.shared
 local spawn = ngx.thread.spawn
 
 
-local graphics = {}
+local gxs = {}
 local p = popen('find "'..ngx_config.prefix().."/lua/mpresty"..'" -type f')
 for file in p:lines() do
    local m, err = re_match(file, "(\\w+)\\.lua$", "i")
    if err then
-      log(ERR, "error: ", err)
+      log(ERR, "fail to load modules: ", err)
       return
    end
    local mod = m[1]
-   graphics[mod] = require("mpresty."..mod)
+   gxs[mod] = require("mpresty."..mod)
 end
 
 
@@ -73,7 +73,7 @@ function _M:render ()
       update_nodes = fn_update_node
    end
    local threads = {}
-   for k, g in pairs(graphics) do
+   for k, g in pairs(gxs) do
       local fn = fn_update_node
       if update_nodes then
          fn = update_nodes[k]
