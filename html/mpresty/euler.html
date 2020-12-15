@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Euler Integration</title>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async>
+MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath: [['$','$'], ['\\(','\\)']],
+    processEscapes: true
+  }
+});
+</script>
+<style>
+body {
+  width: 40em;
+  margin: 0 auto;
+}
+img { padding: 15px; }
+</style>
+</head>
+  
+<body>
+    
+<h3>Euler Integration</h3>
+
+<p>
+  The goal this example is to obtain a figure like Figure 12 illustrating the
+  error, $e$, of first-order Euler integration. If $f'$ is the derivative of $f$:
+  $$f(x+\Delta x)\approx f(x)+f'(x)\Delta x $$
+</p>
+
+<hr>
+<center>
+<table><tr><td>
+<metapost width="250" src="/source/euler.mp"></metapost>
+</td></tr></table>
+<p>Figure 12: Euler Integration
+</center>
+<hr>
+
+The first step is to draw a suitable path. A B ́ezier curve is the simplest to
+generate with MetaPost:
+<pre>
+  path c;
+  c = (0,0)dir 0 ..  (150,100);
+  draw c;
+</pre>
+Next, we choose a point on the path, $P_1:$
+<pre>
+  t := 0.4;
+  pair P[];
+  P1 = point t of c;
+</pre>
+The value of $\Delta x$ is arbitrary, but we should choose a value large enough
+to make the diagram readable. We can then compute $\Delta y$ using the direction
+(i.e., slope) of the path at $t$.
+<pre>
+  dx := 60;
+  (dx, dy) = whatever * direction t of c;
+</pre>
+With $\Delta x$ and $\Delta y$ known, we can locate the other points that we
+need. $P_4$ is not labelled in Figure 12; it is the third vertex of the triangle
+with hypotenuse $P_1P_3.$
+<pre>
+  P4 = P1 + (dx, 0);
+  P3 = P4 + (0, dy);
+  P2 = c intersectionpoint (P4 -- P4+(0,100));  
+</pre>
+All that remains is to draw the lines and label the points and lengths:
+<pre>
+  draw P1--P4--P2;
+  draw P1--P3;
+  dotlabel.ulft(btex $P_1$ etex, P1);
+  dotlabel.ulft(btex $P_2$ etex, P2);
+  dotlabel.rt(btex $P_3$ etex, P3);
+  label.bot(btex $\Delta x$ etex, 0.5[P1,P4]);
+  label.rt(btex $\Delta y$ etex, 0.5[P4,P3]);
+  label.rt(btex $e$ etex, 0.5[P3,P2]);
+</pre>
+
+</body>
+</html>
