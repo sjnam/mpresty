@@ -1,0 +1,701 @@
+<HTML>
+<HEAD>
+  <TITLE>MetaPost</TITLE>
+<META name="author" content="Urs Oswald">
+<META name="keywords" 
+      content="">
+<!--      
+<STYLE type="text/css">
+  BODY {font-family: verdana}
+  TD   {font-family: verdana}
+</STYLE>
+-->
+</HEAD>
+
+<BODY bgcolor="#FFFFFF">
+<CENTER>
+
+<!-- Head -->
+<TABLE width="90%" cellpadding="5" border="0"><TR>
+<TD colspan="3" align="center">
+  <FONT size="-2">
+    <A href="introduction.html">Introduction</A>&#160;|
+    <A href="catalog.html">Catalog</A>&#160;|
+    Tutorial&#160;|
+    <A href="import.html">LaTeX2e Import</A>&#160;
+  </FONT>
+</TD>
+</TR><TR>
+  <TD align="left"><FONT color="#0000FF" size="5">MetaPost</FONT></TD>
+  <TD align="center">
+    <FONT size="5"><B>A Very Brief Tutorial</B></FONT>
+  </TD>
+  <TD align="right"><FONT color="#0000FF" size="5">MetaPost</FONT></TD>
+</TR><TR>
+  <TD colspan="3"> 
+    <A href="tutorial.pdf" target="_new">PDF version (340 KB)</A>
+  </TD> 
+</TR>
+</TABLE>
+<!-- End of Head -->
+
+<!-- Versions -->
+<CENTER>
+<TABLE cellpadding="5" border="0"><TR>
+<TD colspan="2" align="center">
+<B>Versions Used</B>
+</TD>
+</TR><TR>
+  <TD align="right"><FONT size="-1"><B>MetaPost</B></FONT></TD><TD><FONT size="-1">0.641</FONT></TD>
+</TR><TR>
+  <TD align="right"><FONT size="-1"><B>latex2HTML</B></FONT></TD><TD><FONT size="-1">2002-1 (1.68), May 2002</FONT></TD>
+</TR><TR>
+  <TD align="right"><FONT size="-1"><B>pdflatex</B></FONT></TD><TD><FONT size="-1">3.14159-1.00a</FONT></TD>
+</TR>
+</TABLE>
+<!-- End of Versions -->
+<BR>
+<FONT size="-1">Last update: October 8, 2002</FONT>
+<BR><BR>
+</CENTER>
+
+
+<TABLE width="590" cellpadding="3" border="0">
+<!-- Links -->
+<TR>
+  <TD colspan="2" align="center">
+    <table cellpadding="5" border="0"><tr>
+      <td valign="top"><FONT size="-2">
+    <A href="#A2B">A2B<A><BR>
+    <A href="#LineSegments">LineSegments<A><BR>
+    <A href="#Circles">Circles<A><BR>
+    <A href="#CircleParametrization">CircleParametrization<A><BR>
+    <A href="#BezierCurves">BezierCurves<A><BR>
+    <A href="#GraphSqrt">GraphSqrt<A><BR>
+    <A href="#Paths">Paths<A><BR> 
+      </FONT></td><td>&#160;&#160;&#160;&#160;</td><td valign="top"><FONT size="-2">          
+    <A href="#StringLabels">StringLabels<A><BR>
+    <A href="#TeXLabels">TeXLabels<A><BR>
+    <A href="#LaTeXLabels">LaTeXLabels<A><BR>    
+    <A href="#Equations">Equations<A><BR>    
+    <A href="#Mediation">Mediation<A><BR>
+    <A href="#Precedence">Precedence<A><BR>
+    <A href="#whatever">whatever<A><BR>
+      </FONT></td><td>&#160;&#160;&#160;&#160;</td><td valign="top"><FONT size="-2">       
+    <A href="#Directions">Directions<A><BR>
+    <A href="#Times">Times<A><BR>
+    <A href="#Colors">Colors<A><BR>    
+    <A href="#Slanted">Slanted<A><BR>
+    <A href="#Scaled">Scaled<A><BR>
+    <A href="#xScaled">xScaled<A><BR>
+    <A href="#zScaled">zScaled<A><BR>
+      </FONT></td><td>&#160;&#160;&#160;&#160;</td><td valign="top"><FONT size="-2">       
+    <A href="#Transform">Transform<A><BR>
+    <A href="#Functions">Functions<A><BR>
+    <A href="#ForSuffixes">ForSuffixes<A><BR>
+    <A href="#Recursiveness">Recursiveness<A><BR>
+    <A href="#RecursivePath">RecursivePath<A><BR>
+    <A href="#ifthenInLabel">ifthenInLabel<A><BR>
+    <A href="#NewOperators">NewOperators<A><BR>
+      </FONT></td><td>&#160;&#160;&#160;&#160;</td><td valign="top"><FONT size="-2">       
+    <A href="#DynamicTeXLabels">DynamicTeXLabels<A><BR>
+    <A href="#TextOnCurve">TextOnCurve<A><BR>
+      </FONT></td>
+    </tr></table> 
+  </TD>
+</TR><TR>
+  <TD colspan="2"><HR></TD>
+<!-- End of Links -->
+  
+<!-- A2B -->
+</TR><TR>
+  <TD width="190" valign="top">
+    <A name="A2B"></A>
+    <A href="tutorial/A2B.html" target="_new">A2B.mp</A>
+    <BR><BR>
+    <FONT size="-1">
+    The diagonal line segment at the right is drawn by the MetaPost command
+    <BR><BR>
+      <I>draw (0, 0)--(350, 275)</I>.
+    <BR><BR>
+    The unit of MetaPost is the <B>PostScript point</B> which is <B>1/72 of an inch</B>.
+    The default line thickness is <B>0.5 PostScript points</B>, as is seen from
+    <A href="tutorial/A2B1.html" target="_new">A2B.1</A>. 
+    This is the file generated as one result of the command 
+    <BR><BR>
+    <I>mpost A2B</I>. 
+    </FONT>
+  </TD><TD width="400">
+      <metapost  width="399" height="280" border="0">
+        beginfig(1)
+          draw (0, 0)--(350, 275); 
+        endfig;
+      </metapost>
+  </TD>
+</TR><TR>
+  <TD colspan="2">  
+    <FONT size="-1">
+    <BR>
+    (On other systems, the command may be <I>mp A2B</I>.)
+    The other resulting file is 
+    <A href="tutorial/A2Blog.html" target="_new">A2B.log</A>.     
+    <BR><BR>
+      TeX notation for a PostScript point is "bp" (big point). 
+      TeX allows also "pt", which is slightly less than one "bp": 
+      <BR><BR>
+      <B>1pt is 1/72.27 of an inch.</BR>
+    </FONT>
+</TR><TR>
+  <TD colspan="2"><HR></TD>
+  
+<!-- LineSegments -->
+</TR><TR>
+  <TD width="190" valign="top">
+    <A name="LineSegments"></A>
+    <A href="tutorial/LineSegments.html" target="_new">LineSegments.mp</A>
+    <BR><BR>
+    <FONT size="-1">
+    <UL>
+      <LI>draw</LI>
+      <LI>drawarrow</LI>
+      <LI>fill</LI>
+      <LI>pickup pencircle</LI>
+    </UL>
+    The command <I>pickup pencircle scaled 2</I> increases line thickness
+    to 2 PostScript points. With <I>pickup pencircle scaled .5</I>, it is
+    set back to normal (default).
+    </FONT>
+  </TD><TD width="400">
+    <metapost src="/source/LineSegments.mp" width="401" height="282" border="0">
+    </metapost>
+  </TD>
+</TR><TR>
+  <TD colspan="2"><HR></TD>
+
+<!--  Circles -->
+</TR><TR>
+  <TD width="190" valign="top">
+    <A name="Circles"></A>
+    <A href="tutorial/Circles.html" target="_new">Circles.mp</A>
+    <BR><BR>
+    <FONT size="-1">
+    <UL>
+      <LI>fullcircle</LI>
+      <LI>halfcircle</LI>
+      <LI>scaled</LI>
+      <LI>xscaled</LI>
+      <LI>yscaled</LI>
+      <LI>rotated</LI>
+      <LI>shifted</LI>
+    </UL>
+    In mathematics as in MetaPost, the <B>positive</B> sense of
+   rotation is <B>counterclockwise</B>. Thus the red halfcircle is
+   obtained (from the black one) by a rotation of +90 degrees,
+   whereas the blue halfcircle is obtained by a rotation of
+    -90 degrees.    
+    </FONT>
+  </TD><TD width="400">
+    <metapost src="/source/Circles.mp" width="400" height="281" border="0"></metapost>
+  </TD>
+</TR><TR>
+  <TD colspan="2"><HR></TD>
+
+<!--  CircleParametrization -->
+</TR><TR>
+  <TD width="190" valign="top">
+    <A name="CircleParametrization"></A>
+    <A href="tutorial/CircleParametrization.html" target="_new">CircleParametrization.mp</A>
+    <BR><BR>
+    <FONT size="-1">
+    <UL>
+      <LI>point t of p</LI>
+      <LI>subpath (s, t) of p</LI>
+      <LI>cutbefore</LI>
+    </UL>
+    The points on a <I>fullcircle</I> have parameter values ranging from 0 to 8.
+    If a <I>path</I> is <I>transformed</I> (such as <I>scaled</I> or <I>rotated</I>),
+    the points keep their parameter values.
+    <BR><BR>
+    The ellipse at the lower left has undergone a rotation of 225 degrees. Therefore
+    the first half lies upside down (bold red color).
+    </FONT>
+  </TD><TD width="400">
+    <metapost src="/source/CircleParametrization.mp" width="400" height="281" border="0"></metapost>
+  </TD>
+</TR><TR>
+  <TD colspan="2">
+    <FONT size="-1">
+    <BR>
+    The blue arrows in the right half of the figure are directed to the center of the
+    inner ellipse. They are 
+    <center><I>cutbefore subpath (0, 4) of p2</I></center> 
+    <BR>
+    (bold red) if they
+    start from above the center of p2, and
+    <BR><BR>
+    <center><I>cutbefore subpath (4, 8) of p2</I></center> 
+    otherwise.
+    </FONT>
+  </TD>
+</TR><TR>
+  <TD colspan="2"><HR></TD>
+
+<!--  BezierCurves -->
+</TR><TR>
+  <TD width="190" valign="top">
+    <A name="BezierCurves"></A>
+    <A href="tutorial/BezierCurves.html" target="_new">BezierCurves.mp</A>
+    <BR><BR>
+    <FONT size="-1">
+    <UL>
+      <LI>cubic Bezier curve</LI>
+      <LI>control points</LI>
+    </UL>
+    Each pair of consecutive points is connected by a cubic B&#233;zier curve
+    which needs, in order to be determined, two intermediate control points
+    in addition to the end points.
+    <BR><BR>
+    In the opposite figure, the additional control points and the connecting
+    line segments are drawn in red color.
+    </FONT>
+  </TD><TD width="400">
+    <metapost src="/source/BezierCurves.mp" width="400" height="281" border="0"></metapost>
+  </TD>
+
+</TR><TR>
+  <TD colspan="2">
+    <FONT size="-1">
+      <BR>
+      MetaPost automatically calculates the
+      control points in such a way that the segments have the same
+      direction at the interior knots.
+      <BR><BR>
+      <A href="tutorial/BezierDoc/Bezier.html">Cubic B&#233;zier curve (applet)</A>
+      &#160;&#160;&#160;&#160;
+      <A href="tutorial/BezierDoc/BezierDoc.html">Mathematics</A>
+    </FONT>
+  </TD>
+
+</TR><TR>
+  <TD colspan="2"><HR></TD>
+
+<!--  GraphSqrt -->
+</TR><TR>
+  <TD width="190" valign="top">
+    <A name="GraphSqrt"></A>
+    <A href="tutorial/GraphSqrt.html" target="_new">GraphSqrt.mp</A>
+    <BR><BR>
+    <FONT size="-1">
+    <UL>
+      <LI>z points</LI>
+      <LI>direction</LI>
+    </UL>
+    Curves can be controlled by directions at the knots. 
+    <BR>
+    <BR>
+    The black curve has been given the direction {up} at the origin,
+    while the gray curve has been given the same knots, but no
+    direction.
+    </FONT>
+  </TD><TD width="400">
+    <metapost src="/source/GraphSqrt.mp" width="400" height="321" border="0"></metapost>
+  </TD>
+</TR><TR>
+  <TD colspan="2"><HR></TD>
+
+<!--  Paths -->
+</TR><TR>
+  <TD width="190" valign="top">
+    <A name="Paths"></A>
+    <A href="tutorial/Paths.html" target="_new">Paths.mp</A>
+    <BR><BR>
+    <FONT size="-1">
+    MetaPost paths are objects, as are numerics or strings. MetaPost
+    objects can be combined to form arrays. MetaPost arrays can be
+    addressed like, e.g., Java arrays.
+    <BR><BR>
+    In MetaPost, however, array indexes are not restricted to
+    nonnegative integers (i. e. natural numbers and 0).
+    <BR><BR>
+    In the figure to the right, the rectangles are <I>path</I>
+    objects combined in an array called <I>r[]</I>.
+    </FONT>
+  </TD><TD width="400">
+    <metapost src="/source/Paths.mp" width="400" height="400" border="0"></metapost>
+  </TD>
+</TR><TR>
+  <TD colspan="2"><HR></TD>
+
+<!--  StringLabels -->
+</TR><TR>
+  <TD width="190" valign="top">
+    <A name="StringLabels"></A>
+    <A href="tutorial/StringLabels.html" target="_new">StringLabels.mp</A>
+    <BR><BR>
+    <FONT size="-1">
+    <UL>
+      <LI>string</LI>
+      <LI>catenation</LI>
+    </UL>
+    <UL>
+      <LI>label</LI>
+      <LI>label.lft</LI>
+      <LI>label.rt</LI>
+      <LI>label.top</LI>
+      <LI>label.bot</LI>
+      <LI>label.ulft</LI>
+      <LI>...</LI>
+      <LI>label.lrt</LI>
+      <LI>dotlabel</LI>
+    </UL>
+    <UL>
+      <LI>decimal</LI>
+    </UL>    
+    MetaPost strings are objects, as are pairs or paths. 
+    <I>string</I> objects (as well as <I>path</I> objects) can be catenated 
+    with the operator <I>&amp;</I>
+    <BR><BR>
+    The label 
+    commands allow string objects to be written into MetaPost graphics.
+    <BR><BR>
+    The <I>decimal</I> operator generates a <I>string</I> object from a
+    <I>numeric</I> object.    
+    </FONT>
+  </TD><TD width="400">
+    <metapost src="/source/StringLabels.mp" width="400" height="400" border="0"></metapost>
+  </TD>
+</TR><TR>
+  <TD colspan="2"><HR></TD>
+
+<!--  TeXLabels -->
+</TR><TR>
+  <TD width="190" valign="top">
+    <A name="TeXLabels"></A>
+    <A href="tutorial/TeXLabels.html" target="_new">TeXLabels.mp</A>
+    <BR><BR>
+    <FONT size="-1">
+    <UL>
+      <LI>btex...etex</LI>
+      <LI>verbatimtex...etex</LI>
+    </UL>
+    Instead of strings, the label commands accept TeX commands. These
+    have to be enclosed in &#171;btex ... etex&#187;.
+    <BR><BR>
+    The result is a MetaPost picture which can, e.g., be transformed
+    like any MetaPost <I>path</I>, <I>pair</I>, or <I>picture</I> 
+    (or <I>pen</I> or <I>transform</I>). The labels at the right side 
+    of the opposing picture have been rotated by 90 degrees
+    (bottom), and -90 degrees (top).
+    </FONT>
+  </TD><TD width="400">
+    <metapost src="/source/TeXLabels.mp" width="400" height="281" border="0"></metapost>
+  </TD>
+</TR><TR>
+  <TD colspan="2">
+    <FONT size="-1">
+    <BR>
+    The btex...etex commands
+    cannot, alas, be passed to the label commands as MetaPost strings.    
+    Background TeX commands like 
+    &#171;\font\cyr=wncyr10&#187; can be executed if enclosed in  verbatimtex..etex.
+    </FONT>
+  </TD>
+</TR><TR>
+  <TD colspan="2"><HR></TD>
+
+<!--  LaTeXLabels -->
+</TR><TR>
+  <TD width="190" valign="top">
+    <A name="LaTeXLabels"></A>
+    <A href="tutorial/LaTeXLabels.html" target="_new">LaTeXLabels.mp</A>
+    <BR><BR>
+    <FONT size="-1">
+    <UL>
+      <LI>btex...etex</LI>
+      <LI>verbatimtex...etex</LI>
+    </UL>
+    <UL>
+      <LI>tabular</LI>
+      <LI>NFSS</LI>
+      <LI>\newfont</LI>
+    </UL>
+    If you want to use LaTeX, e.g. the New Font Selection System (NFSS), or
+    commands like 
+    \begin{tabular} ... \end{tabular} or \newfont{}{},
+    you have to use the
+    &#171;verbatimtex ... etex&#187; construction.
+    </FONT>
+  </TD><TD width="400">
+    <metapost src="/source/LaTeXLabels.mp" width="400" height="281" border="0"></metapost>
+  </TD>
+</TR><TR>
+  <TD colspan="2">
+    <FONT size="-1">
+    The line %&amp;latex
+    (see 
+    <A href="tutorial/LaTeXLabels.html" target="_new">LaTeXLabels.mp</A>)
+    works in the SuSE-Linux distribution.
+    This line must not have any leading empty spaces.
+  <BR><BR>
+  On other systems, the reference to LaTeX must be made somewhat differently.
+  See, e.g., Die TeXnische Kom&#246;die 1/2002, p. 27, where the following
+  possibility is mentioned:
+  <UL>
+    <LI>mp(ost) --tex=latex <I>file name</I>,</LI>
+  </UL>
+  On a Unix system, the replacement for the line %&amp;latex may be
+  <UL>
+    <LI>setenv TEX latex <I>file name</I>,</LI>
+  </UL>
+  (Alan Hoenig ,TeX UNBOUND).
+  <BR><BR>
+    </FONT>
+  </TD>    
+</TR><TR>
+  <TD width="190" valign="top">
+    <FONT size="-1">
+    Comparison of the two images shows that LaTeX2html does not render all
+    the special signs correctly. The two images were both made from one and 
+    the same
+    <A href="tutorial/LaTeXLabels.html" target="_new">LaTeXLabels.mp</A>.
+    For the picture on top, LaTeX2html (version 2002 - 1) was used. The bottom
+    picture was produced with pdfLaTeX, and the resulting pdf file was converted
+    into a png picture.
+    <BR><BR>
+    By the way, the cyrillic name at the lower right means &#171;Z&#252;rich&#187;.
+    </FONT>
+  </TD><TD width="400">
+    <metapost src="/source/LaTeXLabels.mp" width="400" height="281" border="0"></metapost>      
+  </TD>
+</TR><TR>
+  <TD colspan="2"><HR></TD>
+  
+<!-- whatever -->
+</TR><TR>
+  <TD width="190" valign="top">
+    <A name="whatever"></A>
+    <A href="tutorial/whatever.html" target="_new">whatever.mp</A>
+    <BR><BR>
+    <FONT size="-1">
+      The point of intersection z5 can be obtained with the 
+      &#171;intersectionpoint&#187; operator from the paths z1--z3 
+      and z2--z4.
+      <BR><BR>
+      However, as the paths z1--z4 and z2--z3 do not intersect,
+      z7 cannot be obtained in the same way from these two paths. 
+      Instead, z7 is obtained by the <I>equation</I>
+      <BR><BR>
+      z7=whatever[z1, z4]<BR>
+      =whatever[z2, z3].      
+    </FONT>
+  </TD><TD width="400">
+    <metapost src="/source/whatever.mp" width="400" height="281" border="0"></metapost>
+  </TD>
+</TR><TR>
+    <TD colspan="2">
+    <FONT size="-1">
+      The &#171;double equation&#187; <I>z7=whatever[z1, z4]=whatever[z2, z3]</I>
+      could be replaced with the two equations <I>z7=whatever[z1, z4]</I>
+      and <I>z7=whatever[z2, z3]</I>.      
+      <BR><BR>
+      z6 is obtained by the equation
+      <I>z6=f[z1, z4]=g[z2, z3]</I>. However,
+      while the numeric variables <I>f</I> and <I>g</I> cannot be used in further
+      equations, the <I>whatever</I> can be used over and over again.
+      <BR><BR>
+      By the way: Omitting the parentheses in 
+      <I>(z1--z3)intersectionpoint(z2--z4)</I> would cause MetaPost to try to calculate
+      <I>z1--(z3 intersectionpoint z2)--z4</I>, as &#171;intersectionpoint&#187; is a
+      secondary-level operator, while &#171;--&#187; is of expression level, i.e. has
+      minimum precedence. As the points z3 and z2 do not coincide, this attempt would
+      result in an error message saying that the paths z3 and z2 do not intersect. For
+      MetaPost, pairs like z2 and z3 are special paths, namely paths with length zero.           
+      <BR><BR>
+      Both <I>whatever</I> and <I>intersectionpoint</I> are examples of macros defined
+      in the 
+      <A href="tutorial/plainmp.html" target="_new">plain.mp</A> 
+      file; they are not built-in MetaPost commands. This file shows how to define 
+      new functions and operators. The binary operator <I>intersectionpoint</I> is defined
+      with the use of the built-in operator <I>intersectiontimes</I>. The `?' in the
+      definition of <I>whatever</I> is just an arbitrary variable name. MetaPost allows
+      variable names like `?', `!', or any combination of these two signs.
+    </FONT>
+  </TD>
+</TR><TR>
+  <TD colspan="2"><HR></TD>
+
+<!--  Directions -->
+</TR><TR>
+  <TD width="190" valign="top">
+    <A name="Directions"></A>
+    <A href="tutorial/Directions.html" target="_new">Directions.mp</A>
+    <BR><BR>
+    <FONT size="-1">
+    <UL>
+      <LI>direction</LI>
+      <LI>tension</LI>
+    </UL>
+    Have you ever tried to digitize your signature?
+    I gave up after the first initial. Of course, once you are
+    successfull, you copy the result over and over again.
+    <BR>
+    <BR>
+    Directions can be indicated, e.g., in the form
+    {2,3} or, equivalently, {(2,3)} - which means the slope of a
+    line segment going 2 units to the right and 3 units up. {up}
+    is just an abbreviation for (0,1).
+    </FONT>
+  </TD><TD width="400">
+    <metapost src="/source/Directions.mp" width="401" height="294" border="0"></metapost>
+  </TD>
+</TR><TR>
+  <TD colspan="2"><HR></TD>
+
+<!--  Times -->
+</TR><TR>
+  <TD width="190" valign="top">
+    <A name="Times"></A>
+    <A href="tutorial/Times.html" target="_new">Times.mp</A>
+    <BR><BR>
+    <FONT size="-1">
+    In the figure to the right, <I>p0</I> is defined as
+    <BR><BR>
+    <I>z0..z1..z2..z3</I>.
+    <BR><BR>
+    These knots have integer parameter values <I>i=0, 1, 2, 3</I>.
+    Every point of <I>p0</I> can be obtained with the
+    command
+    <BR><BR>
+    <I>point t of p0</I>,
+    <BR><BR>
+    and the slope of the tangent with
+    <BR><BR>
+    <I>direction t of p0</I>.
+    </FONT>
+  </TD><TD width="400">
+    <metapost src="/source/Times.mp" width="400" height="281" border="0"></metapost>
+  </TD>
+</TR><TR>
+  <TD colspan="2"><HR></TD>
+
+<!--  ForSuffixes -->
+</TR><TR>
+  <TD width="190" valign="top">
+    <A name="ForSuffixes"></A>
+    <A href="tutorial/ForSuffixes.html" target="_new">ForSuffixes.mp</A>
+    <BR><BR>
+    <FONT size="-1">
+    <UL>
+      <LI>forsuffixes</LI>      
+      <LI>hide</LI>      
+    </UL>
+    The control structure <I>forsuffixes ... endfor</I>
+    allows to write &#171;def&#187; and &#171;vardef&#187;
+    subroutines with arbitrarily varying numbers of arguments. In this example,
+    &#171;forsuffixes&#187; loops are used in the subroutines
+    &#171;Zyklus&#187;, &#171;Pfad&#187;, and &#171;Lote&#187;.
+    <BR><BR>
+    By the way, the type <I>color</I> is the only MetaPost type which is
+    not a type in METAFONT. So MetaPost has 9 data types, whereas
+    METAFONT has only 8.
+    </FONT>
+  </TD><TD width="400">
+    <metapost src="/source/ForSuffixes.mp" width="400" height="360" border="0" cache="no"></metapost>
+  </TD>
+</TR><TR>
+  <TD colspan="2">
+    <FONT size="-1">
+    For the projection of 3D points onto the MetaPost picture, 
+    the transformations t and Txy of &#171;Functions&#187; are used.
+    <BR><BR>
+    Notice the use of the <I>hide</I> command within the <I>forsuffixes</I>
+    loop of the <I>vardef</I> subroutine 
+    <I>Pfad(text t)</I>!
+    </FONT>
+  </TD>    
+</TR><TR>
+  <TD colspan="2"><HR></TD>
+
+<!--  RecursivePath -->
+</TR><TR>
+  <TD width="190" valign="top">
+    <A name="RecursivePath"></A>
+    <A href="tutorial/RecursivePath.html" target="_new">RecursivePath.mp</A>
+    <BR><BR>
+    <FONT size="-1">
+    This Hilbert curve of depth 6 (and 4096 knots) was calculated recursively by the <I>vardef</I>
+    subroutine 
+    <BR><BR>
+    <I>hilbertPath(s, n)</I>.
+    <BR><BR>
+    This subroutine returns a <I>path</I>, not a <I>picture</I>. The maximum
+    depth which I could reach with main memory size=1000001 was 7 (a curve
+    with 16384 knots).
+    To calculate curve <I>n</I> from curve <I>n-1</I>, the following
+    <I>path</I> operators are used:
+    <UL>
+      <LI>reflectedabout(<I>pair</I>, <I>pair</I>)</LI>
+      <LI>point <I>numeric</I> of <I>path</I></LI>
+      <LI><I>path</I> catenation (&amp;)</LI>
+      <LI>reverse (reverse <I>path</I> parametrization)</LI>
+    </UL>
+     </FONT>
+  </TD><TD width="400">
+    <metapost src="/source/RecursivePath.mp" width="400" height="400" border="0"></metapost>
+  </TD>
+</TR><TR>
+  <TD colspan="2"><HR></TD>
+
+</TR>
+  
+<!-- Links -->
+<TR>
+  <TD colspan="2" align="center">
+    <table cellpadding="5" border="0"><tr>
+      <td valign="top"><FONT size="-2">
+    <A href="#A2B">A2B<A><BR>
+    <A href="#LineSegments">LineSegments<A><BR>
+    <A href="#Circles">Circles<A><BR>
+    <A href="#CircleParametrization">CircleParametrization<A><BR>
+    <A href="#BezierCurves">BezierCurves<A><BR>
+    <A href="#GraphSqrt">GraphSqrt<A><BR>
+    <A href="#Paths">Paths<A><BR> 
+      </FONT></td><td>&#160;&#160;&#160;&#160;</td><td valign="top"><FONT size="-2">          
+    <A href="#StringLabels">StringLabels<A><BR>
+    <A href="#TeXLabels">TeXLabels<A><BR>
+    <A href="#LaTeXLabels">LaTeXLabels<A><BR>    
+    <A href="#Equations">Equations<A><BR>    
+    <A href="#Mediation">Mediation<A><BR>
+    <A href="#Precedence">Precedence<A><BR>
+    <A href="#whatever">whatever<A><BR>
+      </FONT></td><td>&#160;&#160;&#160;&#160;</td><td valign="top"><FONT size="-2">       
+    <A href="#Directions">Directions<A><BR>
+    <A href="#Times">Times<A><BR>
+    <A href="#Colors">Colors<A><BR>    
+    <A href="#Slanted">Slanted<A><BR>
+    <A href="#Scaled">Scaled<A><BR>
+    <A href="#xScaled">xScaled<A><BR>
+    <A href="#zScaled">zScaled<A><BR>
+      </FONT></td><td>&#160;&#160;&#160;&#160;</td><td valign="top"><FONT size="-2">       
+    <A href="#Transform">Transform<A><BR>
+    <A href="#Functions">Functions<A><BR>
+    <A href="#ForSuffixes">ForSuffixes<A><BR>
+    <A href="#Recursiveness">Recursiveness<A><BR>
+    <A href="#RecursivePath">RecursivePath<A><BR>
+    <A href="#ifthenInLabel">ifthenInLabel<A><BR>
+    <A href="#NewOperators">NewOperators<A><BR>
+      </FONT></td><td>&#160;&#160;&#160;&#160;</td><td valign="top"><FONT size="-2">       
+    <A href="#DynamicTeXLabels">DynamicTeXLabels<A><BR>
+    <A href="#TextOnCurve">TextOnCurve<A><BR>
+      </FONT></td>
+    </tr></table> 
+  </TD>
+</TR><TR>
+  <TD colspan="2"><HR></TD>
+<!-- End of Links -->
+</TD></TR></TABLE>
+
+</CENTER>
+</BODY>
+
+</HTML>
