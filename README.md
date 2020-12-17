@@ -1,4 +1,4 @@
-metapost-openresty
+mpresty
 ==================
 An openresty web application for TeX graphics (`metapost`, `graphviz`, `tikz`)
 that works in all browsers.
