@@ -95,7 +95,7 @@ Run
 ```
 
 Try to visit the following pages
-- http://localhost:8080/mpresty/tutorial.html
+- http://localhost:8080/mpresty/tutorial.html, [Original](http://www.ursoswald.ch/metapost/tutorial.html)
 - http://localhost:8080/mpresty/sunflower.html
 - http://localhost:8080/mpresty/all.html
 - http://localhost:8080/upnode/all.html
