@@ -3,6 +3,10 @@ metapost-openresty
 An openresty web application for TeX graphics (`metapost`, `graphviz`, `tikz`)
 that works in all browsers.
 
+You can write the metapost script of the image you want to draw in the html file,
+and the mpresty converts the code into the image. These actions apply not only to 
+metaposts, but also to tikz or graphviz.
+
 Getting started
 ---------------
 
