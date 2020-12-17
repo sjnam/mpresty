@@ -7,10 +7,9 @@ local gumbo = require "gumbo"
 local type = type
 local pairs = pairs
 local open = io.open
-local popen = io.popen
 local ipairs = ipairs
 local setmetatable = setmetatable
-local say = ngx.print
+local say = ngx.say
 local log = ngx.log
 local ERR = ngx.ERR
 local exit = ngx.exit
@@ -24,17 +23,8 @@ local spawn = ngx.thread.spawn
 
 
 local gxs = {}
-local p = popen('find "'..ngx_config.prefix().."lua/lib/mpresty"..'" -type f')
-for file in p:lines() do
-   local m, err = re_match(file, "(\\w+)\\.lua$", "i")
-   if err then
-      log(ERR, "fail to load modules: ", err)
-      return
-   end
-   local mod = m[1]
-   if mod ~= "base" then
-      gxs[mod] = require("mpresty."..mod)
-   end
+for _, v in ipairs{ "metapost", "graphviz", "tikz" } do
+   gxs[v] = require("mpresty."..v)
 end
 
 
