@@ -90,8 +90,8 @@ end
 
 
 local function image_uri (self, node, fname)
-   local cmd = node:getAttribute("cmd") or self.cmd
-   local run_script = sformat(self.run, ngx_var.document_root..self.workdir, cmd)
+   local run_script = sformat(self.run, ngx_var.document_root..self.workdir,
+                              self.cmd)
    local script, n, err = re_gsub(run_script, "_FNAME_", fname, "i")
    if not script then
       log(ERR, "error: ", err)
@@ -120,7 +120,10 @@ local function update_doc (self, node, fn_update_node)
       return nil, err
    end
 
-   local fname = digest(content)
+   self.cmd = node:getAttribute("cmd") or self.cmd
+   node:removeAttribute("cmd")
+
+   local fname = self.cmd..digest(content)
    local key = self.tag_name..fname
    local uri = use_cache and mpresty_cache:get(key)
    if not uri then
@@ -139,7 +142,6 @@ local function update_doc (self, node, fn_update_node)
          end
       end
    end
-   node:removeAttribute("cmd")
 
    for _, n in ipairs(node.childNodes) do
       n:remove()
