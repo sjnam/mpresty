@@ -95,7 +95,6 @@ Try to visit the following pages
 [Original html page](http://www.ursoswald.ch/metapost/tutorial.html)
 - http://localhost:8080/mpresty/sunflower.html
 - http://localhost:8080/mpresty/all.html
-- http://localhost:8080/upnode/all.html
 - http://localhost:8080/preview.html
 
 Create a `fun.html` file with the above [Getting started](#getting-started) and
@@ -106,6 +105,7 @@ Advanced Usage
 --------------
 ### update-node customization
 See [upnode.lua](https://github.com/sjnam/mpresty/blob/master/lua/upnode.lua).
+- http://localhost:8080/upnode/all.html
 
 Author
 ------
