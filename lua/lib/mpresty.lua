@@ -70,6 +70,9 @@ function _M:render ()
       if update_nodes then
          fn = update_nodes[k]
       end
+      if k == "img" then
+         fn = fn or fn_update_node
+      end
       threads[#threads+1] = spawn(g.update_document, g, doc, fn)
    end
    for i=1,#threads do

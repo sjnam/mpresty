@@ -6,6 +6,7 @@ local tikz = require "mpresty.tikz"
 local graphviz = require "mpresty.graphviz"
 local metapost = require "mpresty.metapost"
 
+local type = type
 local ipairs = ipairs
 local log = ngx.log
 local ERR = ngx.ERR
@@ -18,7 +19,10 @@ local _M = {}
 
 
 function _M:update_document (doc, fn_update_node)
-   self.doc = doc
+   local update_nodes
+   if type(fn_update_node) == "table" then
+      update_nodes = fn_update_node
+   end
    local threads = {}
    for _, node in ipairs(doc.images) do
       local gx
@@ -33,7 +37,11 @@ function _M:update_document (doc, fn_update_node)
          goto continue
       end
       gx.doc = doc
-      threads[#threads+1] = spawn(gx.update_doc, gx, node, fn_update_node)
+      local fn
+      if update_nodes then
+         fn = update_nodes[gx.tag_name]
+      end
+      threads[#threads+1] = spawn(gx.update_doc, gx, node, fn)
       ::continue::
    end
    for i=1,#threads do
@@ -43,8 +51,7 @@ function _M:update_document (doc, fn_update_node)
          return nil, res
       end
    end
-   self.cur_update_node = nil
-   return self.doc
+   return doc
 end
 
 
