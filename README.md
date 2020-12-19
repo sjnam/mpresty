@@ -6,9 +6,9 @@ that works in all browsers.
 Getting started
 ---------------
 You can write the metapost or tikz or graphviz script of the image you want to draw in the html file,
-and the mpresty converts the code into the image
+and the mpresty converts the script into the image.
 
-The graphics scripts are inserted into the html in codes or uri format.
+The graphics scripts are inserted into the html in codes or are stored in a file and uri format of `src` of `img`.
 
 ````html
 <html>
