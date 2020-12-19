@@ -109,8 +109,4 @@ See [upnode.lua](https://github.com/sjnam/mpresty/blob/master/lua/upnode.lua).
 
 Author
 ------
-Soojin Nam, jsunam@gmail.com
-
-License
--------
-Public Domain
+Soojin Nam, jsunam at gmail.com
