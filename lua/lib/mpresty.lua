@@ -29,7 +29,8 @@ end
 
 
 local _M = {
-   version = "0.12.1"
+   version = "0.12.1",
+   cache = true,
 }
 
 
@@ -69,6 +70,7 @@ function _M:render ()
 
    local threads = {}
    for k, g in pairs(gxs) do
+      g.cache = self.cache
       local fn = fn_update_node
       if update_nodes then
          fn = update_nodes[k]
