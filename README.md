@@ -31,10 +31,8 @@ beginfig(1)
   endfor;
 endfig;
 </metapost>
-
-<img src="/source/tree.mp" cache="no"/>
-
-<img src="http://ktug.org/~sjnam/source/rgb.mp" width="300"/>
+<img src="/source/tree.mp" cache="no">
+<img src="http://ktug.org/~sjnam/source/rgb.mp" width="300">
 
 <H1>Graphviz</H1>
 
@@ -50,9 +48,8 @@ digraph G {
     execute -> compare;
 }
 </graphviz>
-
-<img src="https://graphviz.org/Gallery/directed/Linux_kernel_diagram.gv.txt" cmd="dot"/>
-<img src="http://ktug.org/~sjnam/source/neato.gv" cmd="neato"/>
+<img src="https://graphviz.org/Gallery/directed/Linux_kernel_diagram.gv.txt" cmd="dot">
+<img src="http://ktug.org/~sjnam/source/neato.gv" cmd="neato">
 
 <H1>tikz</H1>
 
@@ -72,8 +69,8 @@ digraph G {
     \draw (1pt,\y cm) -- (-1pt,\y cm) node[anchor=east,fill=white] {$\ytext$};
 \end{tikzpicture}
 </tikz>
-<img src="http://ktug.org/~sjnam/source/bissector.tex"/>
-<img src="http://ktug.org/~sjnam/source/mosaic.tex"/>
+<img src="http://ktug.org/~sjnam/source/bissector.tex">
+<img src="http://ktug.org/~sjnam/source/mosaic.tex">
 
 </body>
 </html>
