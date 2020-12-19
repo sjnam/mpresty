@@ -48,6 +48,7 @@ end
 
 
 function _M:render ()
+   local err
    local doc, fn_update_node = self.doc, self.fn_update_node
    if not doc then
       local body = capture(ngx_var.uri)
