@@ -179,5 +179,8 @@ function _M:set_fn_update_node (fn_update_node)
 end
 
 
+_M.update_doc = update_doc
+
+
 return _M
 

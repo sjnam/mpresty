@@ -23,13 +23,13 @@ local spawn = ngx.thread.spawn
 
 
 local gxs = {}
-for _, v in ipairs{ "metapost", "graphviz", "tikz" } do
+for _, v in ipairs{ "img", "metapost", "graphviz", "tikz" } do
    gxs[v] = require("mpresty."..v)
 end
 
 
 local _M = {
-   version = "0.11.1"
+   version = "0.12.1"
 }
 
 

@@ -22,7 +22,7 @@ end
 local gx = mpresty.new {
    fn_update_node = {
       ['metapost'] = fn_update_node,
-      ['tikz'] = fn_update_node
+      ['tikz'] = fn_update_node,
    }
 }
 
