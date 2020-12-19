@@ -5,10 +5,11 @@ that works in all browsers.
 
 Getting started
 ---------------
-You can write the metapost or tikz or graphviz script of the image you want to draw in the html file,
-and the mpresty converts the script into the image.
+You can write the metapost or tikz or graphviz script of the image you want to
+draw in the html file, and the mpresty converts the script into the image.
 
-The graphics scripts are inserted into the html in codes or are stored in a file and uri format of `src` of `img`.
+The graphics scripts are inserted into the html in codes or are stored in
+a file and uri format of `img`'`src` attribute.
 
 ````html
 <html>
@@ -90,13 +91,21 @@ Run
 ```
 
 Try to visit the following pages
-- http://localhost:8080/mpresty/tutorial.html, [Original html page](http://www.ursoswald.ch/metapost/tutorial.html)
+- http://localhost:8080/mpresty/tutorial.html,
+[Original html page](http://www.ursoswald.ch/metapost/tutorial.html)
 - http://localhost:8080/mpresty/sunflower.html
 - http://localhost:8080/mpresty/all.html
 - http://localhost:8080/upnode/all.html
 - http://localhost:8080/preview.html
 
-Create a `fun.html` file with the above [Getting started](#getting-started) and put it in the `$(pwd)/html/mpresty` directory and visit the page http://localhost:8080/mpresty/fun.html
+Create a `fun.html` file with the above [Getting started](#getting-started) and
+put it in the `$(pwd)/html/mpresty` directory and visit the page
+http://localhost:8080/mpresty/fun.html
+
+Advanced Usage
+--------------
+### update-node customization
+See [upnode.lua](https://github.com/sjnam/mpresty/blob/master/lua/upnode.lua).
 
 Author
 ------
