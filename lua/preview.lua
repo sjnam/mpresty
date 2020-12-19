@@ -1,20 +1,25 @@
 local gumbo = require "gumbo"
 local mpresty = require "mpresty"
 
+local ngx_req = ngx.req
+local parse = gumbo.parse
+local tconcat = table.concat
 
-ngx.req.read_body()
 
-local args = ngx.req.get_post_args()
-local cmd = ''
-if args.cmd and args.cmd ~= '' then
-   cmd = " cmd='" .. args.cmd .. "'"
+ngx_req.read_body()
+
+local args = ngx_req.get_post_args()
+local cmd, args_cmd = "", args.cmd
+if args_cmd and args_cmd ~= '' then
+   cmd = " cmd='" .. args_cmd .. "'"
 end
 
-local html = table.concat {
-   "<", args.gx, cmd, " cache='no', width='400'>\n", args.code,
+local html = tconcat {
+   "<", args.gx, cmd, " cache='no', width='400'>\n",
+   args.code,
    "\n</", args.gx, ">"
 }
 
-local gx = mpresty.new { doc = gumbo.parse(html) }
+local gx = mpresty.new { doc = parse(html) }
 gx:render()
 
