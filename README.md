@@ -32,12 +32,12 @@ beginfig(1)
   endfor;
 endfig;
 </metapost>
-<img src="/source/tree.mp" cache="no">
+<img src="tree.mp" cache="no">
 <img src="http://ktug.org/~sjnam/source/rgb.mp" width="300">
 
 <H1>Graphviz</H1>
 
-<graphviz>
+<graphviz cmd="dot">
 digraph G {
     main -> parse -> execute;
     main -> init;
@@ -82,7 +82,7 @@ Run
 ```bash
 % git clone https://github.com/sjnam/mpresty.git
 % cd mpresty
-% mkdir -p html/workspace
+% mkdir -p html/images
 % docker run -d -p 8080:80 \
 -v $(pwd)/lua:/usr/local/openresty/nginx/lua \
 -v $(pwd)/html:/usr/local/openresty/nginx/html \

@@ -27,7 +27,7 @@ local mpresty_cache = ngx_shared.mpresty_cache
 
 local _M = {
    cache = true,
-   workdir = "/workspace",
+   workdir = "/images",
    fn_update_node = function (doc, node, uri, content)
       node.localName = "img"
       node:setAttribute("src", uri)
@@ -51,7 +51,11 @@ local function get_contents (node, use_cache)
    local content = use_cache and mpresty_cache:get(uri)
    if not content then
       if not re_find(uri, "^https?://") then
-         content = capture(uri).body
+         if re_find(uri, "/") then
+            content = capture(uri).body
+         else
+            content = capture(ngx_var.uri:match("(.*[/\\])")..uri).body
+         end
       else
          local res, err = http_request(uri)
          if not res then
