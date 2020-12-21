@@ -31,7 +31,7 @@ beginfig(1)
   endfor;
 endfig;
 </metapost>
-<img src="tree.mp" cache="no">
+<img src="/mpresty/tree.mp" cache="no">
 <img src="http://ktug.org/~sjnam/source/rgb.mp" width="300">
 
 <H1>Graphviz</H1>
@@ -97,8 +97,7 @@ Try to visit the following pages
 - http://localhost:8080/preview.html
 
 Create a `fun.html` file with the above [Getting started](#getting-started) and
-put it in the `$(pwd)/html/mpresty` directory and visit the page
-http://localhost:8080/mpresty/fun.html
+put it in the `$(pwd)/html` directory and visit http://localhost:8080/fun.html
 
 Advanced Usage
 --------------
