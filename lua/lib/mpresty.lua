@@ -34,8 +34,9 @@ local function get_document (doc)
       return doc
    end
    local uri = ngx_var.uri
-   local f = open(ngx_var.document_root..uri, "rb")
+   local f, err = open(ngx_var.document_root..uri, "rb")
    if not f then
+      log(ERR, "error: ", err)
       return nil, 404
    end
    local body = f:read("*all")
@@ -45,7 +46,7 @@ local function get_document (doc)
    end
    local doc, err = parse(body)
    if not doc then
-      log(ERR, "fail to parse html: ", err)
+      log(ERR, "error: ", err)
       return nil, 505
    end
    return doc
@@ -84,7 +85,7 @@ function _M.go (doc, fn_update_node)
    for _, th in ipairs(threads) do
       local ok, res = wait(th)
       if not ok then
-         log(ERR, "fail to render html: ", res)
+         log(ERR, "error: ", res)
          exit(500)
       end
    end
