@@ -19,12 +19,10 @@ local function update_node (doc, node, uri, content)
 end
 
 
-local gx = mpresty.new {
-   fn_update_node = {
-      ['metapost'] = update_node,
-      ['tikz'] = update_node,
-   }
+local fn_update_node = {
+   ['metapost'] = update_node,
+   ['tikz'] = update_node,
 }
 
-gx:go()
+mpresty.go(nil, fn_update_node)
 

@@ -8,19 +8,16 @@ local type = type
 local pairs = pairs
 local open = io.open
 local ipairs = ipairs
-local say = ngx.say
 local log = ngx.log
 local ERR = ngx.ERR
 local exit = ngx.exit
+local say = ngx.print
 local ngx_var = ngx.var
 local ngx_req = ngx.req
 local parse = gumbo.parse
-local wait = ngx.thread.wait
-local ngx_config = ngx.config
 local re_find = ngx.re.find
-local ngx_shared = ngx.shared
+local wait = ngx.thread.wait
 local spawn = ngx.thread.spawn
-local setmetatable = setmetatable
 
 
 local gxs = {}
@@ -29,13 +26,7 @@ for _, v in ipairs{ "img", "metapost", "graphviz", "tikz" } do
 end
 
 
-local _M = {
-   version = "0.12.1",
-   cache = true,
-}
-
-
-local mt = { __index = _M }
+local _M = {}
 
 
 local function get_document (doc)
@@ -61,14 +52,11 @@ local function get_document (doc)
 end
 
 
-function _M:go ()
-   local fn_update_node = self.fn_update_node
-   local doc, err = get_document(self.doc)
+function _M.go (doc, fn_update_node)
+   local doc, err = get_document(doc)
    if not doc then
       exit(err)
-   end
-
-   if err == 200 then
+   elseif err == 200 then
       say(doc)
       exit(200)
    end
@@ -102,11 +90,6 @@ function _M:go ()
    end
 
    say(doc:serialize())
-end
-
-
-function _M.new (o)
-   return setmetatable(o or {}, mt)
 end
 
 

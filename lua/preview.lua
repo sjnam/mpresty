@@ -14,11 +14,7 @@ if args_cmd and args_cmd ~= '' then
    cmd = " cmd='" .. args_cmd .. "'"
 end
 
-local html = tconcat {"<", args.gx, cmd, " width='400'>\n",
+local html = tconcat {"<", args.gx, cmd, " cache='no' width='400'>\n",
                       args.code, "\n</", args.gx, ">" }
-local gx = mpresty.new {
-   doc = parse(html),
-   cache = false,
-}
-gx:go()
+mpresty.go(parse(html))
 
