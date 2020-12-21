@@ -48,7 +48,8 @@ digraph G {
     execute -> compare;
 }
 </graphviz>
-<img src="https://graphviz.org/Gallery/directed/Linux_kernel_diagram.gv.txt" cmd="dot" width="200">
+<img src="https://graphviz.org/Gallery/directed/Linux_kernel_diagram.gv.txt"
+     cmd="dot" width="200">
 <img src="http://ktug.org/~sjnam/source/neato.gv" width="200" cmd="neato">
 
 <H1>tikz</H1>
