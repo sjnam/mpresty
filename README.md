@@ -1,6 +1,6 @@
 mpresty
 ==================
-An openresty web application for TeX graphics that works in all browsers.
+An openresty web application for TeX graphics
 
 Getting started
 ---------------
