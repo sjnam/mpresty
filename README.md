@@ -15,7 +15,7 @@ a file and inserted into uri format of `img`'`src` attribute.
 <body>
 
 <H1>Metapost</H1>
-<metapost width="300">
+<metapost width="200">
 beginfig(1)
   u:=1.3cm; transform T; z1=(0,2u); n:=5;
   for i=1 upto n-1: z[i+1]=z1 rotated (360*i/n);
@@ -31,12 +31,12 @@ beginfig(1)
   endfor;
 endfig;
 </metapost>
-<img src="/mpresty/tree.mp" cache="no">
-<img src="http://ktug.org/~sjnam/source/rgb.mp" width="300">
+<img src="/mpresty/tree.mp" width="200" cache="no">
+<img src="http://ktug.org/~sjnam/source/rgb.mp" width="200">
 
 <H1>Graphviz</H1>
 
-<graphviz cmd="dot">
+<graphviz cmd="dot" width="200">
 digraph G {
     main -> parse -> execute;
     main -> init;
@@ -48,12 +48,12 @@ digraph G {
     execute -> compare;
 }
 </graphviz>
-<img src="https://graphviz.org/Gallery/directed/Linux_kernel_diagram.gv.txt" cmd="dot">
-<img src="http://ktug.org/~sjnam/source/neato.gv" cmd="neato">
+<img src="https://graphviz.org/Gallery/directed/Linux_kernel_diagram.gv.txt" cmd="dot" width="200">
+<img src="http://ktug.org/~sjnam/source/neato.gv" width="200" cmd="neato">
 
 <H1>tikz</H1>
 
-<tikz>
+<tikz width="200">
 \begin{tikzpicture}[scale=3]
   \draw[step=.5cm, gray, very thin] (-1.2,-1.2) grid (1.2,1.2); 
   \filldraw[fill=green!20,draw=green!50!black] (0,0) -- (3mm,0mm) arc (0:30:3mm) -- cycle; 
@@ -69,8 +69,8 @@ digraph G {
     \draw (1pt,\y cm) -- (-1pt,\y cm) node[anchor=east,fill=white] {$\ytext$};
 \end{tikzpicture}
 </tikz>
-<img src="http://ktug.org/~sjnam/source/bissector.tex">
-<img src="http://ktug.org/~sjnam/source/mosaic.tex">
+<img src="http://ktug.org/~sjnam/source/bissector.tex" width="200">
+<img src="http://ktug.org/~sjnam/source/mosaic.tex" width="200">
 
 </body>
 </html>
