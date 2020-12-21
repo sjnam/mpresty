@@ -26,7 +26,7 @@ local mpresty_cache = ngx_shared.mpresty_cache
 
 
 local _M = {
-   cache = true,
+   use_cache = true,
    workdir = "/images",
    fn_update_node = function (doc, node, uri, content)
       node.localName = "img"
@@ -114,10 +114,7 @@ local function update_doc (self, node, fn_update_node)
    local update_node = fn_update_node or
       (self.cur_update_node or self.fn_update_node)
 
-   local use_cache = node:getAttribute("cache") ~= "no"
-   if use_cache then
-      use_cache = self.cache and mpresty_cache
-   end
+   local use_cache = self.use_cache and node:getAttribute("cache") ~= "no"
    node:removeAttribute("cache")
 
    local content, err = get_contents(node, use_cache)

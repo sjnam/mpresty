@@ -62,7 +62,7 @@ function _M.go (doc, fn_update_node)
    end
 
    local args = ngx_req.get_uri_args()
-   local cache = not args.debug
+   local use_cache = not args.debug
 
    local update_nodes
    if type(fn_update_node) == "table" then
@@ -71,7 +71,7 @@ function _M.go (doc, fn_update_node)
 
    local threads = {}
    for k, g in pairs(gxs) do
-      g.cache = cache
+      g.use_cache = use_cache
       local fn = fn_update_node
       if update_nodes then
          fn = update_nodes[k]
