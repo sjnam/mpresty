@@ -26,5 +26,5 @@ local gx = mpresty.new {
    }
 }
 
-gx:render()
+gx:go()
 

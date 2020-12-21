@@ -20,5 +20,5 @@ local gx = mpresty.new {
    doc = parse(html),
    cache = false,
 }
-gx:render()
+gx:go()
 
