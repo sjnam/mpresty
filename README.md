@@ -1,15 +1,14 @@
 mpresty
 ==================
-An openresty web application for TeX graphics (`metapost`, `graphviz`, `tikz`)
-that works in all browsers.
+An openresty web application for TeX graphics that works in all browsers.
 
 Getting started
 ---------------
-You can write the metapost or tikz or graphviz script of the image you want to
-draw in the html file, and the mpresty converts the script into the image.
+You can write the `metapost` or `tikz` or `graphviz` script of the image you want to
+draw in the html file, and the _mpresty_ converts the script into the image.
 
-The graphics scripts are inserted into the html in codes or are stored in
-a file and uri format of `img`'`src` attribute.
+The graphics scripts are inserted into the html in codes or they are stored in
+a file and inserted into uri format of `img`'`src` attribute.
 
 ````html
 <html>
