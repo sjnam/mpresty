@@ -103,8 +103,11 @@ put it in the `$(pwd)/html` directory and visit http://localhost:8080/fun.html
 Advanced Usage
 --------------
 ### update-node customization
-See [upnode.lua](https://github.com/sjnam/mpresty/blob/master/lua/upnode.lua).
-- http://localhost:8080/upnode/all.html
+See [exemples.lua](https://github.com/sjnam/mpresty/blob/master/lua/exemples.lua)
+- http://localhost:8080/exemples.html
+
+See [upnode.lua](https://github.com/sjnam/mpresty/blob/master/lua/upnode.lua)
+- http://localhost:8080/updatenode.html
 
 Author
 ------

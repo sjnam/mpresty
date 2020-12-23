@@ -37,7 +37,7 @@ function _M:update_document (doc, fn_update_node)
          goto continue
       end
       gx.doc = doc
-      local fn
+      local fn = fn_update_node
       if update_nodes then
          fn = update_nodes[gx.tag_name]
       end

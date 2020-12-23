@@ -1,7 +1,7 @@
 local mpresty = require "mpresty"
 
 
-local function update_node (doc, node, uri, content)
+local function mp_update_node (doc, node, uri, content)
    node.localName = "p"
    node:removeAttribute("width")
    -- pre
@@ -18,10 +18,18 @@ local function update_node (doc, node, uri, content)
    node:appendChild(hr)
 end
 
+local function tikz_update_node (doc, node, uri, content)
+   node.localName = "img"
+   node:setAttribute("src", uri)
+   node:setAttribute("width", "200")
+   node:setAttribute("style", "border:5px solid black")
+   node:setAttribute("alt", content)
+end
+
 
 local fn_update_node = {
-   ['metapost'] = update_node,
-   ['tikz'] = update_node,
+   ['metapost'] = mp_update_node,
+   ['tikz'] = tikz_update_node,
 }
 
 mpresty.go(nil, fn_update_node)
