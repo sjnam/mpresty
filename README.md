@@ -51,7 +51,7 @@ Run
 
 Try to visit the following pages
 - http://localhost:8080/mpresty/tutorial.html
-([Original html page](http://www.ursoswald.ch/metapost/tutorial.html))
+([Original](http://www.ursoswald.ch/metapost/tutorial.html))
 - http://localhost:8080/mpresty/sunflower.html
 - http://localhost:8080/mpresty/all.html
 - http://localhost:8080/preview.html
@@ -63,7 +63,7 @@ Advanced Usage
 --------------
 ### update-node customization
 See [exemples.lua](https://github.com/sjnam/mpresty/blob/master/lua/exemples.lua)
-- http://localhost:8080/exemples.html
+- http://localhost:8080/exemples.html ([Original](https://tex.loria.fr/prod-graph/zoonekynd/metapost/metapost.html))
 
 See [upnode.lua](https://github.com/sjnam/mpresty/blob/master/lua/upnode.lua)
 - http://localhost:8080/updatenode.html
