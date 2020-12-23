@@ -13,7 +13,6 @@ a file and inserted into uri format of `img`'`src` attribute.
 ````html
 <html>
 <body>
-
 <H1>Metapost</H1>
 <metapost width="200">
 beginfig(1)
@@ -33,46 +32,6 @@ endfig;
 </metapost>
 <img src="/mpresty/tree.mp" width="200" cache="no">
 <img src="http://ktug.org/~sjnam/source/rgb.mp" width="200">
-
-<H1>Graphviz</H1>
-
-<graphviz cmd="dot" width="200">
-digraph G {
-    main -> parse -> execute;
-    main -> init;
-    main -> cleanup;
-    execute -> make_string;
-    execute -> printf
-    init -> make_string;
-    main -> printf;
-    execute -> compare;
-}
-</graphviz>
-<img src="https://graphviz.org/Gallery/directed/Linux_kernel_diagram.gv.txt"
-     cmd="dot" width="200">
-<img src="http://ktug.org/~sjnam/source/neato.gv" width="200" cmd="neato">
-
-<H1>tikz</H1>
-
-<tikz width="200">
-\begin{tikzpicture}[scale=3]
-  \draw[step=.5cm, gray, very thin] (-1.2,-1.2) grid (1.2,1.2); 
-  \filldraw[fill=green!20,draw=green!50!black] (0,0) -- (3mm,0mm) arc (0:30:3mm) -- cycle; 
-  \draw[->] (-1.25,0) -- (1.25,0) coordinate (x axis);
-  \draw[->] (0,-1.25) -- (0,1.25) coordinate (y axis);
-  \draw (0,0) circle (1cm);
-  \draw[very thick,red] (30:1cm) -- node[left,fill=white] {$\sin \alpha$} (30:1cm |- x axis);
-  \draw[very thick,blue] (30:1cm |- x axis) -- node[below=2pt,fill=white] {$\cos \alpha$} (0,0);
-  \draw (0,0) -- (30:1cm);
-  \foreach \x/\xtext in {-1, -0.5/-\frac{1}{2}, 1} 
-    \draw (\x cm,1pt) -- (\x cm,-1pt) node[anchor=north,fill=white] {$\xtext$};
-  \foreach \y/\ytext in {-1, -0.5/-\frac{1}{2}, 0.5/\frac{1}{2}, 1} 
-    \draw (1pt,\y cm) -- (-1pt,\y cm) node[anchor=east,fill=white] {$\ytext$};
-\end{tikzpicture}
-</tikz>
-<img src="http://ktug.org/~sjnam/source/bissector.tex" width="200">
-<img src="http://ktug.org/~sjnam/source/mosaic.tex" width="200">
-
 </body>
 </html>
 ````
