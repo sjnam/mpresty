@@ -33,19 +33,18 @@ function _M:update_document (doc, fn_update_node)
          gx = tikz
       elseif re_find(uri, "\\."..graphviz.ext.."(\\.txt)?$") then
          gx = graphviz
-      else
-         goto continue
       end
-      gx.doc = doc
-      local fn = fn_update_node
-      if update_nodes then
-         fn = update_nodes[gx.tag_name]
+      if gx then
+         gx.doc = doc
+         local fn = fn_update_node
+         if update_nodes then
+            fn = update_nodes[gx.tag_name]
+         end
+         threads[#threads+1] = spawn(gx.update_doc, gx, node, fn)
       end
-      threads[#threads+1] = spawn(gx.update_doc, gx, node, fn)
-      ::continue::
    end
-   for i=1,#threads do
-      local ok, res = wait(threads[i])
+   for _, th in ipairs(threads) do
+      local ok, res = wait(th)
       if not ok then
          log(ERR, "error: ", res)
          return nil, res
