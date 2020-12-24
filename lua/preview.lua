@@ -17,4 +17,3 @@ end
 local html = tconcat {"<", args.gx, cmd, " cache='no' width='400'>\n",
                       args.code, "\n</", args.gx, ">" }
 mpresty.go(parse(html))
-
