@@ -22,9 +22,9 @@ local spawn = ngx.thread.spawn
 local capture = ngx.location.capture
 
 
-local gxs = {}
+local tags = {}
 for _, v in ipairs{ "img", "metapost", "graphviz", "tikz" } do
-   gxs[v] = require("mpresty."..v)
+   tags[v] = require("mpresty."..v)
 end
 
 
@@ -32,9 +32,7 @@ local _M = {}
 
 
 local function get_document (doc)
-   if doc then
-      return doc
-   end
+   if doc then return doc end
    local uri_html = re_gsub(ngx_var.uri, ".gxn", ".html", "i")
    local res = capture(uri_html)
    if res.status ~= 200 then
@@ -68,16 +66,16 @@ function _M.go (doc, fn_update_node)
    end
 
    local threads = {}
-   for k, g in pairs(gxs) do
-      g.use_cache = use_cache
+   for tag, gx in pairs(tags) do
+      gx.use_cache = use_cache
       local fn = fn_update_node
       if update_nodes then
-         fn = update_nodes[k]
+         fn = update_nodes[tag]
       end
-      if k == "img" and not fn then
+      if tag == "img" and not fn then
          fn = fn_update_node
       end
-      threads[#threads+1] = spawn(g.update_document, g, doc, fn)
+      threads[#threads+1] = spawn(gx.update_document, gx, doc, fn)
    end
    for _, th in ipairs(threads) do
       local ok, res = wait(th)
