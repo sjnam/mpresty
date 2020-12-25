@@ -6,7 +6,6 @@ local gumbo = require "gumbo"
 
 local type = type
 local pairs = pairs
-local open = io.open
 local ipairs = ipairs
 local log = ngx.log
 local ERR = ngx.ERR
@@ -42,7 +41,7 @@ local function get_document (doc)
    local doc, err = parse(res.body)
    if not doc then
       log(ERR, "error: ", err)
-      return nil, 505
+      return nil, 500
    end
    return doc
 end
@@ -52,9 +51,6 @@ function _M.go (doc, fn_update_node)
    local doc, err = get_document(doc)
    if not doc then
       exit(err)
-   elseif err == 200 then
-      say(doc)
-      exit(200)
    end
 
    local args = ngx_req.get_uri_args()
