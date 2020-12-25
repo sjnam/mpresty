@@ -38,9 +38,6 @@ local _M = {
 }
 
 
-local mt = { __index = _M }
-
-
 local function get_contents (node, use_cache)
    local uri = node:getAttribute("src")
    if not uri then
@@ -93,7 +90,8 @@ end
 
 
 local function image_uri (self, node, fname)
-   local run_script = sformat(self.run, ngx_var.document_root.."/"..self.workdir,
+   local run_script = sformat(self.run,
+                              ngx_var.document_root.."/"..self.workdir,
                               self.cmd)
    local script, n, err = re_gsub(run_script, "_FNAME_", fname, "i")
    if not script then
@@ -173,7 +171,7 @@ end
 
 
 function _M:new (o)
-   return setmetatable(o or {}, mt)
+   return setmetatable(o or {}, { __index = _M })
 end
 
 
