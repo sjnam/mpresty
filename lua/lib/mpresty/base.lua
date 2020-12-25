@@ -160,8 +160,8 @@ function _M:update_document (doc, fn_update_node)
    for _, node in ipairs(doc:getElementsByTagName(self.tag_name)) do
       threads[#threads+1] = spawn(update_doc, self, node, fn_update_node)
    end
-   for i=1,#threads do
-      local ok, res = wait(threads[i])
+   for _, th in ipairs(threads) do
+      local ok, res = wait(th)
       if not ok then
          log(ERR, "error: ", res)
          return nil, res
