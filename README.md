@@ -50,23 +50,23 @@ Run
 ```
 
 Try to visit the following pages
-- http://localhost:8080/mpresty/tutorial.html
+- http://localhost:8080/mpresty/tutorial.gxn
 ([Original](http://www.ursoswald.ch/metapost/tutorial.html))
-- http://localhost:8080/mpresty/sunflower.html
-- http://localhost:8080/mpresty/all.html
+- http://localhost:8080/mpresty/sunflower.gxn
+- http://localhost:8080/mpresty/all.gxn
 - http://localhost:8080/preview.html
 
 Create a `fun.html` file with the above [Getting started](#getting-started) and
-put it in the `$(pwd)/html` directory and visit http://localhost:8080/fun.html
+put it in the `$(pwd)/html` directory and visit http://localhost:8080/fun.gxn
 
 Advanced Usage
 --------------
 ### update-node customization
 See [exemples.lua](https://github.com/sjnam/mpresty/blob/master/lua/exemples.lua)
-- http://localhost:8080/exemples.html ([Original](https://tex.loria.fr/prod-graph/zoonekynd/metapost/metapost.html))
+- http://localhost:8080/exemples.gxn ([Original](https://tex.loria.fr/prod-graph/zoonekynd/metapost/metapost.html))
 
 See [upnode.lua](https://github.com/sjnam/mpresty/blob/master/lua/upnode.lua)
-- http://localhost:8080/updatenode.html
+- http://localhost:8080/updatenode.gxn
 
 Author
 ------

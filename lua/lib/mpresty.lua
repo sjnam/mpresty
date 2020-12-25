@@ -16,8 +16,10 @@ local ngx_var = ngx.var
 local ngx_req = ngx.req
 local parse = gumbo.parse
 local re_find = ngx.re.find
+local re_gsub = ngx.re.gsub
 local wait = ngx.thread.wait
 local spawn = ngx.thread.spawn
+local capture = ngx.location.capture
 
 
 local gxs = {}
@@ -33,18 +35,13 @@ local function get_document (doc)
    if doc then
       return doc
    end
-   local uri = ngx_var.uri
-   local f, err = open(ngx_var.document_root..uri, "rb")
-   if not f then
-      log(ERR, "error: ", err)
-      return nil, 404
+   local uri_html = re_gsub(ngx_var.uri, ".gxn", ".html", "i")
+   local res = capture(uri_html)
+   if res.status ~= 200 then
+      log(ERR, "error: ngx.location.capture")
+      return nil, res.status
    end
-   local body = f:read("*all")
-   f:close()
-   if not re_find(uri, [[\.html?$]]) then
-      return body, 200
-   end
-   local doc, err = parse(body)
+   local doc, err = parse(res.body)
    if not doc then
       log(ERR, "error: ", err)
       return nil, 505
