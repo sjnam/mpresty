@@ -6,7 +6,6 @@ local type = type
 local ipairs = ipairs
 local log = ngx.log
 local ERR = ngx.ERR
-local re_find = ngx.re.find
 local wait = ngx.thread.wait
 local spawn = ngx.thread.spawn
 
@@ -28,12 +27,7 @@ function _M:update_document (doc, fn_update_node)
    end
    local threads = {}
    for _, node in ipairs(doc.images) do
-      local gx
-      local uri = node:getAttribute("src")
-      local m = ngx.re.match(uri, [[\.(\w+)$]])
-      if m then
-         gx = gxs[m[1]]
-      end
+      local gx = gxs[node:getAttribute("src"):match("%.(%a+)$")]
       if gx then
          gx.doc = doc
          local fn = fn_update_node

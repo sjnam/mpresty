@@ -27,7 +27,7 @@ local mpresty_cache = ngx_shared.mpresty_cache
 
 local _M = {
    use_cache = true,
-   workdir = "/images",
+   workdir = "images",
    fn_update_node = function (doc, node, uri, content)
       node.localName = "img"
       node:setAttribute("src", uri)
@@ -79,7 +79,7 @@ end
 
 
 local function source_file (self, fname, content)
-   local f, err = open(concat{ngx_var.document_root..self.workdir,
+   local f, err = open(concat{ngx_var.document_root, "/", self.workdir,
                               "/", fname, ".", self.ext}, "w")
    if not f then
       log(ERR, "error: ", err)
@@ -93,7 +93,7 @@ end
 
 
 local function image_uri (self, node, fname)
-   local run_script = sformat(self.run, ngx_var.document_root..self.workdir,
+   local run_script = sformat(self.run, ngx_var.document_root.."/"..self.workdir,
                               self.cmd)
    local script, n, err = re_gsub(run_script, "_FNAME_", fname, "i")
    if not script then
@@ -106,7 +106,7 @@ local function image_uri (self, node, fname)
       log(ERR, "error: fail to run command")
       return nil, stdout
    end
-   return concat{self.workdir, "/", fname, ".svg"}
+   return concat{"/", self.workdir, "/", fname, ".svg"}
 end
 
 
