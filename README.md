@@ -4,8 +4,9 @@ An openresty web application for metapost
 
 Getting started
 ---------------
-You can write the `metapost` or `tikz` or `graphviz` script of the image you want to
-draw in the html file, and the _mpresty_ converts the script into the image.
+You can write the `metapost` or `tikz` or `graphviz` script of the image you
+want to draw in the html file, and the _mpresty_ converts the script into the
+image.
 
 The graphics scripts are inserted into the html in codes or they are stored in
 a file and inserted into uri format of `img`'`src` attribute.
@@ -30,7 +31,7 @@ beginfig(1)
   endfor;
 endfig;
 </metapost>
-<img src="/mpresty/tree.mp" width="200" cache="no">
+<img src="/mpresty/tree.mp" width="200">
 <img src="http://ktug.org/~sjnam/source/rgb.mp" width="200">
 </body>
 </html>
