@@ -51,6 +51,7 @@ Run
 ```
 
 Try to visit the following pages
+- http://localhost:8080/benchmark.gxn
 - http://localhost:8080/mpresty/tutorial.gxn
 ([Original](http://www.ursoswald.ch/metapost/tutorial.html))
 - http://localhost:8080/mpresty/sunflower.gxn

@@ -1,0 +1,37 @@
+input boxes;
+
+beginfig(49);
+  boxjoin(a.se=b.sw; a.ne=b.nw);
+  boxit.a(btex\strut$\cdots$ etex);    boxit.ni(btex\strut$n_i$ etex);
+  boxit.di(btex\strut$d_i$ etex);      boxit.ni1(btex\strut$n_{i+1}$ etex);
+  boxit.di1(btex\strut$d_{i+1}$ etex); boxit.aa(btex\strut$\cdots$ etex);
+  boxit.nk(btex\strut$n_k$ etex);      boxit.dk(btex\strut$d_k$ etex);
+  drawboxed(di,a,ni,ni1,di1,aa,nk,dk); label.lft("ndtable:", a.w);
+  interim defaultdy:=7bp;
+  boxjoin(a.sw=b.nw; a.se=b.ne);
+  boxit.ba(); boxit.bb(); boxit.bc();
+  boxit.bd(btex $\vdots$ etex); boxit.be(); boxit.bf();
+  bd.dx=8bp; ba.ne=a.sw-(15bp,10bp);
+  drawboxed(ba,bb,bc,bd,be,bf); label.lft("hashtab:",ba.w);
+  vardef ndblock suffix $ =
+    boxjoin(a.sw=b.nw; a.se=b.ne);
+    forsuffixes $$=$1,$2,$3: boxit$$(); ($$dx,$$dy)=(5.5bp,4bp);
+    endfor; enddef;
+  ndblock nda;  ndblock ndb;  ndblock ndc;
+  nda1.c-bb.c = ndb1.c-nda3.c = (whatever,0);
+  xpart ndb3.se = xpart ndc1.ne = xpart di.c;
+  ndc1.c - be.c = (whatever,0);
+  drawboxed(nda1,nda2,nda3, ndb1,ndb2,ndb3, ndc1,ndc2,ndc3);
+  drawarrow bb.c -- nda1.w;
+  drawarrow be.c -- ndc1.w;
+  drawarrow nda3.c -- ndb1.w;
+  drawarrow nda1.c{right}..{curl0}ni.c cutafter bpath ni;
+  drawarrow nda2.c{right}..{curl0}di.c cutafter bpath di;
+  drawarrow ndc1.c{right}..{curl0}ni1.c cutafter bpath ni1;
+  drawarrow ndc2.c{right}..{curl0}di1.c cutafter bpath di1;
+  drawarrow ndb1.c{right}..nk.c cutafter bpath nk;
+  drawarrow ndb2.c{right}..dk.c cutafter bpath dk;
+  x.ptr=xpart aa.c;   y.ptr=ypart ndc1.ne;
+  drawarrow subpath (0,.7) of (z.ptr..{left}ndc3.c) dashed evenly;
+  label.rt(btex \strut ndblock etex, z.ptr);
+endfig;
