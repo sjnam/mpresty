@@ -42,7 +42,6 @@ Run
 ```bash
 % git clone https://github.com/sjnam/mpresty.git
 % cd mpresty
-% mkdir -p html/images
 % docker run -d -p 8080:8080 \
 -v $(pwd)/lua:/usr/local/openresty/nginx/lua \
 -v $(pwd)/html:/usr/local/openresty/nginx/html \
