@@ -44,7 +44,6 @@ Run
 % cd mpresty
 % docker run -d -p 8080:8080 \
 -v $(pwd)/lua:/usr/local/openresty/nginx/lua \
--v $(pwd)/html:/usr/local/openresty/nginx/html \
 -v $(pwd)/conf.d:/etc/nginx/conf.d \
 --name mpresty sjnam/mpresty
 ```
