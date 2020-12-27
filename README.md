@@ -56,9 +56,6 @@ Try to visit the following pages
 - http://localhost:8080/all.gxn
 - http://localhost:8080/preview.html
 
-Create a `fun.html` file with the above [Getting started](#getting-started) and
-put it in the `$(pwd)/html` directory and visit http://localhost:8080/fun.gxn
-
 Advanced Usage
 --------------
 ### update-node customization
