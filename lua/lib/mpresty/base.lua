@@ -44,22 +44,19 @@ local function get_contents (node, use_cache)
       return node.textContent, nil
    end
    node:removeAttribute("src")
-
    local content = use_cache and mpresty_cache:get(uri)
    if not content then
-      if not re_find(uri, "^https?://") then
-         if re_find(uri, "/") then
-            content = capture(uri).body
-         else
-            content = capture(ngx_var.uri:match("(.*[/\\])")..uri).body
-         end
-      else
+      if re_find(uri, "^https?://") then
          local res, err = http_request(uri)
          if not res then
             log(ERR, "error: ", err)
             return nil, err
          end
          content = res:body()
+      elseif re_find(uri, "^/") then
+         content = capture(uri).body
+      else
+         content = capture(ngx_var.uri:match("(.*[/\\])")..uri).body
       end
       mpresty_cache:set(uri, content)
    end
