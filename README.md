@@ -31,7 +31,7 @@ beginfig(1)
   endfor;
 endfig;
 </metapost>
-<img src="/mpresty/tree.mp" width="200">
+<img src="/source/tree.mp" width="200">
 <img src="http://ktug.org/~sjnam/source/rgb.mp" width="200">
 </body>
 </html>
