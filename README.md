@@ -51,10 +51,10 @@ Run
 
 Try to visit the following pages
 - http://localhost:8080/benchmark.gxn
-- http://localhost:8080/mpresty/tutorial.gxn
+- http://localhost:8080/tutorial.gxn
 ([Original](http://www.ursoswald.ch/metapost/tutorial.html))
-- http://localhost:8080/mpresty/sunflower.gxn
-- http://localhost:8080/mpresty/all.gxn
+- http://localhost:8080/sunflower.gxn
+- http://localhost:8080/all.gxn
 - http://localhost:8080/preview.html
 
 Create a `fun.html` file with the above [Getting started](#getting-started) and
