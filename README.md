@@ -44,6 +44,7 @@ Run
 % cd mpresty
 % docker run -d -p 8080:8080 \
 -v $(pwd)/lua:/usr/local/openresty/nginx/lua \
+-v $(pwd)/html:/usr/local/openresty/nginx/html \
 -v $(pwd)/conf.d:/etc/nginx/conf.d \
 --name mpresty sjnam/mpresty
 ```
@@ -55,6 +56,9 @@ Try to visit the following pages
 - http://localhost:8080/sunflower.gxn
 - http://localhost:8080/all.gxn
 - http://localhost:8080/preview.html
+
+Create a `fun.html` file with the above [Getting started](#getting-started) and
+put it in the `$(pwd)/html` directory and visit http://localhost:8080/fun.gxn
 
 Advanced Usage
 --------------

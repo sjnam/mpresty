@@ -9,5 +9,4 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update \
     && luarocks install gumbo \
     && luarocks install lua-resty-requests
 
-COPY html /usr/local/openresty/nginx/html
 COPY nginx.conf /usr/local/openresty/nginx/conf/nginx.conf
