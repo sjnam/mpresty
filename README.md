@@ -1,6 +1,6 @@
 mpresty
 ==================
-An openresty web application for metapost
+An openresty web application for metapost and tex graphics
 
 Getting started
 ---------------
