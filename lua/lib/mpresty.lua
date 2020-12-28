@@ -30,8 +30,8 @@ end
 local _M = {}
 
 
-local function get_document (doc)
-   if doc then return doc end
+local function get_document (html)
+   if html then return parse(html) end
    local uri_html = re_gsub(ngx_var.uri, ".gxn", ".html", "i")
    local res = capture(uri_html)
    if res.status ~= 200 then
@@ -47,8 +47,8 @@ local function get_document (doc)
 end
 
 
-function _M.go (doc, fn_update_node)
-   local doc, err = get_document(doc)
+function _M.go (html, fn_update_node)
+   local doc, err = get_document(html)
    if not doc then
       exit(err)
    end
@@ -86,3 +86,4 @@ end
 
 
 return _M
+
