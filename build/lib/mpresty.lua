@@ -31,16 +31,17 @@ local _M = {}
 
 
 local function get_document (html)
-   if html then return parse(html) end
-   local uri_html = re_gsub(ngx_var.uri, ".gxn", ".html", "i")
-   local res = capture(uri_html)
-   if res.status ~= 200 then
-      log(ERR, "error: ngx.location.capture")
-      return nil, res.status
+   local html = html
+   if not html then
+      local uri_html = re_gsub(ngx_var.uri, ".gxn", ".html", "i")
+      local res = capture(uri_html)
+      if res.status ~= 200 then
+         return nil, res.status
+      end
+      html = res.body
    end
-   local doc, err = parse(res.body)
+   local doc, err = parse(html)
    if not doc then
-      log(ERR, "error: ", err)
       return nil, 500
    end
    return doc
@@ -50,6 +51,7 @@ end
 function _M.go (html, fn_update_node)
    local doc, err = get_document(html)
    if not doc then
+      log(ERR, "error: get_document ", err)
       exit(err)
    end
 

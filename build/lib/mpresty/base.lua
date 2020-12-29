@@ -21,7 +21,7 @@ local digest = ngx.crc32_long
 local ngx_shared = ngx.shared
 local spawn = ngx.thread.spawn
 local http_request = requests.get
-local capture = ngx.location.capture
+local location_capture = ngx.location.capture
 local mpresty_cache = ngx_shared.mpresty_cache
 
 
@@ -49,14 +49,14 @@ local function get_contents (node, use_cache)
       if re_find(uri, "^https?://") then
          local res, err = http_request(uri)
          if not res then
-            log(ERR, "error: ", err)
             return nil, err
          end
          content = res:body()
-      elseif re_find(uri, "^/") then
-         content = capture(uri).body
       else
-         content = capture(ngx_var.uri:match("(.*[/\\])")..uri).body
+         if not re_find(uri, "^/") then
+            uri = ngx_var.uri:match("(.*[/\\])")..uri
+         end
+         content = location_capture(uri).body
       end
       mpresty_cache:set(uri, content)
    end
@@ -76,7 +76,6 @@ local function source_file (self, fname, content)
    local f, err = open(concat{ngx_var.document_root, "/", self.workdir,
                               "/", fname, ".", self.ext}, "w")
    if not f then
-      log(ERR, "error: ", err)
       return err
    end
    f:write(self.preamble or "")
@@ -92,13 +91,11 @@ local function image_uri (self, node, fname)
                               self.cmd)
    local script, n, err = re_gsub(run_script, "_FNAME_", fname, "i")
    if not script then
-      log(ERR, "error: ", err)
       return nil, err
    end
 
    local ok, stdout = run(script)
    if not ok then
-      log(ERR, "error: fail to run command")
       return nil, stdout
    end
    return concat{"/", self.workdir, "/", fname, ".svg"}
@@ -132,6 +129,7 @@ local function update_doc (self, node, fn_update_node)
       end
       uri, err = image_uri(self, node, fname)
       if err then
+         log(ERR, "error: ", err)
          update_node = error_fn_update_node
          content = err
       else
