@@ -63,10 +63,10 @@ put it in the `$(pwd)/html` directory and visit http://localhost:8080/fun.gxn
 Advanced Usage
 --------------
 ### update-node customization
-See [exemples.lua](https://github.com/sjnam/mpresty/blob/master/sample/lua/exemples.lua)
+See [exemples.lua](https://github.com/sjnam/mpresty/blob/master/webapp/lua/exemples.lua)
 - http://localhost:8080/exemples.gxn ([Original](https://tex.loria.fr/prod-graph/zoonekynd/metapost/metapost.html))
 
-See [upnode.lua](https://github.com/sjnam/mpresty/blob/master/sample/lua/upnode.lua)
+See [upnode.lua](https://github.com/sjnam/mpresty/blob/master/webapp/lua/upnode.lua)
 - http://localhost:8080/updatenode.gxn
 
 Author
