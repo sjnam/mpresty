@@ -52,13 +52,13 @@ local function get_contents (node, use_cache)
             return nil, err
          end
          content = res:body()
+         mpresty_cache:set(uri, content)
       else
          if not re_find(uri, "^/") then
             uri = ngx_var.uri:match("(.*[/\\])")..uri
          end
          content = location_capture(uri).body
       end
-      mpresty_cache:set(uri, content)
    end
    return content
 end
@@ -128,14 +128,12 @@ local function update_doc (self, node, fn_update_node)
          return nil, err
       end
       uri, err = image_uri(self, node, fname)
-      if err then
+      if uri then
+         mpresty_cache:set(key, uri)
+      else
          log(ERR, "error: ", err)
          update_node = error_fn_update_node
          content = err
-      else
-         if use_cache then
-            mpresty_cache:set(key, uri)
-         end
       end
    end
 
