@@ -7,6 +7,7 @@ local gumbo = require "gumbo"
 local type = type
 local pairs = pairs
 local ipairs = ipairs
+local fopen = io.open
 local log = ngx.log
 local ERR = ngx.ERR
 local exit = ngx.exit
@@ -18,7 +19,6 @@ local re_find = ngx.re.find
 local re_gsub = ngx.re.gsub
 local wait = ngx.thread.wait
 local spawn = ngx.thread.spawn
-local capture = ngx.location.capture
 
 
 local tags = {}
@@ -30,15 +30,26 @@ end
 local _M = {}
 
 
+local function capture ()
+   local f, err = fopen(ngx_var.document_root..ngx_var.uri, "r")
+   if not f then
+      log(ERR, "error: ", err)
+      return nil, 404
+   end
+   local body = f:read("*all")
+   f:close()
+   return body
+end
+
+
 local function get_document (html)
    local html = html
    if not html then
-      local uri_html = re_gsub(ngx_var.uri, ".gxn", ".html", "i")
-      local res = capture(uri_html)
-      if res.status ~= 200 then
-         return nil, res.status
+      local body, err = capture()
+      if not body then
+         return nil, err
       end
-      html = res.body
+      html = body
    end
    local doc, err = parse(html)
    if not doc then

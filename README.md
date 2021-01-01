@@ -51,24 +51,24 @@ Run
 ```
 
 Try to visit the following pages
-- http://localhost:8080/benchmark.gxn
-- http://localhost:8080/tutorial.gxn
+- http://localhost:8080/benchmark.html
+- http://localhost:8080/tutorial.html
 ([Original](http://www.ursoswald.ch/metapost/tutorial.html))
-- http://localhost:8080/sunflower.gxn
-- http://localhost:8080/all.gxn
+- http://localhost:8080/sunflower.html
+- http://localhost:8080/all.html
 - http://localhost:8080/preview.html
 
 Create a `fun.html` file with the above [Getting started](#getting-started) and
-put it in the `$(pwd)/html` directory and visit http://localhost:8080/fun.gxn
+put it in the `$(pwd)/html` directory and visit http://localhost:8080/fun.html
 
 Advanced Usage
 --------------
 ### update-node customization
 See [exemples.lua](https://github.com/sjnam/mpresty/blob/master/webapp/lua/exemples.lua)
-- http://localhost:8080/exemples.gxn ([Original](https://tex.loria.fr/prod-graph/zoonekynd/metapost/metapost.html))
+- http://localhost:8080/exemples.html ([Original](https://tex.loria.fr/prod-graph/zoonekynd/metapost/metapost.html))
 
 See [upnode.lua](https://github.com/sjnam/mpresty/blob/master/webapp/lua/upnode.lua)
-- http://localhost:8080/updatenode.gxn
+- http://localhost:8080/updatenode.html
 
 Author
 ------
