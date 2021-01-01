@@ -49,10 +49,10 @@ local function get_document (html)
       if not body then
          return nil, err
       end
-      html = body
       if not re_find(ngx_var.uri, "\\.html?$") then
          return body, 200
       end
+      html = body
    end
    local doc, err = parse(html)
    if not doc then
