@@ -31,7 +31,7 @@ local _M = {}
 
 
 local function capture ()
-   local f, err = fopen(ngx_var.document_root..ngx_var.uri, "r")
+   local f, err = fopen(ngx_var.document_root..ngx_var.uri, "rb")
    if not f then
       log(ERR, "error: ", err)
       return nil, 404
@@ -50,6 +50,9 @@ local function get_document (html)
          return nil, err
       end
       html = body
+      if not re_find(ngx_var.uri, "\\.html?$") then
+         return body, 200
+      end
    end
    local doc, err = parse(html)
    if not doc then
@@ -63,6 +66,9 @@ function _M.go (html, fn_update_node)
    local doc, err = get_document(html)
    if not doc then
       log(ERR, "error: get_document ", err)
+      exit(err)
+   elseif err == 200 then
+      say(doc)
       exit(err)
    end
 
