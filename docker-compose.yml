@@ -7,9 +7,9 @@ services:
     build:
       context: .
     volumes:
-      - ../webapp/lua:/usr/local/openresty/nginx/lua
-      - ../webapp/html:/usr/local/openresty/nginx/html
-      - ../webapp/conf.d:/etc/nginx/conf.d
+      - ./webapp/lua:/usr/local/openresty/nginx/lua
+      - ./webapp/html:/usr/local/openresty/nginx/html
+      - ./webapp/conf.d:/etc/nginx/conf.d
     ports:
       - "8080:8080"
 

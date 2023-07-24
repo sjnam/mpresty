@@ -42,7 +42,7 @@ Run
 ---
 ```bash
 % git clone https://github.com/sjnam/mpresty.git
-% cd mpresty/build
+% cd mpresty
 % docker-compose build
 % docker-compose up -d
 ```
