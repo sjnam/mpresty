@@ -1,0 +1,15 @@
+version: "3"
+
+services:
+  mpresty:
+    image: mpresty:latest
+    container_name: mpresty
+    build:
+      context: .
+    volumes:
+      - ../webapp/lua:/usr/local/openresty/nginx/lua
+      - ../webapp/html:/usr/local/openresty/nginx/html
+      - ../webapp/conf.d:/etc/nginx/conf.d
+    ports:
+      - "8080:8080"
+
