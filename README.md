@@ -43,13 +43,8 @@ Run
 ```bash
 % git clone https://github.com/sjnam/mpresty.git
 % cd mpresty/build
-% docker build -t mpresty .
-% cd ../webapp
-% docker run -d -p 8080:8080 \
--v $(pwd)/lua:/usr/local/openresty/nginx/lua \
--v $(pwd)/html:/usr/local/openresty/nginx/html \
--v $(pwd)/conf.d:/etc/nginx/conf.d \
---name mpresty mpresty
+% docker-compose build
+% docker-compose up -d
 ```
 
 Try to visit the following pages
