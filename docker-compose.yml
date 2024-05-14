@@ -1,5 +1,3 @@
-version: "3"
-
 services:
   mpresty:
     image: mpresty:latest
@@ -12,4 +10,3 @@ services:
       - ./webapp/conf.d:/etc/nginx/conf.d
     ports:
       - "8080:8080"
-
