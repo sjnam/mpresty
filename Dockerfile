@@ -1,4 +1,4 @@
-FROM openresty/openresty:jammy
+FROM openresty/openresty:noble
 
 LABEL maintainer="Soojin Nam <jsunam@gmail.com>"
 
