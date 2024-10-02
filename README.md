@@ -65,7 +65,3 @@ See [exemples.lua](https://github.com/sjnam/mpresty/blob/master/webapp/lua/exemp
 
 See [upnode.lua](https://github.com/sjnam/mpresty/blob/master/webapp/lua/upnode.lua)
 - http://localhost:8080/updatenode.html
-
-Author
-------
-Soojin Nam, jsunam at gmail.com
