@@ -2,6 +2,10 @@ mpresty
 ==================
 An openresty web application for metapost and tex graphics
 
+See also [go-mpresty](https://github.com/sjnam/go-mpresty), a port of this
+application to Go. It draws `metapost` and `graphviz` from a single binary,
+with no OpenResty or Lua involved.
+
 Getting started
 ---------------
 You can write the `metapost` or `tikz` or `graphviz` script of the image you
